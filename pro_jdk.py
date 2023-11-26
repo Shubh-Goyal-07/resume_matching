@@ -21,9 +21,10 @@ class Project(BaseModel):
     """A project with a name and description."""
 
     name: str = Field(description="The name of the project.")
-    # description: str = Field(description="A description of the project.")
     relevance: float = Field(description="The relevance of the project to the job description.")
-    reason: bool = Field(description="relation of project, true if directly relevant, false otherwise")
+    # reason: bool = Field(description="relation of project, true if directly relevant, false otherwise")
+    reason: str = Field(description="relation of project, directly relevant, indirectly relevant or not relevant")
+    final: bool = Field(description="true if directly relevant, false otherwise")
 
 # Experience model
 class Experience(BaseModel):
@@ -46,7 +47,7 @@ extraction_model = model.bind(functions=extraction_functions, function_call={"na
 # Template
 template = """A job description will be passed to you along with a candidate's project experience.
 
-You will be asked to extract the projects relevant to the job description.
+You will be asked to extract the projects very strictly relevant to the job description.
 
 If no project mentioned are relevant it's fine - you don't need to extract any! Just return an empty list.
 
@@ -57,12 +58,17 @@ The company's jdk is as follows:"""
 
 # Company's job description
 # jdk = """Data analysis and applicability study of algorithm using AI technologies such as machine learning, deep learning, etc. Study and evaluate AI algorithm and NTT Laboratories research products including log analysis AI of telecommunication network, image analysis AI, and so on. For example, trainee is expected to work on the following items:  ++ AI implementation (using machine learning, deep learning, etc.) with Python ++ Study/evaluation of certain algorithms' applicability ++ Analysis and visualization of those results (MS Excel, BI tool)"""
-jdk = """Join our dynamic team as a Web Development Intern. In this role, you'll work closely with our experienced developers to contribute to the design, coding, testing, and deployment of web applications. This internship offers hands-on experience with HTML, CSS, and JavaScript, as well as exposure to popular web development frameworks."""
+jdk = """Join our dynamic team as a Web Development Intern. In this role, you'll work closely with our experienced developers to contribute to the design, coding, testing, and deployment of web applications. This internship offers hands-on experience with HTML, CSS, and JavaScript, as well as exposure to popular web development frameworks. It would be great if the candidate has previous experience with web development"""
 
 # Chat prompt
+# prompt = ChatPromptTemplate.from_messages([
+#     ("system", template + "\n" + jdk),
+#     ("user", "What projects are strictly relevant to the company's requirements?"),
+#     ("human", "{input}")
+# ])
 prompt = ChatPromptTemplate.from_messages([
-    ("system", template + "\n" + jdk),
-    ("user", "What projects are relevant to the company's requirements?"),
+    ("system", "You are a recruiter searching for suitable candidates for your companies job requirement. The job description is as follows" + "\n" + jdk),
+    ("user", "What projects are strictly relevant to the company's requirements?"),
     ("human", "{input}")
 ])
 
@@ -90,6 +96,10 @@ project_prompt = """I have worked on the following projects:
 3. Cloudphysician's Vital Extraction Challenge:
     -Fine-tuned DETR and detectron to for ICU monitor segmentation images of ICU rooms and vital segmentation from ICU monitors.
     -Worked on graph digitisation algorithm to digitize ECG strip.
+
+4. Large Language Models Post-Processing module:
+    -Developed pipeline for bias/toxicity detection in outputs of large language models and integrated GPT-2, BERT and other language models for testing.
+    -Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform for using the developed pipeline.
 """
 
 
