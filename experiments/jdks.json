@@ -1,0 +1,47 @@
+[
+	{
+		"salary": "50000",
+		"requiredEngineerCount": "1",
+		"companyId": "abcd",
+		"jobEndDate": "",
+		"location": "India",
+		"jobId": "Wsf9Ow9GJ6ZJZJBgAwsY",
+		"attachmentURL": "",
+		"candidateAssignedList": [],
+		"skills": [],
+		"optionalSkills": [],
+		"createDate": "March 30, 2022",
+		"openCandidateInterestList": [],
+		"status": "approved",
+		"description": "L36_\"Security Analyst at Secuirty Operation Center\" - Security Analyst at Secuirty Operation Center (SOC) using various security appliances (McAfee SIEM, Fortigate, DefenderATP etc.). When a security incident occurs, we analyze the log of the security appliances to determine the cause and advise on measures to deal with the security incident. For daily operations, tune the security appliance settings so that the security appliances work effectively. In addition, we investigate threat information from all over the world through SNS and public sites, and present customers the information necessary for security measures.",
+		"createdBy": "MAxT7H0EqubwisLPf582r1yCtMN2",
+		"title": "Data Scientist L36"
+	},
+	{
+		"description": "Development and upgrading of the functionality in the existing calendar system in application of loioz.\n<App system>\nLike CRM for advocates in Japan to maintain their schedule, case, legal proceeding, invoicing, remuneration management, chatting etc...\n<Development environment>\n・Windows\n・Spring Tool Suite(STS)\n・Docker（Built within the development PC）\n　-DB（DB environment used by the application）\n　-minIO（AWS S3 environment used by the application）\n<Operational (staging) environment>\n・With AWS\n　-EC2\n　Linux(CentOS)\n　-RDS\n　-S3（Used by company's file function (as own storage)）\n<External linkage>\n・Payment services（Robot Paint）\n・Box\n・DropBox\n・Google Drive\n<Other Tool>\n・Source control：GitLab\n・Project management：Asana\n・Communication tool：Google Chat",
+		"candidateAssignedList": [],
+		"skills": [
+			"Java11（AdoptOpenJDK 11.0.6.10-hotspot）",
+			"Spring Boot2",
+			"Doma2",
+			"Thymeleaf",
+			"jQuery",
+			"Bootstrap4.3",
+			"MySQL8.0.16",
+			" FullCalendar - JavaScript Event Calendar"
+		],
+		"location": "Remote",
+		"optionalSkills": [],
+		"companyId": "85sX6ulufnmvQHGTQLqg",
+		"jobId": "baxZv2IwsZXdixyT5HGw",
+		"jobEndDate": "",
+		"createDate": "May 23, 2023",
+		"status": "pendingApproval",
+		"title": "Development and upgrading Application",
+		"createdBy": "Admin",
+		"requiredEngineerCount": "8",
+		"openCandidateInterestList": [],
+		"attachmentURL": "",
+		"salary": "60000"
+	}
+]

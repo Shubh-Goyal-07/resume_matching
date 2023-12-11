@@ -1,0 +1,12 @@
+[
+    {
+        "id" : 1,
+        "skills" : ["HTML", "JavaScript", "CSS", "PyTorch", "ReactJS", "Django"],
+        "projects" : [
+            {
+                "name" : "Literature Society IITJ Website",
+                "description" : "A website developed for managing various activities for literature society of IIT Jodhpur. The website contains the following features: \n-User Profile Management (with in site notification service) \n-Library Management System \n-Feature to upload written works to be displayed on website (Reader's Section). \n-Moderator and Admin access profiles to approve books and contents."
+            }
+        ]
+    }
+]
