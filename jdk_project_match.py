@@ -1,8 +1,6 @@
 import os
 import openai
 
-
-
 # Importing modules for langchain
 from typing import List, Optional
 from pydantic import BaseModel, Field
@@ -10,6 +8,7 @@ from langchain.utils.openai_functions import convert_pydantic_to_openai_function
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser, JsonKeyOutputFunctionsParser
+
 
 # PYDANTIC MODELS
 # Project model
@@ -102,7 +101,7 @@ class JDK_projects():
         project_rating = extraction_chain.invoke({"input": project_prompt})
 
         # Print projects
-        print(project_rating)
+        # print(project_rating)
 
         return project_rating
     
