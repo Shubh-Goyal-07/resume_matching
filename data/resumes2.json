@@ -1,0 +1,82 @@
+[
+    {
+        "id" : 1,
+        "skills" : ["HTML", "JavaScript", "CSS", "PyTorch", "ReactJS", "Django"],
+        "projects" : [
+            {
+                "name" : "LLMGuard",
+                "description" : "Developed pipeline for bias/toxicity detection in outputs of large language models and integrated GPT-2, BERT and other language models for testing. Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform for using the developed pipeline.",
+                "skills" : ["ReactJS", "Django", "Python", "JavaScript"]
+            },
+            {
+                "name" : "Literature Society IITJ Website",
+                "description" : "A website developed for managing various activities for literature society of IIT Jodhpur. The website contains the following features: \n-User Profile Management (with in site notification service) \n-Library Management System \n-Feature to upload written works to be displayed on website (Reader's Section). \n-Moderator and Admin access profiles to approve books and contents.",
+                "skills" : ["ReactJS", "Django", "Python", "JavaScript"]
+            },
+            {
+                "name" : "CloudPhysician's Vital Extraction Challenge",
+                "description" : "Fine-tuned DETR and detectron to for ICU monitor segmentation images of ICU rooms and vital segmentation from ICU monitors. Worked on graph digitisation algorithm to digitize ECG strip",
+                "skills": ["Computer Vision", "Image Processing"]
+            },
+            {
+                "name" : "Multi Model Data Analysis for Annotation of Human Activities",
+                "description" : "Performed data analysis and outlier detection on a dataset of accelerometer and gyroscope readings. Ideated and executed a pipeline for performing cleaning and detecting the activity type throught the dataset.",
+                "skills" : ["Data Analysis", "PyTorch", "Tensorflow", "Sklearn", "Python"]
+            },
+            {
+                "name" : "FaceNet Implementation",
+                "description" : "Implemented FaceNet research paper and Standard Siamese network from scratch using PyTorch. Successfully trained both on CelebA dataset.",
+                "skills" : ["PyTorch", "Python"] 
+            }
+        ]
+    },
+
+    {
+        "id" : 2,
+        "skills" : ["Python", "C++", "Javascript", "HTML", "CSS", "ReactJS", "Django", "Flutter", "Dart", "Firebase", "Git", "Github", "VS Code", "Figma", "Google Colab", "Android Studio"],
+        "projects" : [
+            {
+                "name" : "SHAMIYANA APP",
+                "description" : "A Food Delivery cum ordering App for Shamiyana Cafe. \nObjectives \n- To make the ordering process hassle-free and time-saving. \n- To manage the Cafe easily by a web portal. \nDeliverables \n- An App for Shamiyana Cafe where customers can orderfood online.",
+                "skills" : ["Flutter", "Dart", "Firebase"]
+            },
+            {
+                "name" : "RAPID",
+                "description" : "A web app where users can play games like chess with their friends, while having a one to one video call with them to increase the engagement. Uses WebSockets forrealtime communication of gameplay information. Uses WebRTC api forthe video call feature.",
+                "skills" : ["NodeJS", "ExpressJS", "Socket.IO", "WebRTC", "HTML", "CSS", "JS", "Docker"]
+            },
+            {
+                "name" : "SMART SENSING MIDDLEWARE",
+                "description" : "A web application to show data collected from smart home devices and display it in the form of graphs for better understanding and use in the analysis.",
+                "skills" : ["ReactJS", "HTML", "CSS"]
+            }
+        ]
+    },
+
+    {
+        "id" : 3,
+        "skills" : ["Python", "C++", "Numpy", "Pandas", "Sklearn", "TensorFlow", "Pytorch", "OpenCV", "Computer Vision", "Image Processing", "Git", "Django Rest framework"],
+        "projects" : [
+            {
+                "name" : "Cloudphysician's Vital Extraction Challenge",
+                "description" : "Extracted the values of vitals from the images of ICU monitors and returned the values in form of a python dictionary. We used object detection to identify the relevant areas from the image and then applied text recognition.",
+                "skills" : ["Computer Vision", "Image Processing"]
+            },
+            {
+                "name" : "Multi Model Data Analysis for Annotation of Human Activities",
+                "description" : "A pipeline which can predict human activities based on continuous analysis of data provided by accelerometer and gyroscope present in a smartwatch.",
+                "skills" : ["Python", "PyTorch", "Tensorflow", "Sklearn"]
+            },
+            {
+                "name" : "Website for the Literature Society of the college",
+                "description" : "A website comprising of a complete library management system along with a readers' section where users can view uploaded content and choose to upload their content too. These are the two major features among many others.",
+                "skills" :  ["Django Rest Framework", "ReactJS"]
+            },
+            {
+                "name" : "Post-processing of Large Language Models",
+                "description" : "We had to build a user interface for machine learning models that we trained to detect hate profanity, bias etc in the responses generated by large language models. I worked on developing the backend of the system, i.e, on integrating the machine learning models with the user interface using Rest APIs.",
+                "skills" : ["Pytorch", "Tensorflow", "Keras", "Django Rest Framework", "ReactJS"]
+            }
+        ]
+    }
+]
