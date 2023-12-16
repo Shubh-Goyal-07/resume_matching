@@ -52,7 +52,7 @@ class JDK_skills():
         for project in self.projects:
             project_skill_scores = self.__get_project_skill_scores(self.projects[project]['skills'])
             project_relevance_score = self.projects[project]['relevance_score']
-            score +=  project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))
+            score +=  project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))*self.projects[project]['experience']
             print(f"project: {project} Done")
 
         score = score/len(self.projects)
