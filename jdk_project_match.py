@@ -13,13 +13,13 @@ from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser,
 # PYDANTIC MODELS
 # Project model
 class Project(BaseModel):
-    """A project with a name and description."""
+    """A project's name, relevance and reason according to a given job description."""
 
-    name: str = Field(description="The name of the project.")
-    relevance: float = Field(description="The relevance of the project to the job description.")
+    name: str = Field(description="The title of the project.")
+    relevance: int = Field(description="Strictly Necessary. The score of the project based on the job description. 1 being the lowest and 10 being the highest.")
     # reason: bool = Field(description="relation of project, true if directly relevant, false otherwise")
-    reason: str = Field(description="relation of project, directly relevant, indirectly relevant or not relevant")
-    final: bool = Field(description="true if directly relevant, false otherwise")
+    reason: str = Field(description="The logical reason behind the relevance or irrelevance of the project.")
+    # final: bool = Field(description="true if directly relevant, false otherwise")
 
 # Experience model
 class Experience(BaseModel):
@@ -49,22 +49,24 @@ class JDK_projects():
 
     def __create_prompt(self):
         # Template
-        template = """A job description will be passed to you along with a candidate's project experience.
+        # template = """A job description will be passed to you along with a candidate's project experience.
 
-        You will be asked to extract the projects very strictly relevant to the job description.
+        # You will be asked to extract the projects very strictly relevant to the job description.
 
-        If no project mentioned are relevant it's fine - you don't need to extract any! Just return an empty list.
+        # If no project mentioned are relevant it's fine - you don't need to extract any! Just return an empty list.
 
-        Do not make up any new project. Strictly return the relevant projects only.
+        # Do not make up any new project. Strictly return the relevant projects only.
 
-        The company's jdk is as follows:"""
+        # The company's jdk is as follows:"""
 
-        
+        template_system = """You are an experienced recruiter searching for strictly suitable candidates for your company's current job requirement. The job description is as follows:"""
         jdk_description = self.jdk['description']
 
+        template_user = """Extract the projects very strictly relevant to the job description. If no project mentioned are relevant it's fine - you don't need to extract any! Just return an empty list. Do not make up any new project. Strictly return the relevant projects only."""
+
         prompt = ChatPromptTemplate.from_messages([
-            ("system", "You are a recruiter searching for suitable candidates for your companies job requirement. The job description is as follows" + "\n" + jdk_description),
-            ("user", "What projects are strictly relevant to the company's requirements?"),
+            ("system", template_system + "\n" + jdk_description),
+            ("user", template_user),
             ("human", "{input}")
         ])
 
@@ -74,7 +76,7 @@ class JDK_projects():
     def __create_project_prompt_template(self):
         projects = self.resume['projects']
 
-        project_prompt = """The candidate has worked on the following projects:"""
+        project_prompt = """I have worked on the following projects:"""
 
         num = 1
         for project in projects:

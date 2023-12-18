@@ -7,51 +7,13 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
-                        "relevance": 8,
-                        "reason": "Experience in developing web applications using ReactJS and Django Rest Framework."
+                        "relevance": 0,
+                        "reason": ""
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "relevance": 7,
-                        "reason": "Experience in user profile management, library management system, and website development."
-                    },
-                    {
-                        "name": "CloudPhysician's Vital Extraction Challenge",
-                        "relevance": 6,
-                        "reason": "Experience in fine-tuning models and working with medical image segmentation."
-                    },
-                    {
-                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 5,
-                        "reason": "Experience in data analysis and outlier detection."
-                    },
-                    {
-                        "name": "FaceNet Implementation",
-                        "relevance": 4,
-                        "reason": "Experience in implementing research papers and training models."
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "scores": [
-                    {
-                        "name": "SHAMIYANA APP",
-                        "relevance": 8,
-                        "reason": "Food delivery app development experience is relevant to the company's requirements.",
-                        "final": true
-                    },
-                    {
-                        "name": "RAPID",
-                        "relevance": 6,
-                        "reason": "Web app development experience is relevant to the company's requirements.",
-                        "final": false
-                    },
-                    {
-                        "name": "SMART SENSING MIDDLEWARE",
-                        "relevance": 4,
-                        "reason": "Web application development experience is relevant to the company's requirements.",
-                        "final": false
+                        "relevance": 1,
+                        "reason": "Developed web application using ReactJS and Django Rest Framework"
                     }
                 ]
             },
@@ -61,26 +23,12 @@
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
                         "relevance": 8,
-                        "reason": "Experience in working with image processing and data extraction.",
-                        "final": false
+                        "reason": "Extracting values from images and using object detection and text recognition aligns with the job description."
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 9,
-                        "reason": "Experience in working with data analysis and prediction.",
-                        "final": false
-                    },
-                    {
-                        "name": "Website for the Literature Society of the college",
-                        "relevance": 5,
-                        "reason": "Limited relevance to MERN stack development.",
-                        "final": false
-                    },
-                    {
-                        "name": "Post-processing of Large Language Models",
-                        "relevance": 7,
-                        "reason": "Experience in backend development and integration with machine learning models.",
-                        "final": false
+                        "relevance": 6,
+                        "reason": "Although it involves data analysis, it is not directly related to MERN stack development."
                     }
                 ]
             }
@@ -94,56 +42,13 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
-                        "relevance": 8,
-                        "reason": "Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform",
-                        "final": true
+                        "relevance": 10,
+                        "reason": "Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform."
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "relevance": 6,
-                        "reason": "Developed website with user profile management, library management system, and content approval features",
-                        "final": false
-                    },
-                    {
-                        "name": "CloudPhysician's Vital Extraction Challenge",
-                        "relevance": 7,
-                        "reason": "Fine-tuned models for ICU monitor segmentation and worked on graph digitization algorithm",
-                        "final": false
-                    },
-                    {
-                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 5,
-                        "reason": "Performed data analysis and outlier detection on accelerometer and gyroscope readings",
-                        "final": false
-                    },
-                    {
-                        "name": "FaceNet Implementation",
-                        "relevance": 4,
-                        "reason": "Implemented FaceNet research paper and Siamese network using PyTorch",
-                        "final": false
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "scores": [
-                    {
-                        "name": "SHAMIYANA APP",
                         "relevance": 8,
-                        "reason": "Food delivery app with web portal management, aligns with company's requirement for web design and user experience",
-                        "final": true
-                    },
-                    {
-                        "name": "RAPID",
-                        "relevance": 6,
-                        "reason": "Web app with real-time communication and gaming features, demonstrates ability to optimize web pages for efficiency",
-                        "final": false
-                    },
-                    {
-                        "name": "SMART SENSING MIDDLEWARE",
-                        "relevance": 7,
-                        "reason": "Web application displaying data in graphs, showcases ability to maintain brand consistency and align with user experience requirements",
-                        "final": false
+                        "reason": "Developed a website for managing various activities and features such as user profile management, library management system, and content approval."
                     }
                 ]
             },
@@ -152,27 +57,23 @@
                 "scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "relevance": 8,
-                        "reason": "Experience in extracting values from images and using object detection and text recognition.",
-                        "final": true
+                        "relevance": 10,
+                        "reason": "Extracted relevant information from images using object detection and text recognition."
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 9,
-                        "reason": "Experience in predicting human activities based on data analysis from sensors.",
-                        "final": true
+                        "relevance": 8,
+                        "reason": "Developed a pipeline for predicting human activities based on sensor data."
                     },
                     {
-                        "name": "Website for the Literature Society of the college",
-                        "relevance": 6,
-                        "reason": "Experience in developing websites and managing content.",
-                        "final": false
+                        "name": "E-commerce Website Development",
+                        "relevance": 5,
+                        "reason": "Developed front-end of an e-commerce website."
                     },
                     {
-                        "name": "Post-processing of Large Language Models",
-                        "relevance": 7,
-                        "reason": "Experience in integrating machine learning models with user interfaces.",
-                        "final": false
+                        "name": "Mobile App UI Design",
+                        "relevance": 3,
+                        "reason": "Designed user interface for a mobile application."
                     }
                 ]
             }
@@ -186,56 +87,13 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
-                        "relevance": 10,
-                        "reason": "Developed pipeline for bias/toxicity detection in language models, which aligns with the company's requirement for language model development and improvement.",
-                        "final": true
+                        "relevance": 0,
+                        "reason": ""
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "relevance": 2,
-                        "reason": "Although this project involves website development, it is not directly relevant to the company's requirements.",
-                        "final": false
-                    },
-                    {
-                        "name": "CloudPhysician's Vital Extraction Challenge",
-                        "relevance": 8,
-                        "reason": "Fine-tuned DETR and detectron for image segmentation, which aligns with the company's requirement for object detection/classification.",
-                        "final": true
-                    },
-                    {
-                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 6,
-                        "reason": "Performed data analysis and outlier detection, which aligns with the company's requirement for data analysis.",
-                        "final": false
-                    },
-                    {
-                        "name": "FaceNet Implementation",
-                        "relevance": 4,
-                        "reason": "Implemented a research paper and trained models on a dataset, which aligns with the company's requirement for ML/DL.",
-                        "final": false
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "scores": [
-                    {
-                        "name": "SHAMIYANA APP",
-                        "relevance": 0.5,
-                        "reason": "The project involves developing a web portal for managing a cafe, which requires data analysis and preprocessing.",
-                        "final": false
-                    },
-                    {
-                        "name": "RAPID",
-                        "relevance": 0.3,
-                        "reason": "The project involves real-time communication and gaming, which can be relevant for object detection/classification and tracking.",
-                        "final": false
-                    },
-                    {
-                        "name": "SMART SENSING MIDDLEWARE",
-                        "relevance": 0.8,
-                        "reason": "The project involves collecting and analyzing data from smart home devices, which aligns with the requirement of data analysis and preprocessing.",
-                        "final": true
+                        "relevance": 0,
+                        "reason": ""
                     }
                 ]
             },
@@ -244,27 +102,13 @@
                 "scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "relevance": 8,
-                        "reason": "Experience in object detection and text recognition, which are relevant for data analysis and preprocessing.",
-                        "final": true
+                        "relevance": 0,
+                        "reason": ""
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 9,
-                        "reason": "Experience in data analysis and prediction, which are relevant for model development and improvement.",
-                        "final": true
-                    },
-                    {
-                        "name": "Website for the Literature Society of the college",
-                        "relevance": 3,
-                        "reason": "Not directly relevant to the company's requirements.",
-                        "final": false
-                    },
-                    {
-                        "name": "Post-processing of Large Language Models",
-                        "relevance": 7,
-                        "reason": "Experience in developing backend systems for machine learning models, which is relevant for model development and improvement.",
-                        "final": true
+                        "relevance": 0,
+                        "reason": ""
                     }
                 ]
             }

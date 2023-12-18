@@ -1,52 +1,100 @@
 [
     {
         "jdk_id": 1,
-        "resume_scores": [
+        "candidate_scores": [
             {
                 "id": 1,
-                "score": 5.215309267284414
-            },
-            {
-                "id": 2,
-                "score": 5.158898091352522
+                "final_score": 12.001679273171007,
+                "project_scores": [
+                    {
+                        "name": "LLMGuard",
+                        "score": 7.3856487834898505
+                    },
+                    {
+                        "name": "Literature Society IITJ Website",
+                        "score": 4.616030489681157
+                    }
+                ]
             },
             {
                 "id": 3,
-                "score": 6.058953792599045
+                "final_score": 9.326232897657942,
+                "project_scores": [
+                    {
+                        "name": "Cloudphysician's Vital Extraction Challenge",
+                        "score": 6.4723568079976666
+                    },
+                    {
+                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
+                        "score": 2.8538760896602744
+                    }
+                ]
             }
         ]
     },
     {
         "jdk_id": 2,
-        "resume_scores": [
+        "candidate_scores": [
             {
                 "id": 1,
-                "score": 5.166314296655213
-            },
-            {
-                "id": 2,
-                "score": 6.182934001917168
+                "final_score": 9.208763672859444,
+                "project_scores": [
+                    {
+                        "name": "LLMGuard",
+                        "score": 4.604381836429722
+                    },
+                    {
+                        "name": "Literature Society IITJ Website",
+                        "score": 4.604381836429722
+                    }
+                ]
             },
             {
                 "id": 3,
-                "score": 6.240993403788952
+                "final_score": 6.824690925393501,
+                "project_scores": [
+                    {
+                        "name": "Cloudphysician's Vital Extraction Challenge",
+                        "score": 3.9907658857319883
+                    },
+                    {
+                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
+                        "score": 2.8339250396615125
+                    }
+                ]
             }
         ]
     },
     {
         "jdk_id": 3,
-        "resume_scores": [
+        "candidate_scores": [
             {
                 "id": 1,
-                "score": 5.470881965685076
-            },
-            {
-                "id": 2,
-                "score": 0.42914027226555146
+                "final_score": 12.452949669996562,
+                "project_scores": [
+                    {
+                        "name": "LLMGuard",
+                        "score": 8.79031741411522
+                    },
+                    {
+                        "name": "Literature Society IITJ Website",
+                        "score": 3.662632255881342
+                    }
+                ]
             },
             {
                 "id": 3,
-                "score": 6.066998578147034
+                "final_score": 10.238459200142954,
+                "project_scores": [
+                    {
+                        "name": "Cloudphysician's Vital Extraction Challenge",
+                        "score": 7.471903373311245
+                    },
+                    {
+                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
+                        "score": 2.7665558268317083
+                    }
+                ]
             }
         ]
     }

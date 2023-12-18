@@ -49,14 +49,25 @@ class JDK_skills():
         self.__load_openai_client()
 
         score = 0
+        project_scores = []
+        print(self.projects)
         for project in self.projects:
+            print(self.projects[project])
             project_skill_scores = self.__get_project_skill_scores(self.projects[project]['skills'])
             project_relevance_score = self.projects[project]['relevance_score']
-            score +=  project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))*self.projects[project]['experience']
+            project_experience = self.projects[project]['experience']/12
+            
+            project_score = project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))*project_experience
+
+            score += project_score
+
+            project_scores.append({'name': project, 'score': project_score})
+
             print(f"project: {project} Done")
 
-        score = score/len(self.projects)
-        return score
+        # score = score/len(self.projects)
+
+        return score, project_scores
 
 
 
@@ -65,8 +76,8 @@ def match_skills(jdk_skills, candidate_project_dic):
     resume_scores = []
     for candidate in candidate_project_dic:
         jdk_candidate_match = JDK_skills(jdk_skills, candidate_project_dic[candidate])
-        resume_score = jdk_candidate_match.get_candidate_score()
-        resume_scores.append({'id': candidate, 'score': resume_score})
+        resume_score, project_scores = jdk_candidate_match.get_candidate_score()
+        resume_scores.append({'id': candidate, 'final_score': resume_score, 'project_scores': project_scores})
         print(f"candidate: {candidate} Done")
     
     return resume_scores
