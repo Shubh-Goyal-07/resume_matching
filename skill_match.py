@@ -65,7 +65,11 @@ class JDK_skills():
 
             print(f"project: {project} Done")
 
-        # score = score/len(self.projects)
+        pro = 0
+        for pro1 in self.projects:
+            if self.projects[pro1]['relevance_score']!=0:
+                pro+=1
+        score = score/pro
 
         return score, project_scores
 

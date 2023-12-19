@@ -7,13 +7,48 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
+                        "relevance": 5,
+                        "reason": "Developed web application using ReactJS and Django Rest Framework, which aligns with the job requirement of developing web/mobile applications using the MERN stack."
+                    },
+                    {
+                        "name": "Literature Society IITJ Website",
+                        "relevance": 4,
+                        "reason": "Developed a website with user profile management, library management system, and content approval features, which demonstrates experience in web development and feature development."
+                    },
+                    {
+                        "name": "CloudPhysician's Vital Extraction Challenge",
+                        "relevance": 3,
+                        "reason": "Worked on fine-tuning models and developing algorithms for image segmentation, which showcases experience in developing high-quality applications and working on feature development."
+                    },
+                    {
+                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
+                        "relevance": 2,
+                        "reason": "Performed data analysis and outlier detection, which demonstrates analytical skills but does not directly align with the MERN stack development requirement."
+                    },
+                    {
+                        "name": "FaceNet Implementation",
+                        "relevance": 1,
+                        "reason": "Implemented FaceNet research paper using PyTorch, which showcases experience in machine learning but does not directly align with the MERN stack development requirement."
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "scores": [
+                    {
+                        "name": "SHAMIYANA APP",
                         "relevance": 0,
                         "reason": ""
                     },
                     {
-                        "name": "Literature Society IITJ Website",
-                        "relevance": 1,
-                        "reason": "Developed web application using ReactJS and Django Rest Framework"
+                        "name": "RAPID",
+                        "relevance": 0,
+                        "reason": ""
+                    },
+                    {
+                        "name": "SMART SENSING MIDDLEWARE",
+                        "relevance": 0,
+                        "reason": ""
                     }
                 ]
             },
@@ -22,13 +57,23 @@
                 "scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "relevance": 8,
-                        "reason": "Extracting values from images and using object detection and text recognition aligns with the job description."
+                        "relevance": 0,
+                        "reason": ""
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 6,
-                        "reason": "Although it involves data analysis, it is not directly related to MERN stack development."
+                        "relevance": 0,
+                        "reason": ""
+                    },
+                    {
+                        "name": "Website for the Literature Society of the college",
+                        "relevance": 0,
+                        "reason": ""
+                    },
+                    {
+                        "name": "Post-processing of Large Language Models",
+                        "relevance": 0,
+                        "reason": ""
                     }
                 ]
             }
@@ -42,13 +87,48 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
-                        "relevance": 10,
-                        "reason": "Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform."
+                        "relevance": 5,
+                        "reason": "Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform"
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "relevance": 8,
-                        "reason": "Developed a website for managing various activities and features such as user profile management, library management system, and content approval."
+                        "relevance": 3,
+                        "reason": "Developed website with user profile management, library management system, and content approval features"
+                    },
+                    {
+                        "name": "CloudPhysician's Vital Extraction Challenge",
+                        "relevance": 2,
+                        "reason": "Fine-tuned DETR and detectron for ICU monitor segmentation images and worked on graph digitisation algorithm"
+                    },
+                    {
+                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
+                        "relevance": 1,
+                        "reason": "Performed data analysis and outlier detection on accelerometer and gyroscope readings"
+                    },
+                    {
+                        "name": "FaceNet Implementation",
+                        "relevance": 4,
+                        "reason": "Implemented FaceNet research paper and Standard Siamese network from scratch using PyTorch"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "scores": [
+                    {
+                        "name": "SHAMIYANA APP",
+                        "relevance": 0,
+                        "reason": ""
+                    },
+                    {
+                        "name": "RAPID",
+                        "relevance": 0,
+                        "reason": ""
+                    },
+                    {
+                        "name": "SMART SENSING MIDDLEWARE",
+                        "relevance": 0,
+                        "reason": ""
                     }
                 ]
             },
@@ -58,22 +138,22 @@
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
                         "relevance": 10,
-                        "reason": "Extracted relevant information from images using object detection and text recognition."
+                        "reason": "Extracted values from images and used object detection and text recognition"
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
                         "relevance": 8,
-                        "reason": "Developed a pipeline for predicting human activities based on sensor data."
+                        "reason": "Predicted human activities based on accelerometer and gyroscope data"
                     },
                     {
-                        "name": "E-commerce Website Development",
+                        "name": "Website for the Literature Society of the college",
+                        "relevance": 2,
+                        "reason": "Developed a library management system and readers' section"
+                    },
+                    {
+                        "name": "Post-processing of Large Language Models",
                         "relevance": 5,
-                        "reason": "Developed front-end of an e-commerce website."
-                    },
-                    {
-                        "name": "Mobile App UI Design",
-                        "relevance": 3,
-                        "reason": "Designed user interface for a mobile application."
+                        "reason": "Integrated machine learning models with a user interface"
                     }
                 ]
             }
@@ -87,11 +167,46 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
+                        "relevance": 10,
+                        "reason": "Developed pipeline for bias/toxicity detection in language models"
+                    },
+                    {
+                        "name": "Literature Society IITJ Website",
+                        "relevance": 0,
+                        "reason": "Not relevant to the job description"
+                    },
+                    {
+                        "name": "CloudPhysician's Vital Extraction Challenge",
+                        "relevance": 8,
+                        "reason": "Fine-tuned DETR and detectron for image segmentation"
+                    },
+                    {
+                        "name": "Multi Model Data Analysis for Annotation of Human Activities",
+                        "relevance": 7,
+                        "reason": "Performed data analysis and outlier detection on sensor data"
+                    },
+                    {
+                        "name": "FaceNet Implementation",
+                        "relevance": 0,
+                        "reason": "Not relevant to the job description"
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "scores": [
+                    {
+                        "name": "SHAMIYANA APP",
                         "relevance": 0,
                         "reason": ""
                     },
                     {
-                        "name": "Literature Society IITJ Website",
+                        "name": "RAPID",
+                        "relevance": 0,
+                        "reason": ""
+                    },
+                    {
+                        "name": "SMART SENSING MIDDLEWARE",
                         "relevance": 0,
                         "reason": ""
                     }
@@ -109,6 +224,16 @@
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
                         "relevance": 0,
                         "reason": ""
+                    },
+                    {
+                        "name": "Website for the Literature Society of the college",
+                        "relevance": 0,
+                        "reason": ""
+                    },
+                    {
+                        "name": "Post-processing of Large Language Models",
+                        "relevance": 1,
+                        "reason": "Data analysis and preprocessing, working with large language models"
                     }
                 ]
             }

@@ -67,15 +67,15 @@ def resume_scorer(jdk_path, resume_path):
         jdk_project_scores.append({'jdk_id': jdk_id, 'project_scores': project_scores})
         candidate_project_dic = add_relevance_score(project_scores, candidate_project_dic)
         
-        # candidate_scores = match_skills(jdk_skills, candidate_project_dic)
+        candidate_scores = match_skills(jdk_skills, candidate_project_dic)
 
-        # jdk_resume_scores.append({'jdk_id': jdk_id, 'candidate_scores': candidate_scores})
+        jdk_resume_scores.append({'jdk_id': jdk_id, 'candidate_scores': candidate_scores})
 
-        # save_to_excel(jdk_id, candidate_scores)
+        save_to_excel(jdk_id, candidate_scores)
 
 
     json.dump(jdk_project_scores, open('./results/jdk_project_scores.json', 'w'), indent=4)
-    # json.dump(jdk_resume_scores, open('./results/jdk_resume_scores.json', 'w'), indent=4)
+    json.dump(jdk_resume_scores, open('./results/jdk_resume_scores.json', 'w'), indent=4)
 
 
 if __name__ == '__main__':
