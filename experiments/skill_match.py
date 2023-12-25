@@ -1,4 +1,4 @@
-import torch.nn.functional as F
+# import torch.nn.functional as F
 from numpy import dot
 from numpy.linalg import norm
 
@@ -44,15 +44,14 @@ def get_skill_embeddings(skill):
     return response
 
 job_skills = [
-    "Java11",
-    "Bootstrap4.3",
-    "MySQL8.0.16",
+    "JavaScript",
+    "Angular",
+    "HTML",
 ]
 
 # Sample skills of the applicant (replace with your actual data)
 applicant_skills = [
-    "Python",
-    "Machine",
+    "ReactJS",
     "MySQL",
     "Java",
 ]
@@ -67,8 +66,16 @@ skill_weights = {
 }
 
 def calculate_similarity(skill1, skill2):
-    tensor1 = get_skill_embeddings(skill1)
-    tensor2 = get_skill_embeddings(skill2)
+    skills1 = "I have these skills: "
+    for i in skill1:
+        skills1 += i + ", "
+
+    skills2 = "I have these skills: "
+    for i in skill2:
+        skills2 += i + ", "
+
+    tensor1 = get_skill_embeddings(skills1)
+    tensor2 = get_skill_embeddings(skills2)
     # tensor1 = tensor1.view(1, -1)
     # tensor2 = tensor2.view(1, -1)
 
@@ -80,24 +87,24 @@ def calculate_similarity(skill1, skill2):
 
 print('hereeeeeeeee1')
 # Calculate similarity scores for all pairs of skills
-similarity_scores = []
-for job_skill in job_skills:
-    max_val = 0
-    a_skill = ''
-    for applicant_skill in applicant_skills:
-        similarity = calculate_similarity(job_skill, applicant_skill)
-        # similarity_scores.append((job_skill, applicant_skill, weighted_similarity))
-        if similarity>max_val:
-            max_val = similarity
-            a_skill = applicant_skill
-    similarity_scores.append([job_skill, a_skill, max_val])
+# similarity_scores = []
+# for job_skill in job_skills:
+#     max_val = 0
+#     a_skill = ''
+#     for applicant_skill in applicant_skills:
+#         similarity = calculate_similarity(job_skill, applicant_skill)
+#         # similarity_scores.append((job_skill, applicant_skill, weighted_similarity))
+#         if similarity>max_val:
+#             max_val = similarity
+#             a_skill = applicant_skill
+#     similarity_scores.append([job_skill, a_skill, max_val])
 
-print("hereeeeeeeeeee2")
-print(similarity_scores)
-n = len(similarity_scores)
-sim_score = 0
-for i in range(n):
-    sim_score += skill_weights[similarity_scores[i][1]]*similarity_scores[i][2]
+# print("hereeeeeeeeeee2")
+# print(similarity_scores)
+# n = len(similarity_scores)
+# sim_score = 0
+# for i in range(n):
+#     sim_score += skill_weights[similarity_scores[i][1]]*similarity_scores[i][2]
 
 # Print similarity scores
-print(sim_score)
+print(calculate_similarity(applicant_skills, job_skills))

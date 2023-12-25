@@ -24,9 +24,9 @@ class JDK_skills():
         return embeddings
 
 
-    def __calculate_similarity(self, skill1, skill2):
-        tensor1 = self.__get_skill_embeddings(skill1)
-        tensor2 = self.__get_skill_embeddings(skill2)
+    def __calculate_similarity(self, job_skills, applicant_project_skills):
+        tensor1 = self.__get_skill_embeddings(job_skills)
+        tensor2 = self.__get_skill_embeddings(applicant_project_skills)
         cos_sim = dot(tensor1, tensor2)/(norm(tensor1)*norm(tensor2))
         return cos_sim
     
@@ -34,15 +34,15 @@ class JDK_skills():
     def __get_project_skill_scores(self, project_skills):
         project_skill_scores = []
 
-        for project_skill in project_skills:
-            max_val = 0
-            for skill in self.jdk_skills:
-                similarity = self.__calculate_similarity(skill, project_skill)
-                if similarity > max_val:
-                    max_val = similarity
-            project_skill_scores.append(max_val)
+        # for project_skill in project_skills:
+        #     max_val = 0
+        #     for skill in self.jdk_skills:
+        #         similarity = self.__calculate_similarity(skill, project_skill)
+        #         if similarity > max_val:
+        #             max_val = similarity
+        #     project_skill_scores.append(max_val)
             
-        return project_skill_scores
+        return self.__calculate_similarity(self.jdk_skills, project_skills)
     
 
     def get_candidate_score(self):
@@ -53,12 +53,13 @@ class JDK_skills():
         print(self.projects)
         for project in self.projects:
             print(self.projects[project])
-            project_skill_scores = self.__get_project_skill_scores(self.projects[project]['skills'])
+            project_skill_score = self.__get_project_skill_scores(self.projects[project]['skills'])
             project_relevance_score = self.projects[project]['relevance_score']
             # project_experience = self.projects[project]['experience']/12
             
             # project_score = project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))*project_experience
-            project_score = project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))
+            # project_score = project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))
+            project_score = project_relevance_score*project_skill_score
             score += project_score
 
             project_scores.append({'name': project, 'score': project_score})
