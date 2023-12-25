@@ -4,27 +4,27 @@
         "candidate_scores": [
             {
                 "id": 1,
-                "final_score": 0.9232060979362313,
+                "final_score": 2.367275367578336,
                 "project_scores": [
                     {
                         "name": "LLMGuard",
-                        "score": 4.616030489681156
+                        "score": 3.9833039521316262
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "score": 0.0
+                        "score": 3.186643161705301
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
-                        "score": 0.0
+                        "score": 2.315550409313988
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 0.0
+                        "score": 1.5528018590054558
                     },
                     {
                         "name": "FaceNet Implementation",
-                        "score": 0.0
+                        "score": 0.7980774557353087
                     }
                 ]
             },
@@ -48,23 +48,23 @@
             },
             {
                 "id": 3,
-                "final_score": 0.0,
+                "final_score": 2.76229894385294,
                 "project_scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "score": 0.0
+                        "score": 3.8592506821899795
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 0.0
+                        "score": 3.1864782405711183
                     },
                     {
                         "name": "Website for the Literature Society of the college",
-                        "score": 0.0
+                        "score": 1.588926508372374
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "score": 0.0
+                        "score": 2.4145403442782873
                     }
                 ]
             }
@@ -75,27 +75,27 @@
         "candidate_scores": [
             {
                 "id": 1,
-                "final_score": 0.9208829719216982,
+                "final_score": 2.6870648296070163,
                 "project_scores": [
                     {
                         "name": "LLMGuard",
-                        "score": 4.604414859608491
+                        "score": 4.999999999999999
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "score": 0.0
+                        "score": 2.999999999999999
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
-                        "score": 0.0
+                        "score": 1.5210072986512915
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 0.0
+                        "score": 0.7680720467421716
                     },
                     {
                         "name": "FaceNet Implementation",
-                        "score": 0.0
+                        "score": 3.1462448026416223
                     }
                 ]
             },
@@ -119,23 +119,23 @@
             },
             {
                 "id": 3,
-                "final_score": 4.665968450062644,
+                "final_score": 4.87629019523887,
                 "project_scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "score": 7.981531771463977
+                        "score": 7.605036493256457
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 6.477327538307626
+                        "score": 6.387017402085046
                     },
                     {
                         "name": "Website for the Literature Society of the college",
-                        "score": 0.0
+                        "score": 1.602928147569862
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "score": 4.205014490478977
+                        "score": 3.9101787380441166
                     }
                 ]
             }
@@ -146,11 +146,11 @@
         "candidate_scores": [
             {
                 "id": 1,
-                "final_score": 4.512309198289638,
+                "final_score": 3.96675092036255,
                 "project_scores": [
                     {
                         "name": "LLMGuard",
-                        "score": 8.79031741411522
+                        "score": 7.789308099070766
                     },
                     {
                         "name": "Literature Society IITJ Website",
@@ -158,11 +158,11 @@
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
-                        "score": 7.471915136603499
+                        "score": 6.486603965511964
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 6.29931344072947
+                        "score": 5.557842537230018
                     },
                     {
                         "name": "FaceNet Implementation",

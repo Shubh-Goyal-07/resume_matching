@@ -13,22 +13,22 @@
                     {
                         "name": "Literature Society IITJ Website",
                         "relevance": 4,
-                        "reason": "Developed a website with user profile management, library management system, and content approval features, which demonstrates experience in web development and feature development."
+                        "reason": "Developed a website with user profile management, library management system, and content approval features, which demonstrates experience in web development and feature enhancement."
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
                         "relevance": 3,
-                        "reason": "Worked on fine-tuning models and developing algorithms for image segmentation, which showcases experience in developing high-quality applications and working on feature development."
+                        "reason": "Worked on fine-tuning models and algorithm development, which showcases problem-solving skills and ability to work with data."
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
                         "relevance": 2,
-                        "reason": "Performed data analysis and outlier detection, which demonstrates analytical skills but does not directly align with the MERN stack development requirement."
+                        "reason": "Performed data analysis and outlier detection, which demonstrates analytical skills and ability to work with sensor data."
                     },
                     {
                         "name": "FaceNet Implementation",
                         "relevance": 1,
-                        "reason": "Implemented FaceNet research paper using PyTorch, which showcases experience in machine learning but does not directly align with the MERN stack development requirement."
+                        "reason": "Implemented research paper and trained models using PyTorch, which showcases technical skills but is less relevant to the MERN stack development required for this role."
                     }
                 ]
             },
@@ -38,17 +38,20 @@
                     {
                         "name": "SHAMIYANA APP",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "RAPID",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     }
                 ]
             },
@@ -57,23 +60,27 @@
                 "scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "relevance": 0,
-                        "reason": ""
+                        "relevance": 5,
+                        "reason": "Object detection and text recognition skills used",
+                        "final": true
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 0,
-                        "reason": ""
+                        "relevance": 4,
+                        "reason": "Predicting human activities based on data analysis",
+                        "final": true
                     },
                     {
                         "name": "Website for the Literature Society of the college",
-                        "relevance": 0,
-                        "reason": ""
+                        "relevance": 2,
+                        "reason": "Not directly related to MERN stack development",
+                        "final": false
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "relevance": 0,
-                        "reason": ""
+                        "relevance": 3,
+                        "reason": "Backend development and integration with ML models",
+                        "final": true
                     }
                 ]
             }
@@ -88,27 +95,27 @@
                     {
                         "name": "LLMGuard",
                         "relevance": 5,
-                        "reason": "Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform"
+                        "reason": "Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform for using the developed pipeline."
                     },
                     {
                         "name": "Literature Society IITJ Website",
                         "relevance": 3,
-                        "reason": "Developed website with user profile management, library management system, and content approval features"
+                        "reason": "Developed a website with user profile management, library management system, and content approval features."
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
                         "relevance": 2,
-                        "reason": "Fine-tuned DETR and detectron for ICU monitor segmentation images and worked on graph digitisation algorithm"
+                        "reason": "Fine-tuned DETR and detectron for ICU monitor segmentation images and worked on graph digitization algorithm."
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
                         "relevance": 1,
-                        "reason": "Performed data analysis and outlier detection on accelerometer and gyroscope readings"
+                        "reason": "Performed data analysis and outlier detection on accelerometer and gyroscope readings."
                     },
                     {
                         "name": "FaceNet Implementation",
                         "relevance": 4,
-                        "reason": "Implemented FaceNet research paper and Standard Siamese network from scratch using PyTorch"
+                        "reason": "Implemented FaceNet research paper and Standard Siamese network from scratch using PyTorch."
                     }
                 ]
             },
@@ -118,17 +125,20 @@
                     {
                         "name": "SHAMIYANA APP",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "RAPID",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     }
                 ]
             },
@@ -138,22 +148,26 @@
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
                         "relevance": 10,
-                        "reason": "Extracted values from images and used object detection and text recognition"
+                        "reason": "Extracted values from images using object detection and text recognition",
+                        "final": true
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
                         "relevance": 8,
-                        "reason": "Predicted human activities based on accelerometer and gyroscope data"
+                        "reason": "Predicted human activities based on accelerometer and gyroscope data",
+                        "final": true
                     },
                     {
                         "name": "Website for the Literature Society of the college",
                         "relevance": 2,
-                        "reason": "Developed a library management system and readers' section"
+                        "reason": "Developed a library management system and readers' section",
+                        "final": false
                     },
                     {
                         "name": "Post-processing of Large Language Models",
                         "relevance": 5,
-                        "reason": "Integrated machine learning models with a user interface"
+                        "reason": "Integrated machine learning models with a user interface",
+                        "final": false
                     }
                 ]
             }
@@ -168,27 +182,32 @@
                     {
                         "name": "LLMGuard",
                         "relevance": 10,
-                        "reason": "Developed pipeline for bias/toxicity detection in language models"
+                        "reason": "Developed pipeline for bias/toxicity detection in language models, which is directly relevant to the job description.",
+                        "final": true
                     },
                     {
                         "name": "Literature Society IITJ Website",
                         "relevance": 0,
-                        "reason": "Not relevant to the job description"
+                        "reason": "Not relevant to the job description.",
+                        "final": false
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
                         "relevance": 8,
-                        "reason": "Fine-tuned DETR and detectron for image segmentation"
+                        "reason": "Fine-tuned DETR and detectron for image segmentation, which is relevant to the job description.",
+                        "final": true
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
                         "relevance": 7,
-                        "reason": "Performed data analysis and outlier detection on sensor data"
+                        "reason": "Performed data analysis and outlier detection, which is relevant to the job description.",
+                        "final": true
                     },
                     {
                         "name": "FaceNet Implementation",
                         "relevance": 0,
-                        "reason": "Not relevant to the job description"
+                        "reason": "Not relevant to the job description.",
+                        "final": false
                     }
                 ]
             },
@@ -198,17 +217,20 @@
                     {
                         "name": "SHAMIYANA APP",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "RAPID",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     }
                 ]
             },
@@ -218,22 +240,26 @@
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "Website for the Literature Society of the college",
                         "relevance": 0,
-                        "reason": ""
+                        "reason": "",
+                        "final": false
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "relevance": 1,
-                        "reason": "Data analysis and preprocessing, working with large language models"
+                        "relevance": 0,
+                        "reason": "",
+                        "final": false
                     }
                 ]
             }

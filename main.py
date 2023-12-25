@@ -2,6 +2,7 @@ import json
 from jdk_project_match import match_projects
 from skill_match import match_skills
 from save_scores import save_to_excel
+import time
 
 def jdk_resume_loader(jdks_path, resumes_path):
     jdks = json.load(open(jdks_path))
@@ -40,12 +41,14 @@ def make_cand_pro_dic(resumes):
 
 def add_relevance_score(project_scores, candidate_project_dic):
     for candidate in project_scores:
-        print(candidate)
+        # print(candidate)
         for project in candidate['scores']:
             if project['name'] in candidate_project_dic[candidate['id']]:
                 # if project['relevance'] > 4:
                 # print(project)
-                candidate_project_dic[candidate['id']][project['name']]['relevance_score'] = project['relevance'] if project['relevance'] > 4 else 0
+                # candidate_project_dic[candidate['id']][project['name']]['relevance_score'] = project['relevance'] if project['relevance'] > 4 else 0
+                candidate_project_dic[candidate['id']][project['name']]['relevance_score'] = project['relevance']
+
 
     return candidate_project_dic
 
@@ -57,22 +60,25 @@ def resume_scorer(jdk_path, resume_path):
     jdk_project_scores = []     # just project scores
     jdk_resume_scores = []      # based on weighted skill scores (final score)
 
+    time_start = time.time()
     for jdk in jdks:
         print(f"Matching jdk {jdk['id']}")
         jdk_id = jdk['id']
         jdk_skills = jdk['skills']
 
         project_scores = match_projects(jdk, resumes)
-
+        # print(project_scores)
         jdk_project_scores.append({'jdk_id': jdk_id, 'project_scores': project_scores})
         candidate_project_dic = add_relevance_score(project_scores, candidate_project_dic)
-        
+        # print(candidate_project_dic)
         candidate_scores = match_skills(jdk_skills, candidate_project_dic)
 
         jdk_resume_scores.append({'jdk_id': jdk_id, 'candidate_scores': candidate_scores})
 
         save_to_excel(jdk_id, candidate_scores)
 
+    time_end = time.time()
+    print(f"Total time taken: {time_end-time_start} seconds")
 
     json.dump(jdk_project_scores, open('./results/jdk_project_scores.json', 'w'), indent=4)
     json.dump(jdk_resume_scores, open('./results/jdk_resume_scores.json', 'w'), indent=4)

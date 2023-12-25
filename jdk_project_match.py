@@ -1,5 +1,6 @@
 import os
 import openai
+import time
 
 # Importing modules for langchain
 from typing import List, Optional
@@ -9,6 +10,7 @@ from langchain.chat_models import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
 from langchain.output_parsers.openai_functions import JsonOutputFunctionsParser, JsonKeyOutputFunctionsParser
 
+import tiktoken
 
 # PYDANTIC MODELS
 # Project model
@@ -16,10 +18,10 @@ class Project(BaseModel):
     """A project's name, relevance and reason according to a given job description."""
 
     name: str = Field(description="The title of the project.")
-    relevance: int = Field(description="Strictly Necessary. The score of the project based on the job description. 1 being the lowest and 10 being the highest.")
+    relevance: int = Field(description="The score of the project based on the job description. Greater than 0")
     # reason: bool = Field(description="relation of project, true if directly relevant, false otherwise")
     reason: str = Field(description="The logical reason behind the relevance or irrelevance of the project.")
-    # final: bool = Field(description="true if directly relevant, false otherwise")
+    final: bool = Field(description="true if directly relevant, false otherwise")
 
 # Experience model
 class Experience(BaseModel):
@@ -99,6 +101,13 @@ class JDK_projects():
         # Project experience
         project_prompt = self.__create_project_prompt_template()
 
+        encoding = tiktoken.get_encoding("cl100k_base")
+        encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
+
+        # messages = prompt.format_messages(input=project_prompt)
+        # for message in messages:
+            # print(len(encoding.encode(message.content)))
+
         # Extract projects
         project_rating = extraction_chain.invoke({"input": project_prompt})
 
@@ -114,10 +123,15 @@ def match_projects(jdk, resumes):
     _ = load_dotenv(find_dotenv())
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
+    time_start = time.time()
+
     resume_scores = []
     for resume in resumes:
         jdk_projects = JDK_projects(jdk, resume)
         scores = jdk_projects.match_projects()
         resume_scores.append({'id': resume['id'], 'scores': scores})
+
+    time_end = time.time()
+    # print(f"Time taken project match: {time_end - time_start}")
 
     return resume_scores

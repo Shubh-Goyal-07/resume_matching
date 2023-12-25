@@ -1,5 +1,6 @@
 import os
 from openai import OpenAI
+import time
 
 import torch.nn.functional as F
 from numpy import dot
@@ -20,14 +21,17 @@ class JDK_skills():
             
 
     def __get_skill_embeddings(self, skill):
-        embeddings = self.client.embeddings.create(input = [skill], model="text-embedding-ada-002").data[0].embedding
+        # print("skill: ", skill)
+        embeddings = self.client.embeddings.create(input = skill, model="text-embedding-ada-002").data[0].embedding
         return embeddings
 
 
     def __calculate_similarity(self, job_skills, applicant_project_skills):
+        time_start = time.time()
         tensor1 = self.__get_skill_embeddings(job_skills)
         tensor2 = self.__get_skill_embeddings(applicant_project_skills)
         cos_sim = dot(tensor1, tensor2)/(norm(tensor1)*norm(tensor2))
+        # print(f"Time taken in one skill match: {time.time()-time_start}")
         return cos_sim
     
 
@@ -50,9 +54,9 @@ class JDK_skills():
 
         score = 0
         project_scores = []
-        print(self.projects)
+        # print(self.projects)
         for project in self.projects:
-            print(self.projects[project])
+            # print(self.projects[project])
             project_skill_score = self.__get_project_skill_scores(self.projects[project]['skills'])
             project_relevance_score = self.projects[project]['relevance_score']
             # project_experience = self.projects[project]['experience']/12
@@ -64,13 +68,14 @@ class JDK_skills():
 
             project_scores.append({'name': project, 'score': project_score})
 
-            print(f"project: {project} Done")
+            # print(f"project: {project} Done")
 
-        pro = 0
-        for pro1 in self.projects:
-            if self.projects[pro1]['relevance_score']!=0:
-                pro+=1
-        score = score/pro
+        # pro = 0
+        # for pro1 in self.projects:
+        #     if self.projects[pro1]['relevance_score']!=0:
+        #         pro+=1
+        # score = score/pro
+        score = score/len(self.projects)
 
         return score, project_scores
 
