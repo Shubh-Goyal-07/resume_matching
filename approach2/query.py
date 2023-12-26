@@ -14,7 +14,7 @@ print("Setting up OpenAI client...")
 client = OpenAI(api_key=api_key_openai)
 
 # jdk1 = "Successfully implemented end-to-end development using the MERN stack, with a focus on integrating Large Language Models (LLM). Executed data preprocessing and analysis, specializing in LLM, NLP, DL, ML, object detection, and tracking. Played a pivotal role in code maintenance, scalability, and feature development for web/mobile applications. Skills required are ReactJS, Django, Python, JavaScript, Pytorch."
-jdk1 = "Collect and preprocess large-scale text corpora to train and fine-tune language models. Conduct data analysis to identify patterns, trends, and insights that can inform model development and improvement. \nPrototypes and do proof of concepts (PoC) in one or all the following areas: LLM, NLP, DL (Deep Learning), ML (Machine Learning), object detection/classification, tracking, etc. Skills required are Python, Pytorch, Tensorflow, Sklearn, Data Analysis."
+jdk1 = "Product Development is my passion. I want a candidate who is passionate about product development."
 
 print("Creating embeddings...")
 jdk_embed = client.embeddings.create(input = [jdk1], model="text-embedding-ada-002").data[0].embedding
