@@ -59,23 +59,28 @@ class JDK_skills():
             # print(self.projects[project])
             project_skill_score = self.__get_project_skill_scores(self.projects[project]['skills'])
             project_relevance_score = self.projects[project]['relevance_score']
-            # project_experience = self.projects[project]['experience']/12
+
+            project_experience = self.projects[project]['experience']/12
+            project_experience = 1 if project_experience > 1 else project_experience
             
             # project_score = project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))*project_experience
             # project_score = project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))
-            project_score = project_relevance_score*project_skill_score
+            
+            project_score = project_relevance_score*project_skill_score*project_experience
             score += project_score
 
+            # score += 1/project_score if project_score else 0
             project_scores.append({'name': project, 'score': project_score})
 
             # print(f"project: {project} Done")
 
-        # pro = 0
-        # for pro1 in self.projects:
-        #     if self.projects[pro1]['relevance_score']!=0:
-        #         pro+=1
-        # score = score/pro
-        score = score/len(self.projects)
+        pro = 0
+        for pro1 in self.projects:
+            if self.projects[pro1]['relevance_score']!=0:
+                pro+=1
+        score = score/pro if pro else 0
+        # score = pro/score if score else 0
+        # score = score/len(self.projects)
 
         return score, project_scores
 

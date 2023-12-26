@@ -7,28 +7,23 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
-                        "relevance": 5,
-                        "reason": "Developed web application using ReactJS and Django Rest Framework, which aligns with the job requirement of developing web/mobile applications using the MERN stack."
+                        "relevance_score": 0.8
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "relevance": 4,
-                        "reason": "Developed a website with user profile management, library management system, and content approval features, which demonstrates experience in web development and feature enhancement."
+                        "relevance_score": 0.6
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
-                        "relevance": 3,
-                        "reason": "Worked on fine-tuning models and algorithm development, which showcases problem-solving skills and ability to work with data."
+                        "relevance_score": 0.4
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 2,
-                        "reason": "Performed data analysis and outlier detection, which demonstrates analytical skills and ability to work with sensor data."
+                        "relevance_score": 0.7
                     },
                     {
                         "name": "FaceNet Implementation",
-                        "relevance": 1,
-                        "reason": "Implemented research paper and trained models using PyTorch, which showcases technical skills but is less relevant to the MERN stack development required for this role."
+                        "relevance_score": 0.5
                     }
                 ]
             },
@@ -37,21 +32,15 @@
                 "scores": [
                     {
                         "name": "SHAMIYANA APP",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.7
                     },
                     {
                         "name": "RAPID",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.4
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.6
                     }
                 ]
             },
@@ -60,27 +49,19 @@
                 "scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "relevance": 5,
-                        "reason": "Object detection and text recognition skills used",
-                        "final": true
+                        "relevance_score": 0.8
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 4,
-                        "reason": "Predicting human activities based on data analysis",
-                        "final": true
+                        "relevance_score": 0.6
                     },
                     {
                         "name": "Website for the Literature Society of the college",
-                        "relevance": 2,
-                        "reason": "Not directly related to MERN stack development",
-                        "final": false
+                        "relevance_score": 0.2
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "relevance": 3,
-                        "reason": "Backend development and integration with ML models",
-                        "final": true
+                        "relevance_score": 0.4
                     }
                 ]
             }
@@ -94,28 +75,23 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
-                        "relevance": 5,
-                        "reason": "Developed user-friendly UI (ReactJS) and backend (Django Rest Framework) for integration of detectors and providing an intuitive platform for using the developed pipeline."
+                        "relevance_score": 0.8
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "relevance": 3,
-                        "reason": "Developed a website with user profile management, library management system, and content approval features."
+                        "relevance_score": 0.6
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
-                        "relevance": 2,
-                        "reason": "Fine-tuned DETR and detectron for ICU monitor segmentation images and worked on graph digitization algorithm."
+                        "relevance_score": 0.4
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 1,
-                        "reason": "Performed data analysis and outlier detection on accelerometer and gyroscope readings."
+                        "relevance_score": 0.7
                     },
                     {
                         "name": "FaceNet Implementation",
-                        "relevance": 4,
-                        "reason": "Implemented FaceNet research paper and Standard Siamese network from scratch using PyTorch."
+                        "relevance_score": 0.9
                     }
                 ]
             },
@@ -124,21 +100,15 @@
                 "scores": [
                     {
                         "name": "SHAMIYANA APP",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.8
                     },
                     {
                         "name": "RAPID",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.6
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.4
                     }
                 ]
             },
@@ -147,27 +117,19 @@
                 "scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "relevance": 10,
-                        "reason": "Extracted values from images using object detection and text recognition",
-                        "final": true
+                        "relevance_score": 0.8
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 8,
-                        "reason": "Predicted human activities based on accelerometer and gyroscope data",
-                        "final": true
+                        "relevance_score": 0.9
                     },
                     {
                         "name": "Website for the Literature Society of the college",
-                        "relevance": 2,
-                        "reason": "Developed a library management system and readers' section",
-                        "final": false
+                        "relevance_score": 0.3
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "relevance": 5,
-                        "reason": "Integrated machine learning models with a user interface",
-                        "final": false
+                        "relevance_score": 0.7
                     }
                 ]
             }
@@ -181,33 +143,23 @@
                 "scores": [
                     {
                         "name": "LLMGuard",
-                        "relevance": 10,
-                        "reason": "Developed pipeline for bias/toxicity detection in language models, which is directly relevant to the job description.",
-                        "final": true
+                        "relevance_score": 0.8
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "relevance": 0,
-                        "reason": "Not relevant to the job description.",
-                        "final": false
+                        "relevance_score": 0.2
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
-                        "relevance": 8,
-                        "reason": "Fine-tuned DETR and detectron for image segmentation, which is relevant to the job description.",
-                        "final": true
+                        "relevance_score": 0.6
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 7,
-                        "reason": "Performed data analysis and outlier detection, which is relevant to the job description.",
-                        "final": true
+                        "relevance_score": 0.9
                     },
                     {
                         "name": "FaceNet Implementation",
-                        "relevance": 0,
-                        "reason": "Not relevant to the job description.",
-                        "final": false
+                        "relevance_score": 0.7
                     }
                 ]
             },
@@ -216,21 +168,15 @@
                 "scores": [
                     {
                         "name": "SHAMIYANA APP",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.6
                     },
                     {
                         "name": "RAPID",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.4
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.8
                     }
                 ]
             },
@@ -239,27 +185,19 @@
                 "scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.8
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.9
                     },
                     {
                         "name": "Website for the Literature Society of the college",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.2
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "relevance": 0,
-                        "reason": "",
-                        "final": false
+                        "relevance_score": 0.7
                     }
                 ]
             }

@@ -18,10 +18,10 @@ class Project(BaseModel):
     """A project's name, relevance and reason according to a given job description."""
 
     name: str = Field(description="The title of the project.")
-    relevance: int = Field(description="The score of the project based on the job description. Greater than 0")
+    relevance_score: int = Field(description="The score of the project based on the job description in a scale of 1 to 10")
     # reason: bool = Field(description="relation of project, true if directly relevant, false otherwise")
-    reason: str = Field(description="The logical reason behind the relevance or irrelevance of the project.")
-    final: bool = Field(description="true if directly relevant, false otherwise")
+    # reason: str = Field(description="The logical reason behind the relevance or irrelevance of the project.")
+    # final: bool = Field(description="true if directly relevant, false otherwise")
 
 # Experience model
 class Experience(BaseModel):
@@ -51,23 +51,23 @@ class JDK_projects():
 
     def __create_prompt(self):
         # Template
-        # template = """A job description will be passed to you along with a candidate's project experience.
+        template = """You are a resume matching agent. You will be given a job description for a job in the field of technology.
 
-        # You will be asked to extract the projects very strictly relevant to the job description.
+        There are multiple applicants for the job and all of them have sent in their resumes. Each of the resumes has multiple number of projects. You will be given the individual applicant's projects' details.
 
-        # If no project mentioned are relevant it's fine - you don't need to extract any! Just return an empty list.
+        Your task is to give the relevance score to each of the projects with respect to the job description. The relevance score refers to how relevant a project is to the job description. The relevance score should be between 0 and 1 with 0 being the least relevance score and 1 being the maximum relevance score.
 
-        # Do not make up any new project. Strictly return the relevant projects only.
+        Make sure to mark the provided projects only and not create some additional projects.
 
-        # The company's jdk is as follows:"""
+        The company's job description is as follows:"""
 
-        template_system = """You are an experienced recruiter searching for strictly suitable candidates for your company's current job requirement. The job description is as follows:"""
+        # template_system = """You are an experienced recruiter searching for strictly suitable candidates for your company's current job requirement. The job description is as follows:"""
         jdk_description = self.jdk['description']
 
-        template_user = """Extract the projects very strictly relevant to the job description. If no project mentioned are relevant it's fine - you don't need to extract any! Just return an empty list. Do not make up any new project. Strictly return the relevant projects only."""
+        template_user = """Extract the projects relevant to the job description and provide a reson behind relevance. Do not make up any new project."""
 
         prompt = ChatPromptTemplate.from_messages([
-            ("system", template_system + "\n" + jdk_description),
+            ("system", template + "\n" + jdk_description),
             ("user", template_user),
             ("human", "{input}")
         ])
@@ -101,8 +101,8 @@ class JDK_projects():
         # Project experience
         project_prompt = self.__create_project_prompt_template()
 
-        encoding = tiktoken.get_encoding("cl100k_base")
-        encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
+        # encoding = tiktoken.get_encoding("cl100k_base")
+        # encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
 
         # messages = prompt.format_messages(input=project_prompt)
         # for message in messages:
