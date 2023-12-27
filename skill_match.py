@@ -20,16 +20,26 @@ class JDK_skills():
         return
             
 
-    def __get_skill_embeddings(self, skill):
-        # print("skill: ", skill)
-        embeddings = self.client.embeddings.create(input = skill, model="text-embedding-ada-002").data[0].embedding
+    def __get_skill_embeddings(self, skills_desc):
+        embeddings = self.client.embeddings.create(input = [skills_desc], model="text-embedding-ada-002").data[0].embedding
         return embeddings
 
 
     def __calculate_similarity(self, job_skills, applicant_project_skills):
-        time_start = time.time()
-        tensor1 = self.__get_skill_embeddings(job_skills)
-        tensor2 = self.__get_skill_embeddings(applicant_project_skills)
+        applicant_project_skills_desc = "I learnt and applied these skills for this project: "
+        n = len(applicant_project_skills)
+        for i in range(n-1):
+            applicant_project_skills_desc += applicant_project_skills[i] + ", "
+        applicant_project_skills_desc += "and " + applicant_project_skills[n-1] + "."
+
+        job_skills_desc = "These skills are required for this job: "
+        m = len(job_skills)
+        for i in range(m-1):
+            job_skills_desc += job_skills[i] + ", "
+        job_skills_desc += "and " + job_skills[m-1]
+
+        tensor1 = self.__get_skill_embeddings(job_skills_desc)
+        tensor2 = self.__get_skill_embeddings(applicant_project_skills_desc)
         cos_sim = dot(tensor1, tensor2)/(norm(tensor1)*norm(tensor2))
         # print(f"Time taken in one skill match: {time.time()-time_start}")
         return cos_sim
