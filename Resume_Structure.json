@@ -1,0 +1,146 @@
+[
+	{
+		"profileCompletionStatus": true,
+		"id": "<ID>",
+		"hasPassport": true,
+		"skypeId": "",
+		"taggedCompanies": [],
+		"shortListedCount": [],
+		"mobileNumber": "<STRING>",
+		"appliedInterships": [],
+		"compRecruitScreeningAnswers": {
+			"The reason why you want to come to Japan  (Multiple choice)": ["ANS1"],
+			"Steps they are taking or plan to take to address these areas": "<ANS>",
+			"Your strengths and characteristics": "<ANS>",
+			"Weaknesses or areas where they would like to improve": "<ANS>",
+			"The career plan you want": "<ANS>",
+			"Lessons learned from that experience": "<ANS>",
+			"Example of a challenge or setback you have faced and how they overcame it": "<ANS>",
+			"Do you have any unique background that differentiate you from others?": "<ANS>",
+			"In which country do you want to work after graduation?": "<ANS>"
+		},
+		"eatingHabbit": "",
+		"dob": "MONTH DD, YYYY",
+		"interviewCount": [],
+		"compRecruitCumulativeScore": 0,
+		"compRecruitQuestionnaireAnswers": {
+			"Do you have any specialty?": "<ANS>",
+			"Are you likely to be adaptable to other cultures?": "<ANS>",
+			"Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?": "<ANS>",
+			"What are your expectations from the company?": "<ANS>",
+			"What would you like to accomplish during the internship with the company?": "<ANS>",
+			"What is your Strength and Weakness?": "<ANS>"
+		},
+		"compRecruitUniqueBGPoints": 0,
+		"email": "<EMAIL>",
+		"personalEmail": "<EMAIL>",
+		"timestamp": "MONTH DD, YYYY",
+		"secondarySkills": ["SKILL1", "SKILL2", "SKILL3"],
+		"subscribedInInternship": true,
+		"status": "<STUDENT/PROFESSIONAL>",
+		"avgRating": "",
+		"video": "",
+		"adminComments": "",
+		"JEERank": "",
+		"homeTown": "",
+		"whyInJapan": "",
+		"religion": "<RELIGION>",
+		"uniqueBG": "<SOMETHING UNIQUE ABOUT THE CANDIDATE>",
+		"collegeGrade": "DOUBLE",
+		"yearOfAdmission": "YYYY",
+		"japaneseProficiency": "<NO KNOWLEDGE>",
+		"placeOfBirth": "",
+		"img": "",
+		"personalInterest": [
+			{
+				"description": "<DESCRIPTION | USER INPUT>",
+				"title": "<INTEREST>"
+			}
+		],
+		"foodAvoid": ["ITEM1", "ITEM2"],
+		"videoThumb": "",
+		"name": "<NAME OF CANDIDATE",
+		"compRecruitConfidentProjects": [
+			{
+				"projectName": "<TITLE>",
+				"companyName": "<COMPANY NAME>",
+				"projectId": "<ID>",
+				"companyId": "<ID>"
+			}
+		],
+		"compRecruitSecondarySelectionStatus": {
+			"result": 0,
+			"step": 2
+		},
+		"workLocation": "Work in <ABROAD/LOCAL>",
+		"selfWeakness": "",
+		"yearOfRegistration": "YYYY",
+		"compRecruitPrimarySelectionStatus": {
+			"terminated": false,
+			"pass": false,
+			"step": 6,
+			"submitted": false,
+			"waiting": true
+		},
+		"parentOccupation": "",
+		"linkedinURL": "<URL>",
+		"githubProfileLink": "<URL>",
+		"experience": "",
+		"gender": "<GENDER>",
+		"selfStrength": "",
+		"professionType": "",
+		"branchName": "<BRANCH NAME>",
+		"codingScore": 0.0,
+		"skills": ["SKILL1", "SKILL2", "SKILL3"],
+		"collegeName": "<COLLEGE NAME>",
+		"monthlySalary": "",
+		"foodPrefer": ["ITEM1", "ITEM2", "ITEM3", "ITEM4"],
+		"education": [
+			{
+				"instituteName": "<INSTITUTE NAME>",
+				"endDate": "MONTH DD, YYYY",
+				"place": "CITY, STATE, COUNTRY",
+				"description": "<DESCRIPTION | USER INPUT>",
+				"degree": "<DEGREE NAME>",
+				"startDate": "MONTH DD, YYYY"
+			}
+		],
+		"projects": [
+			{
+				"title": "<TITLE>",
+				"endDate": "DD/MM/YYYY",
+				"teamSize": "INT",
+				"description": "<DESCRIPTION>",
+				"projectMode": "<ONLINE/OFFLINE>",
+				"skillsUsed": ["SKILL1", "SKILL2", "SKILL3", "SKILL4"],
+				"projectCategory": "<CATEGORY>",
+				"projectType": "<SINGLE/GROUP>",
+				"role": "<ROLE>",
+				"projectLink": "<LIVE LINK>",
+				"startDate": "DD/MM/YYYY",
+				"projectDomain": "<DOMAIN>"
+			}
+		],
+		"certificates": [
+			{
+				"certificateProvider": "<PROVIDER COMPANY>",
+				"certificateCategory": "<CATEGORY>",
+				"issueDate": "DD/MM/YYYY",
+				"startDate": "DD/MM/YYYY",
+				"link": "<LINK>",
+				"description": "<DESCRIPTION>",
+				"endDate": "DD/MM/YYYY",
+				"title": "<COURSE TITLE>",
+				"courseName": "<COURSE NAME>s"
+			}
+		],
+		"spokenLanguages": ["LANG1", "LANG2", "LANG3"],
+		"active": true,
+		"emailVerified": true,
+		"medicallyFit": true,
+		"selectedByCompany": {},
+		"minorDegree": "<IF ANY>",
+		"yearOfGraduation": null,
+		"newArrived": true
+	}
+]
