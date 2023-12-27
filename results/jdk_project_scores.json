@@ -53,15 +53,15 @@
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "relevance_score": 0.6
+                        "relevance_score": 0.9
                     },
                     {
                         "name": "Website for the Literature Society of the college",
-                        "relevance_score": 0.2
+                        "relevance_score": 0.3
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "relevance_score": 0.4
+                        "relevance_score": 0.7
                     }
                 ]
             }

@@ -4,15 +4,15 @@
         "candidate_scores": [
             {
                 "id": 1,
-                "final_score": 3.601030655423489,
+                "final_score": 72.02455697907467,
                 "project_scores": [
                     {
                         "name": "LLMGuard",
-                        "score": 6.373286323410602
+                        "score": 63.73286323410602
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "score": 3.983303952131626
+                        "score": 47.799647425579515
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
@@ -20,21 +20,21 @@
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 2.7174032532595476
+                        "score": 54.34806506519095
                     },
                     {
                         "name": "FaceNet Implementation",
-                        "score": 1.3301290928921812
+                        "score": 39.90387278676544
                     }
                 ]
             },
             {
                 "id": 2,
-                "final_score": 2.5505882679527865,
+                "final_score": 71.41647150267802,
                 "project_scores": [
                     {
                         "name": "SHAMIYANA APP",
-                        "score": 2.711194164626598
+                        "score": 54.22388329253196
                     },
                     {
                         "name": "RAPID",
@@ -42,21 +42,21 @@
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
-                        "score": 2.3899823712789754
+                        "score": 47.799647425579515
                     }
                 ]
             },
             {
                 "id": 3,
-                "final_score": 4.282329885966153,
+                "final_score": 88.56850848715425,
                 "project_scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "score": 6.1748010915039675
+                        "score": 61.75462593122507
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 2.389858680428339
+                        "score": 71.69576041285016
                     },
                     {
                         "name": "Website for the Literature Society of the college",
@@ -64,7 +64,7 @@
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "score": 0.0
+                        "score": 56.3392746998267
                     }
                 ]
             }
@@ -75,15 +75,15 @@
         "candidate_scores": [
             {
                 "id": 1,
-                "final_score": 4.511983941394703,
+                "final_score": 92.59444296598596,
                 "project_scores": [
                     {
                         "name": "LLMGuard",
-                        "score": 7.999999999999998
+                        "score": 79.99999999999999
                     },
                     {
                         "name": "Literature Society IITJ Website",
-                        "score": 4.999999999999999
+                        "score": 59.999999999999986
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
@@ -91,25 +91,25 @@
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 2.6882521635976007
+                        "score": 53.76504327195201
                     },
                     {
                         "name": "FaceNet Implementation",
-                        "score": 2.3596836019812164
+                        "score": 70.7905080594365
                     }
                 ]
             },
             {
                 "id": 2,
-                "final_score": 3.8058385729050714,
+                "final_score": 81.99122166254544,
                 "project_scores": [
                     {
                         "name": "SHAMIYANA APP",
-                        "score": 3.2237738638821876
+                        "score": 64.47547727764375
                     },
                     {
                         "name": "RAPID",
-                        "score": 4.387903281927955
+                        "score": 52.65483938313546
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
@@ -119,15 +119,15 @@
             },
             {
                 "id": 3,
-                "final_score": 5.0502873793419125,
+                "final_score": 87.4736102106938,
                 "project_scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "score": 6.084029194605166
+                        "score": 60.84029194605166
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 3.5926972886728388
+                        "score": 71.85394577345677
                     },
                     {
                         "name": "Website for the Literature Society of the college",
@@ -135,7 +135,7 @@
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "score": 5.474135654747734
+                        "score": 54.7492127319783
                     }
                 ]
             }
@@ -146,11 +146,11 @@
         "candidate_scores": [
             {
                 "id": 1,
-                "final_score": 4.125059742542763,
+                "final_score": 83.07454896041088,
                 "project_scores": [
                     {
                         "name": "LLMGuard",
-                        "score": 6.231446479256613
+                        "score": 62.31446479256613
                     },
                     {
                         "name": "Literature Society IITJ Website",
@@ -158,25 +158,25 @@
                     },
                     {
                         "name": "CloudPhysician's Vital Extraction Challenge",
-                        "score": 4.864952974133973
+                        "score": 48.649529741339734
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 3.5728987739335833
+                        "score": 71.45797547867166
                     },
                     {
                         "name": "FaceNet Implementation",
-                        "score": 1.8309407428468794
+                        "score": 54.93388416002502
                     }
                 ]
             },
             {
                 "id": 2,
-                "final_score": 2.724580040526347,
+                "final_score": 76.28824113473772,
                 "project_scores": [
                     {
                         "name": "SHAMIYANA APP",
-                        "score": 2.333436841424388
+                        "score": 46.66873682848776
                     },
                     {
                         "name": "RAPID",
@@ -184,21 +184,21 @@
                     },
                     {
                         "name": "SMART SENSING MIDDLEWARE",
-                        "score": 3.1157232396283066
+                        "score": 62.31446479256613
                     }
                 ]
             },
             {
                 "id": 3,
-                "final_score": 5.203216707823461,
+                "final_score": 89.54740269960071,
                 "project_scores": [
                     {
                         "name": "Cloudphysician's Vital Extraction Challenge",
-                        "score": 6.486603965511964
+                        "score": 64.86603965511964
                     },
                     {
                         "name": "Multi Model Data Analysis for Annotation of Human Activities",
-                        "score": 3.5790790264440626
+                        "score": 71.58158052888125
                     },
                     {
                         "name": "Website for the Literature Society of the college",
@@ -206,7 +206,7 @@
                     },
                     {
                         "name": "Post-processing of Large Language Models",
-                        "score": 5.543967131514354
+                        "score": 55.43967131514354
                     }
                 ]
             }

@@ -46,7 +46,7 @@ def add_relevance_score(project_scores, candidate_project_dic):
             if project['name'] in candidate_project_dic[candidate['id']]:
                 # if project['relevance'] > 4:
                 # print(project)
-                candidate_project_dic[candidate['id']][project['name']]['relevance_score'] = 10*project['relevance_score'] if project['relevance_score'] > 0.4 else 0
+                candidate_project_dic[candidate['id']][project['name']]['relevance_score'] = project['relevance_score'] if project['relevance_score'] > 0.4 else 0
                 # candidate_project_dic[candidate['id']][project['name']]['relevance_score'] = project['relevance']
 
     # print(candidate_project_dic)

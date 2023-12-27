@@ -60,13 +60,14 @@ class JDK_skills():
             project_skill_score = self.__get_project_skill_scores(self.projects[project]['skills'])
             project_relevance_score = self.projects[project]['relevance_score']
 
-            project_experience = self.projects[project]['experience']/12
+            project_experience = self.projects[project]['experience']/6
             project_experience = 1 if project_experience > 1 else project_experience
             
             # project_score = project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))*project_experience
             # project_score = project_relevance_score*(sum(project_skill_scores)/len(project_skill_scores))
             
-            project_score = project_relevance_score*project_skill_score*project_experience
+            # project_score = 100*project_relevance_score*project_skill_score*project_experience
+            project_score = 100*project_relevance_score*project_skill_score
             score += project_score
 
             # score += 1/project_score if project_score else 0
@@ -79,6 +80,7 @@ class JDK_skills():
             if self.projects[pro1]['relevance_score']!=0:
                 pro+=1
         score = score/pro if pro else 0
+        score = min(1.4*score, 100)
         # score = pro/score if score else 0
         # score = score/len(self.projects)
 
