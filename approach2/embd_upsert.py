@@ -104,8 +104,8 @@ class Upsert_model():
         exp_diff = end_date_obj - start_date_obj
         
         # Capping experience to be not more than 6 months
-        experience = exp_diff.days / 180
-        experience = min(round(experience, 2), 1)
+        experience = min(exp_diff.days, 180) / 15 
+        experience = int(round(experience, 0))
 
         return experience
     
@@ -119,6 +119,7 @@ class Upsert_model():
         num_projects = len(projects)
 
         titles = []
+        skill_titles = []
         final_descriptions = []
         skill_descriptions = []
 
@@ -135,6 +136,7 @@ class Upsert_model():
             experience = self.__get_experience(start_date, end_date)
 
             titles.append(f"{title}__{experience}")
+            skill_titles.append(f"{title}")
 
             final_description = self.__get_final_description(title, description, skills)
             final_descriptions.append(final_description)
@@ -148,13 +150,14 @@ class Upsert_model():
 
 
         description_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(titles)]
-        skill_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(titles, start=num_projects)]
+        skill_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(skill_titles, start=num_projects)]
 
         namespace = f"candidate_{candidate_id}"
         self.__upsert_to_database(namespace, description_vector)
 
         skill_namespace = f"candidate_{candidate_id}_skills"
         self.__upsert_to_database(skill_namespace, skill_vector)
+
         return
 
 
