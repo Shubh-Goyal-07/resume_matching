@@ -1,4 +1,3 @@
-from typing import Any
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
 from langchain.embeddings import OpenAIEmbeddings
@@ -12,6 +11,9 @@ import os
 import pinecone
 
 from datetime import datetime
+
+import json
+
 
 class Upsert_model():
     def __init__(self, data):
@@ -46,10 +48,10 @@ class Upsert_model():
 
         final_description = llm_chain.run(title=title, description=description)
 
-        final_description = f"{final_description}. Skills used includes {skills}."
+        final_description = f"{final_description} Skills used includes {skills}."
 
         return final_description
-    
+
 
     def __upsert_to_database(self, namespace, embeddings_vector):
         
@@ -70,6 +72,18 @@ class Upsert_model():
         return embeddings
 
 
+    def __save_jdk_json_file(self, jdk_id, title, final_description, skills):
+        data = {}
+        data['title'] = title
+        data['description'] = final_description
+        data['skills'] = skills
+
+        with open(f'../new_data/jdks/{jdk_id}.json', 'w') as outfile:
+            json.dump(data, outfile, indent=4)
+
+        return
+
+
     def add_jdk(self):
         jdk_id = self.data['id']
         title = self.data['title']
@@ -80,20 +94,21 @@ class Upsert_model():
         self.__create_jdk_prompt()
         final_description = self.__get_final_description(title, description, skills)
 
-        skills_description = f"{title} is a job that uses {skills}."
-        embeddings = self.__get_embeddings([final_description, skills_description])
+        # skills_description = f"{title} is a job that uses {skills}."
+        embeddings = self.__get_embeddings([final_description])
 
         description_embeddings = embeddings[0]
-        skill_embeddings = embeddings[1]
+        # skill_embeddings = embeddings[1]
 
         vector = [{"id": str(jdk_id), "values": description_embeddings}]
-        skill_vector = [{"id": str(jdk_id), "values": skill_embeddings}]
+        # skill_vector = [{"id": str(jdk_id), "values": skill_embeddings}]
 
         self.__upsert_to_database("jdks", vector)
-        self.__upsert_to_database("jdks_skills", skill_vector)
+        # self.__upsert_to_database("jdks_skills", skill_vector)
+        self.__save_jdk_json_file(jdk_id, title, final_description, skills)
 
         return
-    
+
 
     def __get_experience(self, start_date, end_date):
         date_format = "%d/%m/%Y"
@@ -108,7 +123,24 @@ class Upsert_model():
         experience = int(round(experience, 0))
 
         return experience
-    
+ 
+
+    def __save_candidate_json_file(self, candidate_id, titles, final_descriptions, skill_info):
+        data = {}
+        data['id'] = candidate_id
+
+        projects_dict = {}
+        
+        for title, description, skills in zip(titles, final_descriptions, skill_info):
+            projects_dict[title] = f"{description}. The project uses {skills}." 
+
+        data['projects'] = projects_dict
+
+        with open(f'../new_data/candidates/{candidate_id}.json', 'w') as outfile:
+            json.dump(data, outfile, indent=4)
+
+        return
+
 
     def add_candidate(self):
         candidate_id = self.data['id']
@@ -116,14 +148,12 @@ class Upsert_model():
 
         self.__create_candidate_prompt()
         
-        num_projects = len(projects)
+        # num_projects = len(projects)
 
         titles = []
-        skill_titles = []
+        actual_titles = []
         final_descriptions = []
-        skill_descriptions = []
-
-        date_format = "%d/%m/%Y"
+        skill_info = []
 
         for project in projects:
             title = project['title']
@@ -136,27 +166,27 @@ class Upsert_model():
             experience = self.__get_experience(start_date, end_date)
 
             titles.append(f"{title}__{experience}")
-            skill_titles.append(f"{title}")
+            actual_titles.append(f"{title}")
 
             final_description = self.__get_final_description(title, description, skills)
             final_descriptions.append(final_description)
 
-            skill_description = f"{title} is a project that uses {skills}."
-            skill_descriptions.append(skill_description)
+            skill_info.append(skills)
 
 
-        final_descriptions.extend(skill_descriptions)
+        # final_descriptions.extend(skill_descriptions)
         embeddings = self.__get_embeddings(final_descriptions)
 
 
         description_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(titles)]
-        skill_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(skill_titles, start=num_projects)]
+        # skill_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(skill_titles, start=num_projects)]
 
         namespace = f"candidate_{candidate_id}"
         self.__upsert_to_database(namespace, description_vector)
 
-        skill_namespace = f"candidate_{candidate_id}_skills"
-        self.__upsert_to_database(skill_namespace, skill_vector)
+        self.__save_candidate_json_file(candidate_id, actual_titles, final_descriptions, skill_info)
+        # skill_namespace = f"candidate_{candidate_id}_skills"
+        # self.__upsert_to_database(skill_namespace, skill_vector)
 
         return
 
