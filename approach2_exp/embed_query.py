@@ -250,7 +250,7 @@ class JDKResumeAssistant():
         template = """You are a reasoning agent. We have job description for a job position in the field of technology.
         Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
         
-        We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score.
+        We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score. If you think that the candidate is not suitable for the job, you can say that as well.
         
         You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
         
@@ -312,6 +312,7 @@ class JDKResumeAssistant():
         self.__add_cand_score_reasons()
         # final_scores = self.__calc_final_scores()
         pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx")
+        pd.DataFrame.to_excel(self.cands_dataframe, f"./results/jdk_{self.jdk_id}_all.xlsx")
 
         # final_project_exp_scores_dict = self.__combine_project_exp_scores(cand_ids, num_projects, project_names, project_scores_list, project_experiences)
         # final_scores_dict = self.__get_candidates_final_scores_dict(final_project_exp_scores_dict, skill_scores_dict)

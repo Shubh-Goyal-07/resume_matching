@@ -8,21 +8,21 @@ resumes = json.load(open('../data/resumes.json'))
 
 abs_start_time = time.time()
 
-print("Upserting to database...")
-start_time = time.time()
-for jdk in jdks:
-    upsert_to_database("jdk", jdk)
-print("--- %s seconds ---" % (time.time() - start_time))
-print("Done")
+# print("Upserting to database...")
+# start_time = time.time()
+# for jdk in jdks:
+#     upsert_to_database("jdk", jdk)
+# print("--- %s seconds ---" % (time.time() - start_time))
+# print("Done")
 
-print("Upserting to database...")
-start_time = time.time()
-for resume in resumes:
-    upsert_to_database("candidate", resume)
-print("--- %s seconds ---" % (time.time() - start_time))
-print("Done")
+# print("Upserting to database...")
+# start_time = time.time()
+# for resume in resumes:
+#     upsert_to_database("candidate", resume)
+# print("--- %s seconds ---" % (time.time() - start_time))
+# print("Done")
 
-time.sleep(5)
+# time.sleep(5)
 
 print("Getting candidate scores...")
 start_time = time.time()
