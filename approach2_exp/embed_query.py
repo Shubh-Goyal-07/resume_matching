@@ -20,6 +20,8 @@ import pandas as pd
 
 import json
 
+# from googletrans import Translator
+
 
 class JDKResumeAssistant():
     def __init__(self, jdk_id, candidate_id_list):
@@ -152,7 +154,7 @@ class JDKResumeAssistant():
         percentile_50th = column_percentiles[1]
         percentile_25th = column_percentiles[2]
 
-        self.cands_dataframe['experience'] = self.cands_dataframe['experience'].apply(lambda x: 1 if x>=percentile_75th else (0.95 if x>=percentile_50th else (0.9 if x>=percentile_25th else 0.85)))
+        self.cands_dataframe['experience'] = self.cands_dataframe['experience'].apply(lambda x: 1 if x>=percentile_75th else (0.9 if x>=percentile_50th else (0.85 if x>=percentile_25th else 0.8)))
 
         return 1
 
@@ -172,15 +174,19 @@ class JDKResumeAssistant():
 
     def __calc_project_count_final_normalized_scores(self):
         total_entries = len(self.cands_final_score_dataframe)
-        mode = self.cands_final_score_dataframe['project_count'].mode()[0]
+        # mode = self.cands_final_score_dataframe['project_count'].mode()[0]
 
         count_dataframe = pd.DataFrame(self.cands_final_score_dataframe['project_count'].value_counts())
         count_dataframe['percentage'] = (count_dataframe['count'] / total_entries) * 100
 
         percentage_list = [0, 0, 0, 0, 0]
         penalties = [1, 1, 1, 1, 1]
+        max_percentage = 0
         for index, row in count_dataframe.iterrows():
             percentage_list[index-1] = row['percentage']
+            if row['percentage']>=max_percentage:
+                max_percentage = row['percentage']
+                mode = index
 
 
         if mode==1:
@@ -190,13 +196,13 @@ class JDKResumeAssistant():
                 penalties[0] = 0.9
         
         elif mode==2:
-            penalties[0] = 0.9
+            penalties[0] = 0.85
             percentage_345 = sum(percentage_list[2:]) 
             if percentage_345 > 0.75*percentage_list[1]:
                 penalties[1] = 0.95
         
         elif mode==3:
-            penalties[0] = 0.85
+            penalties[0] = 0.8
             percentage_45 = sum(percentage_list[3:])
             if percentage_45 > 0.75*percentage_list[2]:
                 penalties[2] = 0.95
@@ -206,15 +212,15 @@ class JDKResumeAssistant():
 
         elif mode==4 or mode==5:
             penalties[2] = 0.95
-            penalties[1] = 0.9
-            penalties[0] = 0.8  
+            penalties[1] = 0.85
+            penalties[0] = 0.75  
 
         
         self.cands_final_score_dataframe['project_count'] = self.cands_final_score_dataframe['project_count'].apply(lambda x: penalties[x-1])
         self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'] * self.cands_final_score_dataframe['project_count']
         self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'].apply(lambda x: round(x, 2))
         
-        self.cands_final_score_dataframe.drop('project_count', axis=1, inplace=True)
+        # self.cands_final_score_dataframe.drop('project_count', axis=1, inplace=True)
 
 
         return
@@ -244,23 +250,41 @@ class JDKResumeAssistant():
             candidate_projects_info += f"{count}. {project} : {candidate_projects[project]}"
         
         return candidate_projects_info
-    
+
 
     def __create_llm_chain(self):
+        # template = """You are a reasoning agent. We have job description for a job position in the field of technology.
+        # Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
+        
+        # We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score. If you think that the candidate is not suitable for the job, you can say that as well.
+        
+        # You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
+        
+        
+        # The job title is {jdk_title}, and the description is as follows: {jdk_description}. The skills required for the job are {jdk_skills}.
+
+        # The candidate has worked on the following projects: {candidate_projects_info}.
+
+        # The candidate has been given a score of {candidate_score}.
+
+        
+        # Reasoning: <A VERY SUCCINT REASONING>"""
+
         template = """You are a reasoning agent. We have job description for a job position in the field of technology.
         Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
         
-        We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score. If you think that the candidate is not suitable for the job, you can say that as well.
+        We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score.
+
+        The score is given out of 100. A candidate may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the applicant has a particular score. Say an applicant has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the applicant has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
         
-        You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
-        
-        
+
         The job title is {jdk_title}, and the description is as follows: {jdk_description}. The skills required for the job are {jdk_skills}.
 
         The candidate has worked on the following projects: {candidate_projects_info}.
 
         The candidate has been given a score of {candidate_score}.
 
+        You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
         
         Reasoning: <A VERY SUCCINT REASONING>"""
 
@@ -269,11 +293,13 @@ class JDKResumeAssistant():
         self.llm_chain = LLMChain(prompt=prompt, llm=OpenAI())
 
         return
-    
+
 
     def __add_cand_score_reasons(self):
         jdk_title, jdk_description, jdk_skills = self.__retrieve_jdk_info()
         self.__create_llm_chain()
+
+        # translator = Translator()
 
         for index, row in self.cands_final_score_dataframe.iterrows():
             candidate_id = row['id']
@@ -282,7 +308,10 @@ class JDKResumeAssistant():
 
             final_reason = self.llm_chain.run(jdk_title=jdk_title, jdk_description=jdk_description, jdk_skills=jdk_skills, candidate_projects_info=candidate_projects_info, candidate_score=candidate_score)
 
+            # final_reason_jap = translator.translate(final_reason, dest='ja')
+
             self.cands_final_score_dataframe.loc[index, 'reason'] = final_reason
+            # self.cands_final_score_dataframe.loc[index, 'jap_reason'] = final_reason_jap
 
         return
 
@@ -341,7 +370,3 @@ def get_candidate_score(jdk_id, candidate_id_list):
 
     jdk_resume_assistant = JDKResumeAssistant(jdk_id, candidate_id_list)
     jdk_resume_assistant.score_candidates()
-
-
-# if __name__ == "__main__":
-#     get_candidate_score(3, [1, 2, 3])

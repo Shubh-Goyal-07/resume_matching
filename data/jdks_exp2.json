@@ -1,8 +1,0 @@
-[
-    {
-        "id" : 3,
-        "title" : "NLP engineer Remote",
-        "description" : "Data Analysis and Preprocessing: Collect and preprocess large-scale text corpora to train and fine-tune language models. Conduct data analysis to identify patterns, trends, and insights that can inform model development and improvement. \nPrototypes and do proof of concepts (PoC) in one or all the following areas: LLM, NLP, DL (Deep Learning), ML (Machine Learning), object detection/classification, tracking, etc",
-        "skills" : ["NLP", "Pytorch", "Computer Vision", "Python"]
-    }
-]
