@@ -1,0 +1,587 @@
+[
+    {
+      "email": "a.kimishima@n-poketto.co.jp",
+      "logo": "https://firebasestorage.googleapis.com/v0/b/piit-52003_companylogo/o/DefaultCompanyLogo.png?alt=media&token=6d73cb1c-40f3-4173-8b9d-d6ab96f676c0",
+      "selectedCandidateForFreelance": [],
+      "industry": "IT通信業界",
+      "jobPostings": [],
+      "coverPhotoObject": null,
+      "shortlistedCandidateForFreelance": [],
+      "website": "https://www.neuralpocket.com/en/index.html",
+      "freelanceJobsIds": [],
+      "notifications": [],
+      "shortListedStudentsToInterview": [],
+      "founder": "重松　路威",
+      "internshipJobsIds": [],
+      "do": "",
+      "interviewRequestedCandidateForInternship": [],
+      "shortListedStudents": [],
+      "accountType": "GCA",
+      "description": "",
+      "paidAccount": false,
+      "id": "ae8a5567-a65a-4671-bdb7-460c347deaf6",
+      "followingCandidateForFreelance": [],
+      "interviewRequestedCandidateForFreelance": [],
+      "logoObject": null,
+      "points": 0,
+      "nameInEnglish": "Neural Pocket Inc.",
+      "name": " ニューラルポケット株式会社",
+      "accountUserList": [
+        {
+          "name": "君島 敦也",
+          "approvalStatus": "Approved",
+          "id": "BUCP3HKpGoO11LTL8fjPHgqIpNf1",
+          "active": true,
+          "email": "a.kimishima@n-poketto.co.jp",
+          "role": "Admin",
+          "accountType": "CAU"
+        }
+      ],
+      "coverPhoto": "https://firebasestorage.googleapis.com/v0/b/piit-52003_companycoverphoto/o/CompanyDefaultCoverPhoto.JPG?alt=media&token=e1380da4-8699-4e77-9276-94df2dd5fb14",
+      "shortlistedCandidateForInternship": [],
+      "taggedCandidatesForInternship": [],
+      "internshipLiveProjectIds": [],
+      "size": "10~100",
+      "address": "東京都千代田区有楽町１丁目１−２ 東京ミッドタウン日比谷 日比谷三井タワー32階",
+      "followingCandidateForInternship": [],
+      "rank": 0,
+      "selectedCandidateForInternship": []
+    },
+    {
+      "interviewRequestedCandidateForGALKLab": [],
+      "shortlistedCandidateForFreelance": [],
+      "logo": "https://firebasestorage.googleapis.com/v0/b/piit-52003.appspot.com/o/CompanyLogo%2F1niCOk8ZbEcRWLXrm5Qa?alt=media&token=164d0946-92fe-46ad-8bd5-d9dcbe1c88cb",
+      "visitorList": [],
+      "followingCandidateForGALKLab": [],
+      "internshipJobsIds": [
+        "brabsMR2eEPzcnidqA5j",
+        "RozPWkOLDeoQbqTqkexM"
+      ],
+      "GALKLabJobsIds": [],
+      "selectedCandidateForInternship": [],
+      "website": "https://207-inc.com/",
+      "founder": "Shinya Takayanagi",
+      "rank": "0",
+      "address": "3-16-9 Meguro, Meguro-ku, Tokyo",
+      "email": "yurie.yanaka@willings-inc.com",
+      "paidAccount": false,
+      "interviewRequestedCandidateForFreelance": [],
+      "followingCandidateForFreelance": [],
+      "accountType": "PCA",
+      "nameInEnglish": "207,Inc.",
+      "name": "207株式会社",
+      "interviewRequestedCandidateForInternship": [],
+      "accountUserList": [
+        {
+          "name": "TEST",
+          "id": "utkTPipzkJdSlUaTSgeLKsCQMSB2",
+          "accountType": "CAU",
+          "approvalStatus": "Approved",
+          "email": "yurie.yanaka@willings-inc.com",
+          "role": "TeamMember",
+          "active": true
+        },
+        {
+          "active": true,
+          "name": "Takahiro Fukutomi",
+          "email": "fukutomi@207-inc.com",
+          "id": "ujRpamnjJqQoYtuEEct6L8Q0TYC3",
+          "approvalStatus": "Approved",
+          "password": "wl20180111",
+          "role": "TeamMember"
+        },
+        {
+          "email": "pramendra.gupta@207-inc.com",
+          "active": true,
+          "id": "uvPRUZCGeUSqkdrSvB0gCFNWCzu1",
+          "role": "TeamMember",
+          "name": "Pramendra Gupta",
+          "approvalStatus": "Approved",
+          "password": "wl20180111"
+        }
+      ],
+      "id": "1niCOk8ZbEcRWLXrm5Qa",
+      "selectedCandidateForFreelance": [],
+      "selectedCandidateForGALKLab": [],
+      "recommendedPastStudents": [],
+      "internshipLiveProjectIds": [],
+      "shortlistedCandidateForGALKLab": [],
+      "points": "0",
+      "taggedCandidatesForInternship": [
+        "1ha3iKfveHdR4I54s8xjPS31xK62",
+        "M6UYvpmckWQcEbkNGdX1OR1oE943",
+        "jofrj25quITsxvtYPtjpAWhTvf12",
+        "APrL4xGiEwWYm36Av5RvPEBEdtZ2",
+        "GpOpr7JTuXeZfRh8N2GKQnibquH2",
+        "JbozESpe3TfX35aapJDdmXL7bgw2",
+        "LUJCXYvLVqY4o5RsjH5Q2Dv3omp2",
+        "ZHCrs4HNgbcJodf54rw0vxKRTB03",
+        "tMxyVVLDHTW1bO7yUpOchHOvmcM2",
+        "NKsoxvR2wFeQ8bPZj7sl2Y7jqFw2",
+        "8pYn0HmGJMRjSjzgpAosJbFuE0o1"
+      ],
+      "industry": "logistics",
+      "recommendedCurrentStudents": [],
+      "coverPhoto": "https://firebasestorage.googleapis.com/v0/b/piit-52003.appspot.com/o/CompanyCoverPhoto%2F1niCOk8ZbEcRWLXrm5Qa?alt=media&token=397a3ad3-d7a9-4a4b-9b2e-d601326a59c9",
+      "shortlistedCandidateForInternship": [],
+      "do": "207では、オープンでフラットなコミュニケーションを前提として組織づくりを行っています。\n基本的な業務上のやり取りにはSlackを利用しています。\n\n珍しい取り組みは、すべての従業員に対して報酬が公開されていたり、各メンバーの位置情報を公開する等、基本的な情報をオープンにすることでコミュニケーションコストを徹底して下げております。\n\nまた、働き方は場所や時間を選ばない、「フルリモート・フルフレックス制」を原則として導入しており、各メンバーが個人の裁量で働く場所や時間を選択することができるような環境を整えております。\n\n週に1回、皆で鍋を囲んで仕事に関する話題を議論する会、その名も「鍋会」を毎週行っており、常に熱い議論が飛び交っています。",
+      "followingCandidateForInternship": [],
+      "size": "27",
+      "freelanceJobsIds": [],
+      "description": "Vision：いつでもどこでもモノがトドク、世界的な物流ネットワークを創る\n「いつでもどこでもモノがトドク」というビジョンを掲げ、将来どんなところにいても瞬時にモノがトドクような世界を創ることで、「モノの所有」という概念をアップデートし、人々が行動しやすい社会を実現することをミッションとしています。\nアナログで非効率な配送業務を解決するアプリ「TODOCU（トドク）サポーター」は、リリースから1年半で1万5千人程の配送員に利用されています。「TODOCU」により、配送効率化データとリアルオペレーションを整備し、物流のラストワンマイルを再定義し、近い将来、自動運転/ドローン/ロボット等により、変革が進む物流のラストワンマイル領域において、リーディングカンパニーを目指します。\n\nMission：世界的な物流ネットワークを創る\nあらゆる世界中の物流インフラを繋げるラストマイルソリューションの提供を通し、世界中どこにいてもシームレスにモノがトドク物流ネットワークの構築をを実現します。\n\nValues：\n1.「スピードMax,クオリティ7割」\nチャットの返信は即レスを意識し、タスク実行はスピードMaxかつクオリティは7割を担保するという意識を共有しています。\n\n2. 「情報の透明化」\nメンバー全員が有機的に素早く最善の決断を下せるよう、常に信頼しオープンマインドな行動を心がけています。\n年齢やポジションを超えて、オープンなコミュニケーションが実行できるカルチャーを醸成しています。取り組みの一つとして、週に1回オフィスで鍋を囲みながらプロダクト・組織・カルチャー等について議論する自由参加型の「鍋会」が開催されています。\n\n3. 「先生であり、生徒であり、科学者であれ」\nお互いを高め合うため、常に体験しインプットを惜しまず、かつアウトプットし、データで判断するように取り組んでいます。\n※Sensei、Seito、Scientistsの頭文字の「S」をとって3S。\n\nWork culture:\n1. 「時間や場所にとらわれない」\n207の働き方は、いつでもどこからでも仕事が可能です。個人が判断した最適な働き方を尊重し、フルリモート/フルフレックス制を採用しています。海外から参画しているメンバーもいます。\n\n2. 「継続的デリバリー」\n小さな開発サイクルを素早く繰り返すことで、プロダクトバックログの優先順位を迅速に開発フローに反映させています。また、デイリーで高品質なリリースを可能にするための様々な仕組みが整備されています。\n\n3. 「高品質なコードベース」\n207のプロジェクトではコードレビュー、自動テストの文化が根付いています。本番にマージされるソースコードは統一化された規約によって常に自動検証されており、可読性が担保されています。"
+    },
+    {
+      "taggedCandidatesForInternship": [],
+      "coverPhotoObject": null,
+      "freelanceJobsIds": [],
+      "internshipJobsIds": [],
+      "followingCandidateForFreelance": [],
+      "address": "",
+      "shortlistedCandidateForFreelance": [],
+      "founder": "",
+      "selectedCandidateForFreelance": [],
+      "points": 0,
+      "size": "",
+      "rank": 0,
+      "followingCandidateForInternship": [],
+      "id": "c199a7d2-f569-4539-bc0c-d8da4613121e",
+      "description": "",
+      "nameInEnglish": "AWL, Inc.",
+      "shortListedStudents": [],
+      "internshipLiveProjectIds": [],
+      "shortlistedCandidateForInternship": [],
+      "logoObject": null,
+      "jobPostings": [],
+      "website": "",
+      "accountType": "GCA",
+      "accountUserList": [
+        {
+          "email": "kishida.t@awl.co.jp",
+          "approvalStatus": "Approved",
+          "accountType": "CAU",
+          "name": "岸田 隆",
+          "role": "Admin",
+          "active": true,
+          "id": "umqQdLHhooXS6mnhSbMw1cvWlQc2"
+        }
+      ],
+      "paidAccount": false,
+      "industry": "",
+      "name": "AWL株式会社",
+      "interviewRequestedCandidateForFreelance": [],
+      "selectedCandidateForInternship": [],
+      "shortListedStudentsToInterview": [],
+      "logo": "https://firebasestorage.googleapis.com/v0/b/piit-52003_companylogo/o/DefaultCompanyLogo.png?alt=media&token=6d73cb1c-40f3-4173-8b9d-d6ab96f676c0",
+      "interviewRequestedCandidateForInternship": [],
+      "coverPhoto": "https://firebasestorage.googleapis.com/v0/b/piit-52003_companycoverphoto/o/CompanyDefaultCoverPhoto.JPG?alt=media&token=e1380da4-8699-4e77-9276-94df2dd5fb14",
+      "email": "kishida.t@awl.co.jp",
+      "notifications": [],
+      "do": ""
+    },
+    {
+      "paidAccount": false,
+      "interviewRequestedCandidateForInternship": [],
+      "selectedCandidateForFreelance": [],
+      "coverPhotoObject": null,
+      "pastTaggedStudents": [
+        "3T4jmgQ50eZXpCXViEnj4Agd5v93",
+        "E6onKBG2HCNkQQ6kMp80FDEIjhz1",
+        "KQ4prnCJu0SZAfbd0C6U7yz6oe12",
+        "NMd83Nl7EQOy0hTiAKwvSq3pUhl2",
+        "SjzkEW1djFfigZsvTHrXM8fG1hl2",
+        "cJfeZXzwkbRDT720MPoK5nK5YuL2",
+        "j92p0bvBXohAVQR8qFOErTZMoUI2",
+        "tL4wtF10E8V53h7xUNxB2FRYZ983"
+      ],
+      "website": "https://byjus.com/",
+      "accountUserList": [
+        {
+          "approvalStatus": "Approved",
+          "role": "Admin",
+          "active": true,
+          "accountType": "CAU",
+          "id": "cmuS3SkvoMOi1PGbfWmKSV7zd1h2",
+          "name": "Pravin Prakash",
+          "email": "pravin@byjus.com"
+        }
+      ],
+      "logo": "https://firebasestorage.googleapis.com/v0/b/piit-52003.appspot.com/o/CompanyLogo%2F45769f92-c10b-46d0-bc86-6dfc093eabfd?alt=media&token=e97b15b2-5a97-4dda-a066-df022af923e1",
+      "notifications": [],
+      "jobPostings": [],
+      "followingCandidateForFreelance": [],
+      "nameInEnglish": "BYJU'S",
+      "points": "0",
+      "size": "",
+      "selectedCandidateForInternship": [],
+      "founder": "",
+      "rank": "0",
+      "id": "45769f92-c10b-46d0-bc86-6dfc093eabfd",
+      "accountType": "GCA",
+      "industry": "Edutech",
+      "logoObject": null,
+      "email": "pravin@byjus.com",
+      "shortlistedCandidateForInternship": [],
+      "description": "",
+      "interviewRequestedCandidateForFreelance": [],
+      "shortListedStudentsToInterview": [],
+      "shortlistedCandidateForFreelance": [],
+      "name": "BYJU'S",
+      "internshipJobsIds": [],
+      "internshipLiveProjectIds": [],
+      "do": "",
+      "freelanceJobsIds": [],
+      "shortListedStudents": [],
+      "coverPhoto": "https://firebasestorage.googleapis.com/v0/b/piit-52003_companycoverphoto/o/CompanyDefaultCoverPhoto.JPG?alt=media&token=e1380da4-8699-4e77-9276-94df2dd5fb14",
+      "taggedCandidatesForInternship": [
+        "buTnZPximbMcWcjmX7pwvmTyoHs2",
+        "IcJ0f3ssQnh9nkbgTuo4hZXZSo72",
+        "rDlpOcrHqAa8JxvgYnthxUnuWrD3",
+        "Z4OQGNjJZJTA6qA5wHjnIKe26Q52",
+        "8NTRz8thv8OlkYZvRLBbZ1KCjdN2",
+        "cbShRiX9XIVjP4RBz3oUYVFB8z52",
+        "rvFDgPkt8reIH5Lgw8cTn4GCeBX2"
+      ],
+      "address": "India",
+      "followingCandidateForInternship": []
+    },
+    {
+      "do": "Making Student Life Eventful!\n\n",
+      "points": "0",
+      "shortlistedCandidateForFreelance": [],
+      "freelanceJobsIds": [],
+      "size": "",
+      "taggedCandidatesForInternship": [
+        "mgZksScCKVbx6vMF8XaST8vIwAX2",
+        "FgoBbZXGgkRCZFki9JNXwa09ASh1",
+        "ZXa8NPH8D1SrtFHGEoA6TGDZ8i73",
+        "UCHNhBA5NvZmNkyrsfbCjFDUepG3",
+        "c9X5QleLMwUlaAgTbGEAMYCHEmR2",
+        "sSpyrz28QDeyIS6wBBIhFmUZsRE3",
+        "JnRBZRBeGoVrvtpFIJihomc96Pp2",
+        "NoS0bmYFLQcV4VJHrIZ0zNSvjMz2",
+        "CuN13h7g1EfiJWeM2M41SzI30M93",
+        "IcJ0f3ssQnh9nkbgTuo4hZXZSo72",
+        "EP7JthtGs4RM2Br6Jtm4FQ8TwCg2",
+        "lltKcP7VDVUsh0RZ4Tnr8pIVj2K3",
+        "rDlpOcrHqAa8JxvgYnthxUnuWrD3",
+        "2iFQlRD0e5VC3cLohfuwy4DKesg2",
+        "TAF7A3yWCTgcPrGN5VpArGjcrh22",
+        "HEPrZzFJF1Or20QFRvSe8rrbkJF2",
+        "PFfA5xbRzQfhWbTZgHDQzVoy1i43",
+        "OX2VAWxMuKcdFp1h4HZjEPCg77C3",
+        "oMqxmgWCARMHn2aBgDo7SWZK8w93",
+        "SZNpE72MGtSqyy0qyD4xAJDtlMB3",
+        "3IbQUGHGxxbcqN1m85yVt6p53mf1",
+        "8yBN3j4wmvdseRUSl5PIzwNPGw13",
+        "rZ0Zlm6L3fSJHX3Ob5yiGkyFGL33",
+        "H1T243GEFnQ6PobphlwSOuLTfmb2",
+        "Z4OQGNjJZJTA6qA5wHjnIKe26Q52",
+        "tEZQ72jzSeVYj42FbUXBSY8zTbv2",
+        "Z91np41FW4Yndd0MasEliXsmBW22",
+        "g4Scgc2XEwR32Ksou2Jr9Hk7S3u2",
+        "G3pGKRSXBaTQwJI18isseqohvJC3",
+        "IkXvZRCz7fQMbNv0uIQNpDfpkXh1",
+        "mmcQOcU6I3QkFugsEIwOyQRfUUw2"
+      ],
+      "selectedCandidateForFreelance": [],
+      "pastTaggedStudents": [
+        "hKC0Jd8QhacQHUqUQcVbippk6rr2",
+        "SLXe8iMEyPgXfwDF09iRlD5ule82",
+        "8CkzAwikTfQiEx8MQMu9MyiquXp2",
+        "TFGpn1KKbebWbnAyXiXVIvtocQm1",
+        "cboFBkPasbUQBtUmL7dz7Lxvspt1",
+        "mikrMUJPVyNgBr5k4kDqn1IvQYU2",
+        "eBmi15ivKlhc48DJgRkXRBm8Hb72",
+        "54tpXtO4gaZdZQrg2JUaPMNnnPm1",
+        "LHoL6VW8lHaAiJtS4kjlxTWz9em1",
+        "gquHBnjRtoWBKEK5EpQCAuBWWqA3",
+        "xSiENb0g6lP70XL4kMyLhTYN00x1",
+        "GmKYuV3WErRyW1MiDSC18aE0qLw1"
+      ],
+      "email": "saurabh@eventbeep.com",
+      "founder": "Saurabh Mangrulkar",
+      "id": "8512e917-43b0-45c6-9873-f3f9f37ded0a",
+      "coverPhoto": "https://firebasestorage.googleapis.com/v0/b/piit-52003_companycoverphoto/o/CompanyDefaultCoverPhoto.JPG?alt=media&token=e1380da4-8699-4e77-9276-94df2dd5fb14",
+      "interviewRequestedCandidateForInternship": [
+        {
+          "actionDate": "April 23, 2021",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "candidateId": "2iFQlRD0e5VC3cLohfuwy4DKesg2"
+        },
+        {
+          "actionDate": "April 24, 2021",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "candidateId": "TAF7A3yWCTgcPrGN5VpArGjcrh22"
+        },
+        {
+          "actionDate": "April 24, 2021",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "candidateId": "g4Scgc2XEwR32Ksou2Jr9Hk7S3u2"
+        },
+        {
+          "actionDate": "April 24, 2021",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "candidateId": "mmcQOcU6I3QkFugsEIwOyQRfUUw2"
+        },
+        {
+          "candidateId": "G3pGKRSXBaTQwJI18isseqohvJC3",
+          "actionDate": "April 24, 2021",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2"
+        },
+        {
+          "actionDate": "April 24, 2021",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "candidateId": "Z91np41FW4Yndd0MasEliXsmBW22"
+        }
+      ],
+      "description": "Our Team at EventBeep hopes to help, invent and initiate. We are thinkers who believe that big things seed from small ideas. Sometimes, small teams are the ones to revolutionize. We’re a bunch of creative and talented people who are dedicated to making student’s lives easier.",
+      "followingCandidateForInternship": [],
+      "industry": "",
+      "logoObject": null,
+      "shortListedStudents": [],
+      "accountType": "GCA",
+      "nameInEnglish": "EventBeep",
+      "shortlistedCandidateForInternship": [
+        {
+          "candidateId": "mgZksScCKVbx6vMF8XaST8vIwAX2",
+          "actionDate": "April 22, 2021",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2"
+        },
+        {
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "candidateId": "oMqxmgWCARMHn2aBgDo7SWZK8w93",
+          "actionDate": "April 22, 2021"
+        },
+        {
+          "candidateId": "9wGAeqwLbNMC6PzRgzOUESJZp853",
+          "actionDate": "April 22, 2021",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2"
+        },
+        {
+          "actionDate": "April 22, 2021",
+          "candidateId": "SZNpE72MGtSqyy0qyD4xAJDtlMB3",
+          "actionBy": "zoW9mR8cLQf1koF4fFe83QQIwHY2"
+        }
+      ],
+      "shortListedStudentsToInterview": [
+        {
+          "studentEmail": "cbaghla@ee.iitr.ac.in",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "studentName": "CHIRAG BAGHLA",
+          "status": "InterviewRequested",
+          "date": "April 22, 2021",
+          "companyUserName": "Saurabh Mangrulkar",
+          "studentId": "mgZksScCKVbx6vMF8XaST8vIwAX2",
+          "companyUserEmail": "saurabh@eventbeep.com"
+        },
+        {
+          "companyUserName": "Saurabh Mangrulkar",
+          "studentName": "Abhishek Upadhyay",
+          "status": "InterviewRequested",
+          "date": "April 22, 2021",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "studentEmail": "akrupadhyay.met18@itbhu.ac.in",
+          "companyUserEmail": "saurabh@eventbeep.com",
+          "studentId": "oMqxmgWCARMHn2aBgDo7SWZK8w93"
+        },
+        {
+          "studentName": "Shubhamkumar Pandey",
+          "studentId": "9wGAeqwLbNMC6PzRgzOUESJZp853",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "companyUserName": "Saurabh Mangrulkar",
+          "companyUserEmail": "saurabh@eventbeep.com",
+          "status": "InterviewRequested",
+          "studentEmail": "b18194@students.iitmandi.ac.in",
+          "date": "April 22, 2021"
+        },
+        {
+          "studentName": "Tanmay Jain",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "status": "InterviewRequested",
+          "companyUserName": "Saurabh Mangrulkar",
+          "date": "April 22, 2021",
+          "studentEmail": "tanmay18a@iitg.ac.in",
+          "studentId": "SZNpE72MGtSqyy0qyD4xAJDtlMB3",
+          "companyUserEmail": "saurabh@eventbeep.com"
+        },
+        {
+          "studentId": "2iFQlRD0e5VC3cLohfuwy4DKesg2",
+          "companyUserName": "Saurabh Mangrulkar",
+          "companyUserEmail": "saurabh@eventbeep.com",
+          "studentName": "ADITYA KUMAR",
+          "status": "InterviewRequested",
+          "date": "April 23, 2021",
+          "studentEmail": "kumar.92@iitj.ac.in",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2"
+        },
+        {
+          "companyUserName": "Saurabh Mangrulkar",
+          "date": "April 24, 2021",
+          "companyUserEmail": "saurabh@eventbeep.com",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "studentId": "TAF7A3yWCTgcPrGN5VpArGjcrh22",
+          "studentName": "Pratik Kumar",
+          "status": "InterviewRequested",
+          "studentEmail": "b18187@students.iitmandi.ac.in"
+        },
+        {
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "studentEmail": "chhajer.2@iitj.ac.in",
+          "studentName": "Manan Chhajer",
+          "companyUserEmail": "saurabh@eventbeep.com",
+          "date": "April 24, 2021",
+          "status": "InterviewRequested",
+          "companyUserName": "Saurabh Mangrulkar",
+          "studentId": "g4Scgc2XEwR32Ksou2Jr9Hk7S3u2"
+        },
+        {
+          "studentId": "mmcQOcU6I3QkFugsEIwOyQRfUUw2",
+          "status": "InterviewRequested",
+          "studentEmail": "ranjan.1@iitj.ac.in",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "companyUserEmail": "saurabh@eventbeep.com",
+          "companyUserName": "Saurabh Mangrulkar",
+          "studentName": "Raghav Ranjan",
+          "date": "April 24, 2021"
+        },
+        {
+          "studentEmail": "rbansal1@ce.iitr.ac.in",
+          "status": "InterviewRequested",
+          "date": "April 24, 2021",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "studentName": "Rizul Bansal",
+          "companyUserName": "Saurabh Mangrulkar",
+          "studentId": "G3pGKRSXBaTQwJI18isseqohvJC3",
+          "companyUserEmail": "saurabh@eventbeep.com"
+        },
+        {
+          "studentEmail": "jalajmadaan@gmail.com",
+          "companyUserName": "Saurabh Mangrulkar",
+          "status": "InterviewRequested",
+          "companyUserEmail": "saurabh@eventbeep.com",
+          "studentName": "Jalaj Kumar Madaan",
+          "date": "April 24, 2021",
+          "studentId": "Z91np41FW4Yndd0MasEliXsmBW22",
+          "companyUserId": "zoW9mR8cLQf1koF4fFe83QQIwHY2"
+        }
+      ],
+      "rank": "0",
+      "notifications": [],
+      "interviewRequestedCandidateForFreelance": [],
+      "address": "India",
+      "paidAccount": false,
+      "coverPhotoObject": null,
+      "website": "https://eventbeep.com/",
+      "name": "EventBeep",
+      "jobPostings": [
+        {
+          "likedBy": [],
+          "updatedDate": "April 22, 2021",
+          "skills": [
+            "JavaScript",
+            "SQL",
+            "Backend",
+            "Node.js"
+          ],
+          "createdDate": "April 22, 2021",
+          "createdById": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "title": "[Internship] Backend Engineer",
+          "createdByName": "Saurabh Mangrulkar",
+          "approvedByAdmin": true,
+          "place": "Maharashtra, India",
+          "description": "Responsible for building the structure of a software application. Involved in writing business logic, server scripts and APIs that will eventually be utilized by front-end developers and UX designers"
+        },
+        {
+          "place": "Maharashtra, India",
+          "updatedDate": "April 22, 2021",
+          "likedBy": [],
+          "createdByName": "Saurabh Mangrulkar",
+          "approvedByAdmin": true,
+          "createdById": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "description": "Skilled Developers with Strong Knowledge in Flutter Widgets & Android Material Component.",
+          "skills": [
+            "JavaScript",
+            "Mobile app developer",
+            "Flutter",
+            "Android",
+            "ios"
+          ],
+          "title": "[Internship] Flutter Developer",
+          "createdDate": "April 22, 2021"
+        },
+        {
+          "createdByName": "Saurabh Mangrulkar",
+          "skills": [
+            "Soft Skill",
+            "Business Mnaagement Skills",
+            "leadership Skills"
+          ],
+          "approvedByAdmin": true,
+          "likedBy": [],
+          "place": "Maharashtra, India",
+          "updatedDate": "April 22, 2021",
+          "jobId": "JdHg396juKA5XeNQ3EiJ",
+          "createdById": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "createdDate": "April 22, 2021",
+          "description": "Business heads oversee and supervise a company's activities and its employees to ensure that the workers are aligned with the company's goals. ",
+          "title": "[Internship] Head of business"
+        },
+        {
+          "createdDate": "April 22, 2021",
+          "updatedDate": "April 22, 2021",
+          "skills": [
+            "communication skills",
+            "management skill",
+            "leadership Skills"
+          ],
+          "approvedByAdmin": true,
+          "createdById": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "title": "[Full Time] Tech Lead",
+          "likedBy": [],
+          "description": "Take charge of technical teams. While their duties vary depending on the industry, they typically ensure the smooth functioning of technical operations, monitor and evaluate staff progress, assist with training and recruitment, set goals, and ensure overall client satisfaction.",
+          "createdByName": "Saurabh Mangrulkar",
+          "place": "Maharashtra, India",
+          "jobId": "v9jm5UuqKNf1fBI139Qw"
+        },
+        {
+          "place": "Maharashtra, India",
+          "createdByName": "Saurabh Mangrulkar",
+          "approvedByAdmin": true,
+          "createdDate": "April 22, 2021",
+          "updatedDate": "April 22, 2021",
+          "likedBy": [],
+          "skills": [
+            "management skills",
+            "interpersonal skills",
+            "leadership skills"
+          ],
+          "jobId": "00m9qZ6wU3gLtTUknjmE",
+          "title": "[Full Time] Head of Business",
+          "createdById": "zoW9mR8cLQf1koF4fFe83QQIwHY2",
+          "description": "Business heads oversee and supervise a company's activities and its employees to ensure that the workers are aligned with the company's goals. They are also responsible for hiring activities of employees and negotiating contracts."
+        }
+      ],
+      "accountUserList": [
+        {
+          "accountType": "CAU",
+          "name": "Saurabh Mangrulkar",
+          "active": true,
+          "role": "Admin",
+          "email": "saurabh@eventbeep.com",
+          "approvalStatus": "Approved",
+          "id": "zoW9mR8cLQf1koF4fFe83QQIwHY2"
+        }
+      ],
+      "followingCandidateForFreelance": [],
+      "internshipJobsIds": [
+        "2BJOnGV7s5t6EIz1aNwJ",
+        "mJ0MSlVw82ZfTWQbvqLY",
+        "JdHg396juKA5XeNQ3EiJ",
+        "v9jm5UuqKNf1fBI139Qw",
+        "00m9qZ6wU3gLtTUknjmE"
+      ],
+      "logo": "https://firebasestorage.googleapis.com/v0/b/piit-52003.appspot.com/o/CompanyLogo%2F8512e917-43b0-45c6-9873-f3f9f37ded0a?alt=media&token=74a660a0-7f79-44e3-a5e7-47efe9290c77",
+      "selectedCandidateForInternship": [],
+      "internshipLiveProjectIds": []
+    }
+]

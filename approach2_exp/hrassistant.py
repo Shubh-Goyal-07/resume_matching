@@ -23,7 +23,7 @@ import json
 # from googletrans import Translator
 
 
-class JDKResumeAssistant():
+class HRAssistant():
     def __init__(self, jdk_id, candidate_id_list):
         self.jdk_id = jdk_id
         self.candidate_id_list = candidate_id_list
@@ -358,8 +358,7 @@ class JDKResumeAssistant():
         # save_to_excel(self.jdk_id, candidate_scores)
 
 
-
-def get_candidate_score(jdk_id, candidate_id_list):
+def score_candidates(jdk_id, candidate_id_list):
     _ = load_dotenv(find_dotenv())
 
     # print(os.environ.get('PINECONE_API_KEY'))
@@ -368,5 +367,5 @@ def get_candidate_score(jdk_id, candidate_id_list):
         environment='gcp-starter'
     )
 
-    jdk_resume_assistant = JDKResumeAssistant(jdk_id, candidate_id_list)
+    jdk_resume_assistant = HRAssistant(jdk_id, candidate_id_list)
     jdk_resume_assistant.score_candidates()

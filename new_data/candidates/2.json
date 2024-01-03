@@ -1,8 +1,8 @@
 {
     "id": 2,
     "projects": {
-        "SHAMIYANA APP": "\n\nThis project aims to develop a food delivery and ordering app for Shamiyana Cafe, to provide a hassle-free and time-saving ordering process and an easy-to-use web portal for the cafe's management. Skills used includes Flutter, Dart, Firebase.. The project uses Flutter, Dart, Firebase.",
-        "RAPID": "\n\nThis project is a web application that enables users to play chess and other real-time games with friends via video call. It uses WebSockets for real-time communication of gameplay information and WebRTC API for the video call feature. Skills used includes NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker.. The project uses NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker.",
-        "SMART SENSING MIDDLEWARE": "\n\nThis project will develop a web application that will collect data from smart home devices and display it in the form of graphs for better analysis and understanding. Users will be able to access the data and view it in various graphical formats to make it easier to analyze. Skills used includes ReactJS, HTML, CSS.. The project uses ReactJS, HTML, CSS."
+        "SHAMIYANA APP": "\n\nThis project aims to develop an app for Shamiyana Cafe that enables customers to order food online, making the ordering process hassle-free and time-saving. The app will also be accompanied by a web portal to help manage the cafe. Skills used includes Flutter, Dart, Firebase.. The project uses Flutter, Dart, Firebase.",
+        "RAPID": "\n\nRAPID is a web app that allows users to play real-time games like chess with their friends while having a video call with them. It utilizes WebSockets for real-time communication of gameplay information and WebRTC api for video calls. Skills used includes NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker.. The project uses NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker.",
+        "SMART SENSING MIDDLEWARE": "\n\nThis project is aimed at creating a web application to collect and present data from smart home devices in a graphic format for analysis and understanding. It will make use of advanced sensing technologies to gather data from various devices and present it in an easily understandable manner. Skills used includes ReactJS, HTML, CSS.. The project uses ReactJS, HTML, CSS."
     }
 }
