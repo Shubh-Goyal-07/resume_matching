@@ -110,6 +110,15 @@ class Upsert_model():
         return
 
 
+    def __get_cand_combined_desc(self, titles, final_descriptions, skill_info):
+        all_project_desc = ""
+
+        for title, description, skills in zip(titles, final_descriptions, skill_info):
+            all_project_desc += f"The project is titled '{title}'. {description} The project uses {skills}. "
+
+        return all_project_desc
+    
+
     def __get_experience(self, start_date, end_date):
         date_format = "%d/%m/%Y"
 
@@ -142,14 +151,12 @@ class Upsert_model():
         return
 
 
-    def add_candidate(self):
+    def add_candidate(self, save_gen_desc_only = False):
         candidate_id = self.data['id']
         projects = self.data['projects']
 
         self.__create_candidate_prompt()
         
-        # num_projects = len(projects)
-
         titles = []
         actual_titles = []
         final_descriptions = []
@@ -173,25 +180,30 @@ class Upsert_model():
 
             skill_info.append(skills)
 
+        all_projects_desc = self.__get_cand_combined_desc(actual_titles, final_descriptions, skill_info)
+        
 
-        # final_descriptions.extend(skill_descriptions)
-        embeddings = self.__get_embeddings(final_descriptions)
+        if save_gen_desc_only:
+            embeddings = self.__get_embeddings([all_projects_desc])
+        else:
+            final_descriptions.append(all_projects_desc)
+            embeddings = self.__get_embeddings(final_descriptions)
+            namespace = f"candidate_{candidate_id}"
+            description_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(titles)]
+            self.__upsert_to_database(namespace, description_vector)
 
 
-        description_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(titles)]
-        # skill_vector = [{"id": title, "values": embeddings[i]} for i, title in enumerate(skill_titles, start=num_projects)]
-
-        namespace = f"candidate_{candidate_id}"
-        self.__upsert_to_database(namespace, description_vector)
-
+        gen_desc_vec = [{"id": f"{candidate_id}", "values": embeddings[-1]}]
+        namespace_all = "all_candidates"
+        self.__upsert_to_database(namespace_all, gen_desc_vec)
+        
+        
         self.__save_candidate_json_file(candidate_id, actual_titles, final_descriptions, skill_info)
-        # skill_namespace = f"candidate_{candidate_id}_skills"
-        # self.__upsert_to_database(skill_namespace, skill_vector)
 
         return
 
 
-def upsert_to_database(category, data):
+def upsert_to_database(category, data, save_gen_desc_only=False):
     # Load .env file
     _ = load_dotenv(find_dotenv())
     openai.api_key = os.environ.get("OPENAI_API_KEY")
@@ -205,6 +217,6 @@ def upsert_to_database(category, data):
     upsert_model = Upsert_model(data)
     
     if category == "candidate":
-        upsert_model.add_candidate()
+        upsert_model.add_candidate(save_gen_desc_only=save_gen_desc_only)
     else:
         upsert_model.add_jdk()
