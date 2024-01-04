@@ -220,7 +220,7 @@ class HRAssistant():
         self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'] * self.cands_final_score_dataframe['project_count']
         self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'].apply(lambda x: round(x, 2))
         
-        # self.cands_final_score_dataframe.drop('project_count', axis=1, inplace=True)
+        self.cands_final_score_dataframe.drop('project_count', axis=1, inplace=True)
 
 
         return
@@ -340,8 +340,8 @@ class HRAssistant():
         # print(project_experiences)
         self.__add_cand_score_reasons()
         # final_scores = self.__calc_final_scores()
-        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx")
-        pd.DataFrame.to_excel(self.cands_dataframe, f"./results/jdk_{self.jdk_id}_all.xlsx")
+        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
+        pd.DataFrame.to_excel(self.cands_dataframe, f"./results/jdk_{self.jdk_id}_all.xlsx", index=False)
 
         # final_project_exp_scores_dict = self.__combine_project_exp_scores(cand_ids, num_projects, project_names, project_scores_list, project_experiences)
         # final_scores_dict = self.__get_candidates_final_scores_dict(final_project_exp_scores_dict, skill_scores_dict)
