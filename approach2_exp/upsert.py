@@ -72,16 +72,10 @@ class Upsert_model():
         return embeddings
 
 
-    def __save_jdk_json_file(self, jdk_id, title, final_description, skills):
-        data = {}
-        data['title'] = title
-        data['description'] = final_description
-        data['skills'] = skills
+    def __get_jdk_final_description(self, title, description, skills):
+        description = f"The job title is {title}, and the description is as follows: {description}. The skills required for the job are {skills}."
 
-        with open(f'../new_data/jdks/{jdk_id}.json', 'w') as outfile:
-            json.dump(data, outfile, indent=4)
-
-        return
+        return description
 
 
     def add_jdk(self):
@@ -94,20 +88,16 @@ class Upsert_model():
         self.__create_jdk_prompt()
         final_description = self.__get_final_description(title, description, skills)
 
-        # skills_description = f"{title} is a job that uses {skills}."
         embeddings = self.__get_embeddings([final_description])
 
         description_embeddings = embeddings[0]
-        # skill_embeddings = embeddings[1]
 
         vector = [{"id": str(jdk_id), "values": description_embeddings}]
-        # skill_vector = [{"id": str(jdk_id), "values": skill_embeddings}]
 
         self.__upsert_to_database("jdks", vector)
-        # self.__upsert_to_database("jdks_skills", skill_vector)
-        self.__save_jdk_json_file(jdk_id, title, final_description, skills)
+        description = self.__get_jdk_final_description(title, final_description, skills)
 
-        return
+        return description
 
 
     def __get_cand_combined_desc(self, titles, final_descriptions, skill_info):
@@ -133,23 +123,6 @@ class Upsert_model():
 
         return experience
  
-
-    def __save_candidate_json_file(self, candidate_id, titles, final_descriptions, skill_info):
-        data = {}
-        data['id'] = candidate_id
-
-        projects_dict = {}
-        
-        for title, description, skills in zip(titles, final_descriptions, skill_info):
-            projects_dict[title] = f"{description}. The project uses {skills}." 
-
-        data['projects'] = projects_dict
-
-        with open(f'../new_data/candidates/{candidate_id}.json', 'w') as outfile:
-            json.dump(data, outfile, indent=4)
-
-        return
-
 
     def add_candidate(self, save_gen_desc_only = False):
         candidate_id = self.data['id']
@@ -198,9 +171,7 @@ class Upsert_model():
         self.__upsert_to_database(namespace_all, gen_desc_vec)
         
         
-        self.__save_candidate_json_file(candidate_id, actual_titles, final_descriptions, skill_info)
-
-        return
+        return all_projects_desc
 
 
 def upsert_to_database(category, data, save_gen_desc_only=False):
@@ -217,6 +188,8 @@ def upsert_to_database(category, data, save_gen_desc_only=False):
     upsert_model = Upsert_model(data)
     
     if category == "candidate":
-        upsert_model.add_candidate(save_gen_desc_only=save_gen_desc_only)
+        description = upsert_model.add_candidate(save_gen_desc_only=save_gen_desc_only)
     else:
-        upsert_model.add_jdk()
+        description = upsert_model.add_jdk()
+
+    return description

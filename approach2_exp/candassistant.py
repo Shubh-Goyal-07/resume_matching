@@ -14,8 +14,6 @@ import pinecone
 import time
 import math
 
-from save_scores import save_to_excel
-
 import pandas as pd
 
 import json
@@ -76,11 +74,6 @@ class JobSearchAssistant():
         self.jdk_dataframe.sort_values(by=['score'], ascending=False, inplace=True)
 
         return
-
-
-    def __save_jdk_scores(self):
-        self.jdk_dataframe.to_excel(f"./job_suggestions/candidate_{self.candidate_id}.xlsx", index=False)
-        return
     
 
     def suggest_jobs(self):
@@ -88,9 +81,9 @@ class JobSearchAssistant():
         jdk_query_scores = self.__fetch_jdk_scores()
         self.jdk_dataframe = self.__create_jdk_dataframe(jdk_query_scores)
         self.__normalize_jdk_scores()
-        self.__save_jdk_scores()
+        result_data_json = self.jdk_dataframe.to_json(orient='records')
         
-        return
+        return result_data_json
     
 
 def get_job_suggestions(candidate_id):
@@ -103,4 +96,5 @@ def get_job_suggestions(candidate_id):
     )
 
     jdk_resume_assistant = JobSearchAssistant(candidate_id)
-    jdk_resume_assistant.suggest_jobs()
+    results = jdk_resume_assistant.suggest_jobs()
+    return results

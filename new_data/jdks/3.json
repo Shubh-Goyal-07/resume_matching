@@ -1,5 +1,4 @@
 {
-    "title": "NLP engineer Remote",
-    "description": " \n\nThis position is for an experienced NLP Engineer to develop and improve language models by preprocessing large-scale text corpora and performing data analysis to identify patterns and trends. The successful candidate will also prototype and provide proof of concept for language models, deep learning, machine learning, object detection/classification, and tracking. Skills used includes NLP, Pytorch, Computer Vision, Python.",
-    "skills": "NLP, Pytorch, Computer Vision, Python"
+    "id": 3,
+    "description": "The job title is NLP engineer Remote, and the description is as follows: \n\nThis position is an NLP Engineer role, with a focus on data analysis, preprocessing, and developing language models. The engineer must have experience with LLM, NLP, DL, ML, object detection/classification, and tracking. The engineer will be responsible for creating and testing prototypes to identify patterns, trends, and insights to inform model development and improvement. Skills used includes NLP, Pytorch, Computer Vision, Python.. The skills required for the job are NLP, Pytorch, Computer Vision, Python."
 }

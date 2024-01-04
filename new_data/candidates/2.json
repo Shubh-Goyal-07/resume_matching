@@ -1,8 +1,0 @@
-{
-    "id": 2,
-    "projects": {
-        "SHAMIYANA APP": "\n\nThis project aims to develop an app for Shamiyana Cafe that allows customers to order food online and a web portal to manage the cafe. The app and portal will provide a hassle-free and time-saving ordering experience. Skills used includes Flutter, Dart, Firebase.. The project uses Flutter, Dart, Firebase.",
-        "RAPID": "\n\nRAPID is a web app that enables users to play real-time, interactive games such as chess with their friends using WebSockets, while using WebRTC for the video call feature to enhance the experience. Skills used includes NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker.. The project uses NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker.",
-        "SMART SENSING MIDDLEWARE": "\n\nThis project aims to create a web application that collects and visualizes data from connected smart home devices, allowing users to better understand and analyze the data for various purposes. The application will present the data in the form of graphs. Skills used includes ReactJS, HTML, CSS.. The project uses ReactJS, HTML, CSS."
-    }
-}

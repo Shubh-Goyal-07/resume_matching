@@ -28,9 +28,9 @@ class questionnaire_scoring():
         You have to return the output in the following JSON format:
         {
             Score: <GIVE A SCORE OUT OF 5 HERE>,
-            Reasoning: <GIVE A BRIEF REASONING FOR THE SCORE. BE SUCCINT.>
         }
         """
+        # Reasoning: <GIVE A BRIEF REASONING FOR THE SCORE. BE SUCCINT.>
 
     def __init_client(self, OPENAI_API_KEY):
         self.client = OpenAI(

@@ -1,5 +1,4 @@
 {
-    "title": "SDE Intern",
-    "description": " \n\nThis SDE Intern role is a remote position that requires the successful candidate to utilize their MERN Stack development skills to design and develop high-quality web/mobile applications. The intern will be responsible for code maintenance, scalability, feature development and product enhancement. Skills used includes MongoDB, ReactJS, JavaScript, Web Development, NodeJS.",
-    "skills": "MongoDB, ReactJS, JavaScript, Web Development, NodeJS"
+    "id": 1,
+    "description": "The job title is SDE Intern, and the description is as follows: \n\nThis SDE Intern position is a remote role, where the candidate will collaborate with a talented team of developers to design and develop high-quality web/mobile applications using the MERN stack. The intern will be responsible for maintaining the codes, working on scalability, developing new features, and suggesting possible features for product enhancement. Skills used includes MongoDB, ReactJS, JavaScript, Web Development, NodeJS.. The skills required for the job are MongoDB, ReactJS, JavaScript, Web Development, NodeJS."
 }

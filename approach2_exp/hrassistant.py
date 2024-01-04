@@ -11,22 +11,24 @@ import numpy as np
 
 import pinecone
 
-import time
 import math
-
-from save_scores import save_to_excel
 
 import pandas as pd
 
 import json
 
-# from googletrans import Translator
-
 
 class HRAssistant():
-    def __init__(self, jdk_id, candidate_id_list):
-        self.jdk_id = jdk_id
-        self.candidate_id_list = candidate_id_list
+    def __init__(self, jdk_info, candidates_info):
+        self.jdk_id = jdk_info['id']
+        self.jdk_desc = jdk_info['description']
+
+        self.candidate_id_list = []
+        self.candidate_desc_list = []
+
+        for candidate in candidates_info:
+            self.candidate_id_list.append(candidate['id'])
+            self.candidate_desc_list.append(candidate['description'])
         
         self.index = pinecone.Index("willings")
 
@@ -37,15 +39,11 @@ class HRAssistant():
         jdk_embedding = self.index.fetch(ids=[jdk_id_str], namespace="jdks").to_dict()
         jdk_embedding = jdk_embedding['vectors'][jdk_id_str]['values']
 
-        # jdk_skill_embeddings = self.index.fetch(ids=[jdk_id_str], namespace="jdks_skills").to_dict()
-        # jdk_skill_embeddings = jdk_skill_embeddings['vectors'][jdk_id_str]['values']
-
         return jdk_embedding
 
 
     def __fetch_candidate_scores(self, candidate_id):
         candidate_namespace = f"candidate_{candidate_id}"
-        # candidate_skill_namespace = f"candidate_{candidate_id}_skills"
 
         cand_project_query_response = self.index.query(
                                             vector=self.jdk_embedding,
@@ -54,16 +52,8 @@ class HRAssistant():
                                             include_values=False
                                         )['matches']
         
-        # cand_skill_query_response = self.index.query(
-        #                                     vector=self.jdk_skill_embeddings,
-        #                                     namespace=candidate_skill_namespace,
-        #                                     top_k=10,
-        #                                     include_values=False
-        #                                 )['matches']
-        
         
         project_scores = {}
-        # skill_scores = {}
 
         for cand_project in cand_project_query_response:
             cand_project_id = cand_project['id']
@@ -80,13 +70,6 @@ class HRAssistant():
 
             if (cand_project_score):
                 project_scores[cand_project_id] = round(cand_project_score, 2)
-
-
-        # for cand_skill in cand_skill_query_response:
-        #     cand_skill_id = cand_skill['id']
-        #     cand_skill_score = cand_skill['score']
-
-        #     skill_scores[cand_skill_id] = round(cand_skill_score, 2)
 
         return project_scores
 
@@ -226,47 +209,22 @@ class HRAssistant():
         return
 
 
-    def __retrieve_jdk_info(self):
-        with open(f'../new_data/jdks/{self.jdk_id}.json') as json_file:
-            data = json.load(json_file)
-
-        jdk_title = data['title']
-        jdk_description = data['description']
-        jdks_skills = data['skills']
-
-        return jdk_title, jdk_description, jdks_skills
-
-
-    def __retrieve_cand_projects_info(self, candidate_id):
-        with open(f'../new_data/candidates/{int(candidate_id)}.json') as json_file:
-            data = json.load(json_file)
-
-        candidate_projects = data['projects']
-        count = 1
-
-        candidate_projects_info = ""
-
-        for project in self.cands_dataframe[self.cands_dataframe['id']==candidate_id]['name']:
-            candidate_projects_info += f"{count}. {project} : {candidate_projects[project]}"
-        
-        return candidate_projects_info
-
-
     def __create_llm_chain(self):
         # template = """You are a reasoning agent. We have job description for a job position in the field of technology.
         # Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
         
-        # We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score. If you think that the candidate is not suitable for the job, you can say that as well.
+        # We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score.
+
+        # The score is given out of 100. A candidate may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the applicant has a particular score. Say an applicant has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the applicant has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
         
-        # You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
-        
-        
+
         # The job title is {jdk_title}, and the description is as follows: {jdk_description}. The skills required for the job are {jdk_skills}.
 
         # The candidate has worked on the following projects: {candidate_projects_info}.
 
         # The candidate has been given a score of {candidate_score}.
 
+        # You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
         
         # Reasoning: <A VERY SUCCINT REASONING>"""
 
@@ -278,9 +236,9 @@ class HRAssistant():
         The score is given out of 100. A candidate may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the applicant has a particular score. Say an applicant has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the applicant has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
         
 
-        The job title is {jdk_title}, and the description is as follows: {jdk_description}. The skills required for the job are {jdk_skills}.
+        {jdk_description}
 
-        The candidate has worked on the following projects: {candidate_projects_info}.
+        The candidate has worked on the following projects: {candidate_description}.
 
         The candidate has been given a score of {candidate_score}.
 
@@ -288,7 +246,7 @@ class HRAssistant():
         
         Reasoning: <A VERY SUCCINT REASONING>"""
 
-        prompt = PromptTemplate(template=template, input_variables=["jdk_title", "jdk_description", "jdk_skills", "candidate_projects_info", "candidate_score"])
+        prompt = PromptTemplate(template=template, input_variables=["jdk_description", "candidate_description", "candidate_score"])
 
         self.llm_chain = LLMChain(prompt=prompt, llm=OpenAI())
 
@@ -296,17 +254,15 @@ class HRAssistant():
 
 
     def __add_cand_score_reasons(self):
-        jdk_title, jdk_description, jdk_skills = self.__retrieve_jdk_info()
         self.__create_llm_chain()
-
-        # translator = Translator()
 
         for index, row in self.cands_final_score_dataframe.iterrows():
             candidate_id = row['id']
             candidate_score = row['final_score']
-            candidate_projects_info = self.__retrieve_cand_projects_info(candidate_id)
+            candidate_projects_info = self.candidate_desc_list[self.candidate_id_list.index(candidate_id)]
 
-            final_reason = self.llm_chain.run(jdk_title=jdk_title, jdk_description=jdk_description, jdk_skills=jdk_skills, candidate_projects_info=candidate_projects_info, candidate_score=candidate_score)
+            final_reason = self.llm_chain.run(jdk_description=self.jdk_desc, candidate_description=candidate_projects_info, candidate_score=candidate_score)
+            final_reason = final_reason.split("Reasoning: ")[-1]
 
             # final_reason_jap = translator.translate(final_reason, dest='ja')
 
@@ -324,41 +280,28 @@ class HRAssistant():
         for candidate_id in self.candidate_id_list:
             project_scores= self.__fetch_candidate_scores(candidate_id)
             project_scores_all[candidate_id] = project_scores
-            # skill_scores_dict[candidate_id] = skill_scores
 
         self.cands_dataframe = self.__create_dataframe(project_scores_all)
-        # print(self.cands_dataframe)
         self.__normalize_project_scores()
-        # print(self.cands_dataframe)
         self.__drop_irrelevant_projects()
-        # print(self.cands_dataframe)
         self.__normalize_experience_scores()
-        # print(self.cands_dataframe)
         self.__create_final_scores_dataframe()
-        # print(self.cands_dataframe)
         self.__calc_project_count_final_normalized_scores()
-        # print(project_experiences)
         self.__add_cand_score_reasons()
-        # final_scores = self.__calc_final_scores()
-        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
-        pd.DataFrame.to_excel(self.cands_dataframe, f"./results/jdk_{self.jdk_id}_all.xlsx", index=False)
+        # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
+        # pd.DataFrame.to_excel(self.cands_dataframe, f"./results/jdk_{self.jdk_id}_all.xlsx", index=False)
 
-        # final_project_exp_scores_dict = self.__combine_project_exp_scores(cand_ids, num_projects, project_names, project_scores_list, project_experiences)
-        # final_scores_dict = self.__get_candidates_final_scores_dict(final_project_exp_scores_dict, skill_scores_dict)
-        
-        # return final_scores_dict
-        return 1
+        result_data_json = self.cands_final_score_dataframe.to_json(orient='records')        
+        return result_data_json
 
 
     def score_candidates(self):
         self.jdk_embedding = self.__fetch_jdk_embeddings()
-        
         candidate_scores = self.__get_all_candidate_scores()
-        
-        # save_to_excel(self.jdk_id, candidate_scores)
+        return candidate_scores
 
 
-def score_candidates(jdk_id, candidate_id_list):
+def score_candidates(jdk_info, candidates_info):
     _ = load_dotenv(find_dotenv())
 
     # print(os.environ.get('PINECONE_API_KEY'))
@@ -367,5 +310,7 @@ def score_candidates(jdk_id, candidate_id_list):
         environment='gcp-starter'
     )
 
-    jdk_resume_assistant = HRAssistant(jdk_id, candidate_id_list)
-    jdk_resume_assistant.score_candidates()
+    jdk_resume_assistant = HRAssistant(jdk_info, candidates_info)
+    result = jdk_resume_assistant.score_candidates()
+
+    return result
