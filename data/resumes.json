@@ -10,6 +10,24 @@
             "ReactJS",
             "Django"
         ],
+        "compRecruitScreeningAnswers": {
+            "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",
+            "The career plan you want": "Currently I am in the 3rd year of my college and will graduate after almost 1.5 years. After that I plan to do a stable job preferably in the field of AI/ML and backend development.",
+            "In which country do you want to work after graduation?": "For me, there is no such boundation. I can work in India, the US and even Japan.",
+            "Are you likely to be adaptable to other cultures?": "Although I am quite attached to my Indian roots, I am confident enough that given a sufficient amount of time in a new place, I will be able to adapt to the culture well.",
+            "Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?": "Apart from the amazing work culture and the hard-working people in Japan with whom I want to work, I will get to learn a new language while I work in Japan.",
+            "What are your expectations from the company?": "I want to get a decent package enough to stay comfortably in a foreign country like Japan. Furthermore, I want to work on projects related to my chosen field of interest.",
+            "What would you like to accomplish during the internship with the company?": "I want to contribute to cutting-edge AI/ML technologies by applying by technical skills whilst also getting to learn new skills."
+        },
+        "compRecruitQuestionnaireAnswers": {
+            "Your strengths and characteristics": "I am a hard-worker. I am good at grasping new concepts. I work good with a team.",
+            "Weaknesses or areas where they would like to improve": "It takes time for me to acquire new skills. Also, I prefer not to work alone.",
+            "Steps they are taking or plan to take to address these areas": "I try to work alone to learn to work alone.",
+            "Example of a challenge or setback you have faced and how they overcame it": "During a tight project deadline, our team encountered unexpected technical issues that threatened the completion of the entire project.",
+            "Lessons learned from that experience": "We quickly adopted a collaborative problem-solving approach, fostering open communication. We learned the importance of adaptability and contingency planning, ensuring smoother project execution in the future.",
+            "Do you have any unique background that differentiate you from others?": "My background in both engineering and graphic design sets me apart, allowing me to bridge the gap between technical and creative aspects in projects.",
+            "Do you have any specialty?": "Specializing in data analytics, I excel in deriving meaningful insights from complex datasets, providing valuable information for strategic decision-making."
+        },
         "projects": [
             {
                 "title": "LLMGuard",
@@ -68,6 +86,24 @@
         "id" : 2,
         "name": "Aakash",
         "skills" : ["Python", "C++", "Javascript", "HTML", "CSS", "ReactJS", "Django", "Flutter", "Dart", "Firebase", "Git", "Github", "VS Code", "Figma", "Google Colab", "Android Studio"],
+        "compRecruitScreeningAnswers": {
+            "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",
+            "The career plan you want": "Currently I am in the 3rd year of my college and will graduate after almost 1.5 years. After that I plan to do a stable job preferably in the field of AI/ML and backend development.",
+            "In which country do you want to work after graduation?": "For me, there is no such boundation. I can work in India, the US and even Japan.",
+            "Are you likely to be adaptable to other cultures?": "Although I am quite attached to my Indian roots, I am confident enough that given a sufficient amount of time in a new place, I will be able to adapt to the culture well.",
+            "Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?": "Apart from the amazing work culture and the hard-working people in Japan with whom I want to work, I will get to learn a new language while I work in Japan.",
+            "What are your expectations from the company?": "I want to get a decent package enough to stay comfortably in a foreign country like Japan. Furthermore, I want to work on projects related to my chosen field of interest.",
+            "What would you like to accomplish during the internship with the company?": "I want to contribute to cutting-edge AI/ML technologies by applying by technical skills whilst also getting to learn new skills."
+        },
+        "compRecruitQuestionnaireAnswers": {
+            "Your strengths and characteristics": "I am a hard-worker. I am good at grasping new concepts. I work good with a team.",
+            "Weaknesses or areas where they would like to improve": "It takes time for me to acquire new skills. Also, I prefer not to work alone.",
+            "Steps they are taking or plan to take to address these areas": "I try to work alone to learn to work alone.",
+            "Example of a challenge or setback you have faced and how they overcame it": "During a tight project deadline, our team encountered unexpected technical issues that threatened the completion of the entire project.",
+            "Lessons learned from that experience": "We quickly adopted a collaborative problem-solving approach, fostering open communication. We learned the importance of adaptability and contingency planning, ensuring smoother project execution in the future.",
+            "Do you have any unique background that differentiate you from others?": "My background in both engineering and graphic design sets me apart, allowing me to bridge the gap between technical and creative aspects in projects.",
+            "Do you have any specialty?": "Specializing in data analytics, I excel in deriving meaningful insights from complex datasets, providing valuable information for strategic decision-making."
+        },
         "projects" : [
             {
                 "title" : "SHAMIYANA APP",
@@ -113,6 +149,24 @@
             "Git",
             "Django Rest framework"
         ],
+        "compRecruitScreeningAnswers": {
+            "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",
+            "The career plan you want": "Currently I am in the 3rd year of my college and will graduate after almost 1.5 years. After that I plan to do a stable job preferably in the field of AI/ML and backend development.",
+            "In which country do you want to work after graduation?": "For me, there is no such boundation. I can work in India, the US and even Japan.",
+            "Are you likely to be adaptable to other cultures?": "Although I am quite attached to my Indian roots, I am confident enough that given a sufficient amount of time in a new place, I will be able to adapt to the culture well.",
+            "Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?": "Apart from the amazing work culture and the hard-working people in Japan with whom I want to work, I will get to learn a new language while I work in Japan.",
+            "What are your expectations from the company?": "I want to get a decent package enough to stay comfortably in a foreign country like Japan. Furthermore, I want to work on projects related to my chosen field of interest.",
+            "What would you like to accomplish during the internship with the company?": "I want to contribute to cutting-edge AI/ML technologies by applying by technical skills whilst also getting to learn new skills."
+        },
+        "compRecruitQuestionnaireAnswers": {
+            "Your strengths and characteristics": "I am a hard-worker. I am good at grasping new concepts. I work good with a team.",
+            "Weaknesses or areas where they would like to improve": "It takes time for me to acquire new skills. Also, I prefer not to work alone.",
+            "Steps they are taking or plan to take to address these areas": "I try to work alone to learn to work alone.",
+            "Example of a challenge or setback you have faced and how they overcame it": "During a tight project deadline, our team encountered unexpected technical issues that threatened the completion of the entire project.",
+            "Lessons learned from that experience": "We quickly adopted a collaborative problem-solving approach, fostering open communication. We learned the importance of adaptability and contingency planning, ensuring smoother project execution in the future.",
+            "Do you have any unique background that differentiate you from others?": "My background in both engineering and graphic design sets me apart, allowing me to bridge the gap between technical and creative aspects in projects.",
+            "Do you have any specialty?": "Specializing in data analytics, I excel in deriving meaningful insights from complex datasets, providing valuable information for strategic decision-making."
+        },
         "projects": [
             {
                 "title": "Cloudphysician's Vital Extraction Challenge",

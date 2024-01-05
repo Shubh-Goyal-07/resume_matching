@@ -17,13 +17,13 @@ abs_start_time = time.time()
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("Done")
 
-# print("Upserting cands to database...")
-# start_time = time.time()
-# for resume in resumes:
-#     desc = upsert_to_database("candidate", resume, save_gen_desc_only=False)
-#     json.dump({'id': resume['id'], 'description':desc}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
-# print("--- %s seconds ---" % (time.time() - start_time))
-# print("Done")
+print("Upserting cands to database...")
+start_time = time.time()
+for resume in resumes:
+    desc = upsert_to_database("candidate", resume, save_gen_desc_only=False)
+    json.dump({'id': resume['id'], 'description':desc['final_description'], 'personality_score':desc['score']}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
+print("--- %s seconds ---" % (time.time() - start_time))
+print("Done")
 
 # time.sleep(5)
 

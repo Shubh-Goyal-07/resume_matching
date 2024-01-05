@@ -210,24 +210,6 @@ class HRAssistant():
 
 
     def __create_llm_chain(self):
-        # template = """You are a reasoning agent. We have job description for a job position in the field of technology.
-        # Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
-        
-        # We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score.
-
-        # The score is given out of 100. A candidate may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the applicant has a particular score. Say an applicant has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the applicant has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
-        
-
-        # The job title is {jdk_title}, and the description is as follows: {jdk_description}. The skills required for the job are {jdk_skills}.
-
-        # The candidate has worked on the following projects: {candidate_projects_info}.
-
-        # The candidate has been given a score of {candidate_score}.
-
-        # You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
-        
-        # Reasoning: <A VERY SUCCINT REASONING>"""
-
         template = """You are a reasoning agent. We have job description for a job position in the field of technology.
         Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
         
