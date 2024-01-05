@@ -19,6 +19,9 @@ class Upsert_model():
     def __init__(self, data):
         self.data = data
 
+        config = json.load(open('./config.json'))
+        self.max_experience_days = config['experience_params']['maximum_experience'] * 30
+
 
     def __create_jdk_prompt(self):
         template = """Job Title: {title}
@@ -117,8 +120,7 @@ class Upsert_model():
         
         exp_diff = end_date_obj - start_date_obj
         
-        # Capping experience to be not more than 6 months
-        experience = min(exp_diff.days, 180) / 15 
+        experience = min(exp_diff.days, self.max_experience_days) / 15 
         experience = int(round(experience, 0))
 
         return experience
@@ -166,7 +168,7 @@ class Upsert_model():
             ]
         )
 
-        score = json.loads(response.choices[0].message.content)['score']
+        score = max(min(json.loads(response.choices[0].message.content)['score'], 5), 0)
         return score
 
 

@@ -28,6 +28,10 @@ class JobSearchAssistant():
         self.index = pinecone.Index("willings")
 
 
+        config = json.load(open('./config.json'))
+        self.dev_e_factor = config['job_suggestion_dev_e_factor']
+
+
     def __fetch_candidate_embedding(self):
         cand_id_str = str(self.candidate_id)
 
@@ -67,7 +71,7 @@ class JobSearchAssistant():
     def __normalize_jdk_scores(self):
         jdk_score_mean = self.jdk_dataframe['score'].mean()
         self.jdk_dataframe['score_devs'] = self.jdk_dataframe['score'] - jdk_score_mean
-        self.jdk_dataframe['score_devs'] = self.jdk_dataframe['score_devs'].apply(lambda x: max(round(2-math.exp(-5*x), 2), 0))
+        self.jdk_dataframe['score_devs'] = self.jdk_dataframe['score_devs'].apply(lambda x: min(max(round(2-math.exp(-self.dev_e_factor*x), 2), 0), 100))
         self.jdk_dataframe['score'] = self.jdk_dataframe['score'] * self.jdk_dataframe['score_devs']
         self.jdk_dataframe.drop('score_devs', axis=1, inplace=True)
         self.jdk_dataframe['score'] = self.jdk_dataframe['score'].apply(lambda x: int(x*100))

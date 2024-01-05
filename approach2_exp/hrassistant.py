@@ -33,6 +33,12 @@ class HRAssistant():
         self.index = pinecone.Index("willings")
 
 
+        config = json.load(open('./config.json'))
+        self.sim_score_penalty_params = config['similarity_score_penalty_params']
+        self.experience_penalties = config['experience_params']['experience_percentile_penalties']
+        self.project_count_penalties = config['project_count_penalties']
+
+
     def __fetch_jdk_embeddings(self):
         jdk_id_str = str(self.jdk_id)
 
@@ -102,15 +108,18 @@ class HRAssistant():
 
 
     def __normalize_project_scores(self):
+        minimum_mean = self.sim_score_penalty_params['minimum_mean']
+        dev_e_factor = self.sim_score_penalty_params['dev_e_factor']
+        cutoff = self.sim_score_penalty_params['cutoff_score_after_penalty']
         
         # Step 1: Get the mean of the column
-        project_score_mean = self.cands_dataframe['project_score'].mean()
+        project_score_mean = max(self.cands_dataframe['project_score'].mean(), minimum_mean)
 
         # Step 2: Subtract the mean from the column to create a new column
         self.cands_dataframe['project_devs'] = self.cands_dataframe['project_score'] - project_score_mean
 
         # Step 3: Apply a lambda function on the new column
-        self.cands_dataframe['project_devs'] = self.cands_dataframe['project_devs'].apply(lambda x: max(round(2-math.exp(-3*x), 2), 0))
+        self.cands_dataframe['project_devs'] = self.cands_dataframe['project_devs'].apply(lambda x: max(round(2-math.exp(-dev_e_factor*x), 2), 0))
 
         # Step 4: Multiply the first column and the new column and store the value in the first column
         self.cands_dataframe['project_score'] = self.cands_dataframe['project_score'] * self.cands_dataframe['project_devs']
@@ -119,7 +128,7 @@ class HRAssistant():
         self.cands_dataframe.drop('project_devs', axis=1, inplace=True)
 
         # Step 6: Apply a lambda function to the first column
-        self.cands_dataframe['project_score'] = self.cands_dataframe['project_score'].apply(lambda x: 0 if x<0.6 else round(x*100, 2))
+        self.cands_dataframe['project_score'] = self.cands_dataframe['project_score'].apply(lambda x: 0 if x<cutoff else round(x*100, 2))
 
         return 1
 
@@ -137,7 +146,13 @@ class HRAssistant():
         percentile_50th = column_percentiles[1]
         percentile_25th = column_percentiles[2]
 
-        self.cands_dataframe['experience'] = self.cands_dataframe['experience'].apply(lambda x: 1 if x>=percentile_75th else (0.9 if x>=percentile_50th else (0.85 if x>=percentile_25th else 0.8)))
+        penalty_75_100 = self.experience_penalties['75_100']
+        penalty_50_75 = self.experience_penalties['50_75']
+        penalty_25_50 = self.experience_penalties['25_50']
+        penalty_0_25 = self.experience_penalties['0_25']
+
+
+        self.cands_dataframe['experience'] = self.cands_dataframe['experience'].apply(lambda x: penalty_75_100 if x>=percentile_75th else (penalty_50_75 if x>=percentile_50th else (penalty_25_50 if x>=percentile_25th else penalty_0_25)))
 
         return 1
 
@@ -174,29 +189,29 @@ class HRAssistant():
 
         if mode==1:
             if percentage_list[0]>=50:
-                penalties[0] = 0.95
+                penalties = self.project_count_penalties['mode_1']['more_than_50']
             else:
-                penalties[0] = 0.9
+                penalties = self.project_count_penalties['mode_1']['less_than_50']
         
         elif mode==2:
-            penalties[0] = 0.85
             percentage_345 = sum(percentage_list[2:]) 
-            if percentage_345 > 0.75*percentage_list[1]:
-                penalties[1] = 0.95
+            if percentage_345 > self.project_count_penalties['equivalence_factor']*percentage_list[1]:
+                penalties = self.project_count_penalties['mode_2']['3_5_equivalent']
+            else:
+                penalties = self.project_count_penalties['mode_2']['normal']
         
         elif mode==3:
-            penalties[0] = 0.8
             percentage_45 = sum(percentage_list[3:])
-            if percentage_45 > 0.75*percentage_list[2]:
-                penalties[2] = 0.95
-                penalties[1] = 0.9
+            if percentage_45 > self.project_count_penalties['equivalence_factor']*percentage_list[2]:
+                penalties = self.project_count_penalties['mode_3']['4_5_equivalent']
             else:
-                penalties[1] = 0.95
+                penalties = self.project_count_penalties['mode_3']['normal']
 
-        elif mode==4 or mode==5:
-            penalties[2] = 0.95
-            penalties[1] = 0.85
-            penalties[0] = 0.75  
+        elif mode==4:
+            penalties = self.project_count_penalties['mode_4']
+        
+        elif mode==5:
+            penalties = self.project_count_penalties['mode_5']
 
         
         self.cands_final_score_dataframe['project_count'] = self.cands_final_score_dataframe['project_count'].apply(lambda x: penalties[x-1])
