@@ -1,7 +1,9 @@
 from langchain.chains import LLMChain
 from langchain.llms import OpenAI
-from langchain.prompts import PromptTemplate
+from langchain.prompts import PromptTemplate, ChatPromptTemplate
+
 import pinecone
+import openai
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -86,13 +88,21 @@ class HRAssistant():
 
         self.jdk_id = jdk_info['id']
         self.jdk_desc = jdk_info['description']
+        self.jdk_soft_skills = ', '.join(jdk_info['soft_skills'])
 
         self.candidate_id_list = []
         self.candidate_desc_list = []
+        self.candidate_recruit_answers = []
 
         for candidate in candidates_info:
             self.candidate_id_list.append(candidate['id'])
             self.candidate_desc_list.append(candidate['description'])
+            answers = candidate['compRecruitScreeningAnswers']
+            answers.update(candidate['compRecruitQuestionnaireAnswers'])
+            self.candidate_recruit_answers.append(str(answers))
+        
+        # delete the variable answers
+        del answers
 
         self.index = pinecone.Index("willings")
 
@@ -394,7 +404,7 @@ class HRAssistant():
 
         return
 
-    def __create_llm_chain(self):
+    def __create_reasoning_llm_chain(self):
         """
         Creates the LLM chain for generating the reasoning.
         
@@ -428,7 +438,7 @@ class HRAssistant():
         prompt = PromptTemplate(template=template, input_variables=[
                                 "jdk_description", "candidate_description", "candidate_score"])
 
-        self.llm_chain = LLMChain(prompt=prompt, llm=OpenAI())
+        self.reasoning_llm_chain = LLMChain(prompt=prompt, llm=OpenAI(model='gpt-3.5-turbo-instruct'))
 
         return
 
@@ -445,7 +455,7 @@ class HRAssistant():
         None
         """
 
-        self.__create_llm_chain()
+        self.__create_reasoning_llm_chain()
 
         for index, row in self.cands_final_score_dataframe.iterrows():
             candidate_id = row['id']
@@ -453,7 +463,7 @@ class HRAssistant():
             candidate_projects_info = self.candidate_desc_list[self.candidate_id_list.index(
                 candidate_id)]
 
-            final_reason = self.llm_chain.run(
+            final_reason = self.reasoning_llm_chain.run(
                 jdk_description=self.jdk_desc, candidate_description=candidate_projects_info, candidate_score=candidate_score)
             final_reason = final_reason.split("Reasoning: ")[-1]
 
@@ -465,9 +475,83 @@ class HRAssistant():
 
         return
 
+    def __get_personality_score(self, candidate_recruit_answers):
+        client = openai.OpenAI()
+
+        system_prompt = """You are an agent that judges an applicant's personality and his/her willingness to go to Japan to work for the company."""
+
+        user_prompt = """You have to judge the willingness of the applicant to go to Japan based on his/her answers to the following set of questions:
+        1. The reason why you want to come to Japan
+        2. The career plan you want
+        3. In which country do you want to work after graduation?
+        4. Are you likely to be adaptable to other cultures?
+        5. Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?
+        6. What are your expectations from the company?
+        7. What would you like to accomplish during the internship with the company?
+
+        In addition to the willingness, you also have to judge the personality of the applicant based on his/her answers to the following set of questions:
+        1. Your strengths and characteristics
+        2. Weaknesses or areas where they would like to improve
+        3. Steps they are taking or plan to take to address these areas
+        4. Example of a challenge or setback you have faced and how they overcame it
+        5. Lessons learned from that experience
+        6. Do you have any unique background that differentiate you from others?
+        7. Do you have any specialty?
+
+        While judging the personality of the applicant, you also have to consider the soft skills that the company is looking for in a candidate. Be sure to consider those skills as they are very important for the company.
+
+        You will be given the answers to all the questions in a JSON format. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
+
+        You have to return the output in the following JSON format:
+        {
+            score: <GIVE A SCORE OUT OF 5 HERE>,
+            reason: <GIVE A REASON FOR THE SCORE HERE>
+        }""" + f"""
+        The soft skills that the company is looking for are: {self.jdk_soft_skills}.
+
+        The answers given by the applicant are: {candidate_recruit_answers}.
+        """
+
+        response = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ]
+        )
+
+        response = json.loads(response.choices[0].message.content)
+
+        score = max(min(response['score'], 5), 0)
+        reason = response['reason']
+
+        return score, reason
+
+    def __add_cand_personality_scores(self):
+        """
+        Returns the personality score of the candidate.
+
+        Returns
+        -------
+        int
+            The personality score of the candidate.
+        """
+
+        for index, row in self.cands_final_score_dataframe.iterrows():
+            candidate_id = row['id']
+            candidate_recruit_answers = self.candidate_recruit_answers[self.candidate_id_list.index(
+                candidate_id)]
+
+            score, reason = self.__get_personality_score(candidate_recruit_answers)
+
+            self.cands_final_score_dataframe.loc[index, 'personality_score'] = score
+            self.cands_final_score_dataframe.loc[index, 'personality_reason'] = reason
+
+        return
+
     def __get_all_candidate_scores(self):
         """
-        
+
         """
         project_scores_all = {}
 
@@ -482,8 +566,8 @@ class HRAssistant():
         self.__create_final_scores_dataframe()
         self.__calc_project_count_final_normalized_scores()
         self.__add_cand_score_reasons()
-        # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
-        # pd.DataFrame.to_excel(self.cands_dataframe, f"./results/jdk_{self.jdk_id}_all.xlsx", index=False)
+        self.__add_cand_personality_scores()
+        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')
