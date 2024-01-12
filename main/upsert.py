@@ -66,6 +66,8 @@ class Upsert_model():
         config = json.load(open('./config.json'))
         self.max_experience_days = config['experience_params']['maximum_experience'] * 30
 
+        self.pinecone_config = config['pinecone_config']
+
     def __create_jdk_prompt(self):
         """
         Creates a PromptTemplate object for getting the final description of the job description.
@@ -148,7 +150,7 @@ class Upsert_model():
         None        
         """
 
-        index = pinecone.Index("willings")
+        index = pinecone.Index(self.pinecone_config['index_name'])
 
         index.upsert(
             vectors=embeddings_vector,
@@ -224,9 +226,11 @@ class Upsert_model():
 
         description_embeddings = embeddings[0]
 
+        jdk_namespace = self.pinecone_config['jdk_namespace']
+
         vector = [{"id": str(jdk_id), "values": description_embeddings}]
 
-        self.__upsert_to_database("jdks", vector)
+        self.__upsert_to_database(jdk_namespace, vector)
         description = self.__get_jdk_final_description(
             title, final_description, skills)
 
@@ -322,7 +326,7 @@ class Upsert_model():
             start_date = project['startDate']
             experience = self.__get_experience(start_date, end_date)
 
-            titles.append(f"{title}__{experience}")
+            titles.append(f"{candidate_id}__{title}__{experience}")
             actual_titles.append(f"{title}")
 
             final_description = self.__get_final_description(
@@ -339,14 +343,15 @@ class Upsert_model():
         else:
             final_descriptions.append(all_projects_desc)
             embeddings = self.__get_embeddings(final_descriptions)
-            namespace = f"candidate_{candidate_id}"
+            namespace = self.pinecone_config['projects_namespace']
+            metadata = {"candidate_id": f'{candidate_id}'}
             description_vector = [
-                {"id": title, "values": embeddings[i]} for i, title in enumerate(titles)]
+                {"id": title, "values": embeddings[i], 'metadata': metadata} for i, title in enumerate(titles)]
             self.__upsert_to_database(namespace, description_vector)
 
         gen_desc_vec = [{"id": f"{candidate_id}", "values": embeddings[-1]}]
-        namespace_all = "all_candidates"
-        self.__upsert_to_database(namespace_all, gen_desc_vec)
+        cand_desc_namespace = self.pinecone_config['candidate_description_namespace']
+        self.__upsert_to_database(cand_desc_namespace, gen_desc_vec)
 
         return all_projects_desc
 

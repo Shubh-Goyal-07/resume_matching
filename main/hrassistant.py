@@ -111,6 +111,8 @@ class HRAssistant():
         self.experience_penalties = config['experience_params']['experience_percentile_penalties']
         self.project_count_penalties = config['project_count_penalties']
 
+        self.pinecone_config = config['pinecone_config']
+
     def __fetch_jdk_embeddings(self):
         """
         Fetches the embedding of the job description from the pinecone index.
@@ -141,21 +143,26 @@ class HRAssistant():
         ----------
         candidate_id : int
             The id of the candidate whose projects are to be scored.
-        
+
         Returns:
         -------
         project_scores : dict
             The dictionary containing the scores of the projects of the candidate.
         """
 
-        candidate_namespace = f"candidate_{candidate_id}"
+        projects_namespace = self.pinecone_config['projects_namespace']
 
         cand_project_query_response = self.index.query(
             vector=self.jdk_embedding,
-            namespace=candidate_namespace,
+            namespace=projects_namespace,
+            filter={
+                "candidate_id": {"$eq": f'{candidate_id}'},
+            },
             top_k=10,
             include_values=False
         )['matches']
+        
+        # print(cand_project_query_response)
 
         project_scores = {}
 
@@ -207,7 +214,7 @@ class HRAssistant():
                 cand_ids.append(candidate_id)
                 project_scores_list.append(projects[project])
 
-                name, experience = project.split("__")
+                _, name, experience = project.split("__")
                 project_names.append(name)
                 project_experiences.append(float(experience))
 
@@ -520,6 +527,8 @@ class HRAssistant():
             ]
         )
 
+        # print(response)
+
         response = json.loads(response.choices[0].message.content)
 
         score = max(min(response['score'], 5), 0)
@@ -558,16 +567,18 @@ class HRAssistant():
         for candidate_id in self.candidate_id_list:
             project_scores = self.__fetch_candidate_scores(candidate_id)
             project_scores_all[candidate_id] = project_scores
-
+        # print(project_scores_all)
         self.cands_dataframe = self.__create_dataframe(project_scores_all)
+        # print(self.cands_dataframe)
         self.__normalize_project_scores()
         self.__drop_irrelevant_projects()
         self.__normalize_experience_scores()
         self.__create_final_scores_dataframe()
         self.__calc_project_count_final_normalized_scores()
         self.__add_cand_score_reasons()
+        # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
         self.__add_cand_personality_scores()
-        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
+        # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')

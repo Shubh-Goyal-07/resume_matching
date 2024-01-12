@@ -4,7 +4,6 @@ from candassistant import get_job_suggestions
 import json
 import time
 
-import ast
 
 jdks = json.load(open('../data/jdks.json'))
 resumes = json.load(open('../data/resumes.json'))
@@ -29,16 +28,17 @@ abs_start_time = time.time()
 
 # time.sleep(5)
 
-print("Getting candidate scores...")
-start_time = time.time()
-cands_data = []
-for i in range(1, 4):
-    cands_data.append(json.load(open(f"../new_data/cands/{i}.json")))
-print("Data Loaded")
-jdk1 = json.load(open(f"../new_data/jdks/1.json"))
-results = score_candidates(jdk1, cands_data)
-print("JDK 1 Done")
+# print("Getting candidate scores...")
+# start_time = time.time()
+# cands_data = []
+# for i in range(1, 4):
+#     cands_data.append(json.load(open(f"../new_data/cands/{i}.json")))
+# print("Data Loaded")
+# jdk1 = json.load(open(f"../new_data/jdks/1.json"))
+# results = score_candidates(jdk1, cands_data)
+# print("JDK 1 Done")
 # print(results)
+
 # jdk2 = json.load(open(f"../new_data/jdks/2.json"))
 # results = score_candidates(jdk2, cands_data)
 # print("JDK 2 Done")
@@ -47,7 +47,7 @@ print("JDK 1 Done")
 # results = score_candidates(jdk3, cands_data)
 # print("JDK 3 Done")
 # print(results)
-print("--- %s seconds ---" % (time.time() - start_time))
+# print("--- %s seconds ---" % (time.time() - start_time))
 
 # time.sleep(5)
 
@@ -56,12 +56,12 @@ start_time = time.time()
 result = get_job_suggestions(1)
 print("Candidate 1 Done")
 print(result)
-# result = get_job_suggestions(2)
-# print("Candidate 2 Done")
-# print(result)
-# result = get_job_suggestions(3)
-# print("Candidate 3 Done")
-# print(result)
+result = get_job_suggestions(2)
+print("Candidate 2 Done")
+print(result)
+result = get_job_suggestions(3)
+print("Candidate 3 Done")
+print(result)
 print("--- %s seconds ---" % (time.time() - start_time))
 
 print("Total Time Taken: --- %s seconds ---" % (time.time() - abs_start_time))

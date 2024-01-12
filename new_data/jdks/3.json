@@ -1,4 +1,5 @@
 {
     "id": 3,
-    "description": "The job title is NLP engineer Remote, and the description is as follows: \n\nWe are seeking a skilled NLP engineer to join our team remotely. The ideal candidate will have experience in data analysis and preprocessing, as well as prototyping and proof of concept development in areas such as LLM, NLP, DL, ML, and object detection/classification. Skills used includes NLP, Pytorch, Computer Vision, Python.. The skills required for the job are NLP, Pytorch, Computer Vision, Python."
+    "description": "The job title is NLP engineer Remote, and the description is as follows: \n\nProject Description: We are seeking a highly skilled NLP engineer to join our team remotely. The ideal candidate will be responsible for analyzing and preprocessing large-scale text data, as well as developing prototypes and conducting PoCs in areas such as LLM, NLP, DL, ML, and object detection/classification.  Skills used includes NLP, Pytorch, Computer Vision, Python.. The skills required for the job are NLP, Pytorch, Computer Vision, Python.",
+    "soft_skills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
 }

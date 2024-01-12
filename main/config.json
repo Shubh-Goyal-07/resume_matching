@@ -1,4 +1,11 @@
 {
+    "pinecone_config" : {
+        "index_name" : "willings",
+        "projects_namespace" : "candidate_projects",
+        "candidate_description_namespace" : "candidate_descriptions",
+        "jdk_namespace" : "jdks"
+    },
+
     "similarity_score_penalty_params" : {
         "minimum_mean" : 0.75,
         "dev_e_factor" : 3,

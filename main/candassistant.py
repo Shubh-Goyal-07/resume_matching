@@ -59,6 +59,8 @@ class JobSearchAssistant():
         config = json.load(open('./config.json'))
         self.dev_e_factor = config['job_suggestion_dev_e_factor']
 
+        self.pinecone_config = config['pinecone_config']
+
     def __fetch_candidate_embedding(self):
         """
         Fetches the embedding of the corresponding candidate's resume from the pinecone index.
@@ -76,7 +78,7 @@ class JobSearchAssistant():
         cand_id_str = str(self.candidate_id)
 
         cand_embedding = self.index.fetch(
-            ids=[cand_id_str], namespace="all_candidates").to_dict()
+            ids=[cand_id_str], namespace=self.pinecone_config['candidate_description_namespace']).to_dict()
         cand_embedding = cand_embedding['vectors'][cand_id_str]['values']
 
         return cand_embedding
@@ -150,12 +152,12 @@ class JobSearchAssistant():
         self.jdk_dataframe['score_devs'] = self.jdk_dataframe['score'] - \
             jdk_score_mean
         self.jdk_dataframe['score_devs'] = self.jdk_dataframe['score_devs'].apply(
-            lambda x: min(max(round(2-math.exp(-self.dev_e_factor*x), 2), 0), 100))
+            lambda x: max(round(2-math.exp(-self.dev_e_factor*x), 2), 0))
         self.jdk_dataframe['score'] = self.jdk_dataframe['score'] * \
             self.jdk_dataframe['score_devs']
         self.jdk_dataframe.drop('score_devs', axis=1, inplace=True)
         self.jdk_dataframe['score'] = self.jdk_dataframe['score'].apply(
-            lambda x: int(x*100))
+            lambda x: min(int(x*100), 100))
         self.jdk_dataframe.sort_values(
             by=['score'], ascending=False, inplace=True)
 
