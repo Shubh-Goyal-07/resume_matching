@@ -5,15 +5,15 @@
 ***Parameters:***
 
 1. category : string - "jdk" or "candidate"
-2. 2. data : dictionary
-            if "jdk" - 
+2. data : dictionary
+   - if "jdk" - 
             {
               "id": string/integer
               "title": string
               "description": string
               "skills": array
             }
-            if "candidate" -
+   - if "candidate" -
             {
               "id": string/integer
               "projects": array -
