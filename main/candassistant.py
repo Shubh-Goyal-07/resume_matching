@@ -1,3 +1,7 @@
+from langchain.chains import LLMChain
+from langchain.llms import OpenAI
+from langchain.prompts import PromptTemplate
+
 import pinecone
 
 from dotenv import load_dotenv, find_dotenv
@@ -8,6 +12,7 @@ import math
 
 import json
 
+import openai
 
 class JobSearchAssistant():
     """
@@ -163,6 +168,64 @@ class JobSearchAssistant():
 
         return
 
+    def __create_reasoning_llm_chain(self):
+        """
+        Creates the LLM chain for generating the reasoning.
+        
+        Parameters:
+        ----------
+        None
+        
+        Returns:
+        -------
+        None
+        """
+        
+        template = """You are a reasoning agent. We have candidate who wants to apply for a job position in the field of technology.
+        We have multiple job descriptions and the projects the candidate have worked on. And we have calculated a score for the jobs based on the candidate's projects to give the candidate a score for the job.
+        
+        We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the job has been given that score.
+
+        The score is given out of 100. A job may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the job has a particular score. Say a jod has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the job has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
+
+        The candidate has worked on the following projects: {candidate_description}.
+
+        The job description is as follows: {jdk_description}.
+
+        The job has been given a score of {candidate_score}.
+
+        You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
+        
+        Reasoning: <A VERY SUCCINT REASONING>"""
+
+        prompt = PromptTemplate(template=template, input_variables=[
+                                "jdk_description", "candidate_description", "job_score"])
+
+        self.reasoning_llm_chain = LLMChain(prompt=prompt, llm=OpenAI(model='gpt-3.5-turbo-instruct'))
+
+        return
+
+
+    def __add_job_score_reasons(self):
+        self.__create_reasoning_llm_chain()
+
+        for index, row in self.jdk_dataframe.iterrows():
+            jdk_score = row['score']
+            jdk_description = row['jdk_description']
+
+            candidate_description = row['candidate_description']
+
+            reasoning = self.reasoning_llm_chain.run(
+                jdk_description=jdk_description,
+                candidate_description=candidate_description,
+                job_score=jdk_score
+            )
+            reasoning = reasoning.split("Reasoning: ")[-1]
+
+            self.jdk_dataframe.at[index, 'reasoning'] = reasoning
+
+        return
+    
     def suggest_jobs(self):
         """
         Suggests jobs to the candidate based on their resume.
