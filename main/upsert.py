@@ -61,6 +61,13 @@ class Upsert_model():
             A dictionary containing the raw data of the candidate or the job description.
         """
 
+        _ = load_dotenv(find_dotenv())
+        openai.api_key = os.environ.get("OPENAI_API_KEY")
+        pinecone.init(
+            api_key=os.environ.get('PINECONE_API_KEY'),
+            environment='gcp-starter'
+        )
+
         self.data = data
 
         config = json.load(open('./config.json'))
@@ -299,7 +306,7 @@ class Upsert_model():
         ----------
         save_gen_desc_only : bool, optional
             A boolean value that indicates whether to save only the generated description of the candidate or to save the generated description along with the descriptions of the candidate's projects. The default value is False.
-        
+
         Returns
         -------
         dict
@@ -315,6 +322,7 @@ class Upsert_model():
         actual_titles = []
         final_descriptions = []
         skill_info = []
+        metadatas = []
 
         for project in projects:
             title = project['title']
@@ -326,12 +334,14 @@ class Upsert_model():
             start_date = project['startDate']
             experience = self.__get_experience(start_date, end_date)
 
-            titles.append(f"{candidate_id}__{title}__{experience}")
+            titles.append(f"{candidate_id}__{title}")
             actual_titles.append(f"{title}")
 
             final_description = self.__get_final_description(
                 title, description, skills)
             final_descriptions.append(final_description)
+
+            metadatas.append({"candidate_id": f'{candidate_id}', 'experience': experience})
 
             skill_info.append(skills)
 
@@ -342,9 +352,9 @@ class Upsert_model():
         embeddings = self.__get_embeddings(final_descriptions)
 
         namespace = self.pinecone_config['projects_namespace']
-        metadata = {"candidate_id": f'{candidate_id}'}
+        
         description_vector = [
-            {"id": title, "values": embeddings[i], 'metadata': metadata} for i, title in enumerate(titles)]
+            {"id": title, "values": embeddings[i], 'metadata': metadatas[i]} for i, title in enumerate(titles)]
         self.__upsert_to_database(namespace, description_vector)
 
         gen_desc_vec = [{"id": f"{candidate_id}", "values": embeddings[-1]}]
@@ -353,6 +363,35 @@ class Upsert_model():
 
         return all_projects_desc
 
+    def delete_candidate(self):
+        index = pinecone.Index(self.pinecone_config['index_name'])
+
+        # deleting general description embedding
+        index.delete(
+            ids=[str(self.data['id'])],
+            namespace=self.pinecone_config['candidate_description_namespace']
+        )
+
+        # deleting project embeddings
+        projects = self.data['projects']
+        titles = [f"{self.data['id']}__{project}" for project in projects]
+
+        index.delete(
+            ids=titles,
+            namespace=self.pinecone_config['projects_namespace']
+        )
+
+        return
+
+    def delete_jdk(self):
+        index = pinecone.Index(self.pinecone_config['index_name'])
+
+        index.delete(
+            ids=[str(self.data['id'])],
+            namespace=self.pinecone_config['jdk_namespace']
+        )
+
+        return
 
 def upsert_to_database(category, data):
     """

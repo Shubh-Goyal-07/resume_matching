@@ -88,7 +88,7 @@ class HRAssistant():
 
         self.jdk_id = jdk_info['id']
         self.jdk_desc = jdk_info['description']
-        self.jdk_soft_skills = ', '.join(jdk_info['soft_skills'])
+        self.jdk_soft_skills = ', '.join(jdk_info['softSkills'])
 
         self.candidate_id_list = []
         self.candidate_desc_list = []
@@ -100,7 +100,7 @@ class HRAssistant():
             answers = candidate['compRecruitScreeningAnswers']
             answers.update(candidate['compRecruitQuestionnaireAnswers'])
             self.candidate_recruit_answers.append(str(answers))
-        
+
         # delete the variable answers
         del answers
 
@@ -159,15 +159,17 @@ class HRAssistant():
                 "candidate_id": {"$eq": f'{candidate_id}'},
             },
             top_k=10,
-            include_values=False
+            include_values=False,
+            include_metadata=True
         )['matches']
-        
+
         # print(cand_project_query_response)
 
         project_scores = {}
 
         for cand_project in cand_project_query_response:
-            cand_project_id = cand_project['id']
+            experience = cand_project['metadata']['experience']
+            cand_project_id = f"{cand_project['id']}__{experience}"
             cand_project_score = cand_project['score']
 
             if cand_project_score >= 0.9:
@@ -577,7 +579,7 @@ class HRAssistant():
         self.__calc_project_count_final_normalized_scores()
         self.__add_cand_score_reasons()
         self.__add_cand_personality_scores()
-        # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
+        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')

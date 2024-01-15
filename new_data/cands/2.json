@@ -18,5 +18,31 @@
         "Lessons learned from that experience": "We quickly adopted a collaborative problem-solving approach, fostering open communication. We learned the importance of adaptability and contingency planning, ensuring smoother project execution in the future.",
         "Do you have any unique background that differentiate you from others?": "My background in both engineering and graphic design sets me apart, allowing me to bridge the gap between technical and creative aspects in projects.",
         "Do you have any specialty?": "Specializing in data analytics, I excel in deriving meaningful insights from complex datasets, providing valuable information for strategic decision-making."
-    }
+    },
+    "projects" : [
+        {
+            "title" : "SHAMIYANA APP",
+            "description" : "A Food Delivery cum ordering App for Shamiyana Cafe. \nObjectives \n- To make the ordering process hassle-free and time-saving. \n- To manage the Cafe easily by a web portal. \nDeliverables \n- An App for Shamiyana Cafe where customers can orderfood online.",
+            "skills" : ["Flutter", "Dart", "Firebase"],
+            "experience" : 4,
+            "startDate": "01/01/2021",
+            "endDate": "01/05/2021"
+        },
+        {
+            "title" : "RAPID",
+            "description" : "A web app where users can play games like chess with their friends, while having a one to one video call with them to increase the engagement. Uses WebSockets forrealtime communication of gameplay information. Uses WebRTC api forthe video call feature.",
+            "skills" : ["NodeJS", "ExpressJS", "Socket.IO", "WebRTC", "HTML", "CSS", "JS", "Docker"],
+            "experience" : 6,
+            "startDate": "01/06/2020",
+            "endDate": "01/12/2020"
+        },
+        {
+            "title" : "SMART SENSING MIDDLEWARE",
+            "description" : "A web application to show data collected from smart home devices and display it in the form of graphs for better understanding and use in the analysis.",
+            "skills" : ["ReactJS", "HTML", "CSS"],
+            "experience" : 6,
+            "startDate": "01/06/2020",
+            "endDate": "01/12/2020"
+        }
+    ]
 }
