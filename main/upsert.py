@@ -291,7 +291,7 @@ class Upsert_model():
 
         return experience
 
-    def add_candidate(self, save_gen_desc_only=False):
+    def add_candidate(self):
         """
         Adds the candidate to the database.
 
@@ -338,16 +338,14 @@ class Upsert_model():
         all_projects_desc = self.__get_cand_combined_desc(
             actual_titles, final_descriptions, skill_info)
 
-        if save_gen_desc_only:
-            embeddings = self.__get_embeddings([all_projects_desc])
-        else:
-            final_descriptions.append(all_projects_desc)
-            embeddings = self.__get_embeddings(final_descriptions)
-            namespace = self.pinecone_config['projects_namespace']
-            metadata = {"candidate_id": f'{candidate_id}'}
-            description_vector = [
-                {"id": title, "values": embeddings[i], 'metadata': metadata} for i, title in enumerate(titles)]
-            self.__upsert_to_database(namespace, description_vector)
+        final_descriptions.append(all_projects_desc)
+        embeddings = self.__get_embeddings(final_descriptions)
+
+        namespace = self.pinecone_config['projects_namespace']
+        metadata = {"candidate_id": f'{candidate_id}'}
+        description_vector = [
+            {"id": title, "values": embeddings[i], 'metadata': metadata} for i, title in enumerate(titles)]
+        self.__upsert_to_database(namespace, description_vector)
 
         gen_desc_vec = [{"id": f"{candidate_id}", "values": embeddings[-1]}]
         cand_desc_namespace = self.pinecone_config['candidate_description_namespace']
@@ -356,7 +354,7 @@ class Upsert_model():
         return all_projects_desc
 
 
-def upsert_to_database(category, data, save_gen_desc_only=False):
+def upsert_to_database(category, data):
     """
     Adds the candidate or the job description to the database.
 
@@ -387,8 +385,7 @@ def upsert_to_database(category, data, save_gen_desc_only=False):
     upsert_model = Upsert_model(data)
 
     if category == "candidate":
-        description = upsert_model.add_candidate(
-            save_gen_desc_only=save_gen_desc_only)
+        description = upsert_model.add_candidate()
     else:
         description = upsert_model.add_jdk()
 

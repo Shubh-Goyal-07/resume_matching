@@ -529,7 +529,7 @@ class HRAssistant():
 
         # print(response)
 
-        response = json.loads(response.choices[0].message.content)
+        response = json.loads(response.choices[0].message.content, strict=False)
 
         score = max(min(response['score'], 5), 0)
         reason = response['reason']
@@ -576,7 +576,6 @@ class HRAssistant():
         self.__create_final_scores_dataframe()
         self.__calc_project_count_final_normalized_scores()
         self.__add_cand_score_reasons()
-        # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
         self.__add_cand_personality_scores()
         # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
