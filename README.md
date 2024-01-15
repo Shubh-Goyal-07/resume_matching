@@ -97,3 +97,7 @@ _**Returns:**_ array
              }
 
         \]
+
+  ---
+
+  ### **candassistant.py - get\_job\_suggestions**
