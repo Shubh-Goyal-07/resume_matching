@@ -34,6 +34,9 @@ _**Parameters:**_
             }
 
 _**Returns:**_ string
+  
+---
+  
 
 ### **hrassistant.py - score\_candidates(jdk\_info, candidates\_info)**
 
