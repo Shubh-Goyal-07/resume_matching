@@ -235,7 +235,7 @@ class Upsert_model():
 
         jdk_namespace = self.pinecone_config['jdk_namespace']
 
-        vector = [{"id": str(jdk_id), "values": description_embeddings}]
+        vector = [{"id": str(jdk_id), "values": description_embeddings, "metadata": {"jdk_id": str(jdk_id)}}]
 
         self.__upsert_to_database(jdk_namespace, vector)
         description = self.__get_jdk_final_description(

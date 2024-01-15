@@ -57,35 +57,40 @@ abs_start_time = time.time()
 
 # time.sleep(5)
 
-# print("Getting job suggestions...")
-# start_time = time.time()
-# result = get_job_suggestions(1)
-# print("Candidate 1 Done")
-# print(result)
+print("Getting job suggestions...")
+start_time = time.time()
+cand_data = json.load(open(f"../new_data/cands/1.json"))
+jobs_data = []
+for i in range(1, 4):
+    jobs_data.append(json.load(open(f"../new_data/jdks/{i}.json")))
+# print(jobs_data)
+result = get_job_suggestions(cand_data, jobs_data)
+print("Candidate 1 Done")
+print(result)
 # result = get_job_suggestions(2)
 # print("Candidate 2 Done")
 # print(result)
 # result = get_job_suggestions(3)
 # print("Candidate 3 Done")
 # print(result)
-# print("--- %s seconds ---" % (time.time() - start_time))
+print("--- %s seconds ---" % (time.time() - start_time))
 
 # time.sleep(5)
 
-print("Deleting all data...")
-start_time = time.time()
+# print("Deleting all data...")
+# start_time = time.time()
 
-jdk_id = '2'
-upsert_model = Upsert_model({'id': jdk_id})
-upsert_model.delete_jdk()
+# jdk_id = '3'
+# upsert_model = Upsert_model({'id': jdk_id})
+# upsert_model.delete_jdk()
 
 
-for i in range(1, 4):
-    cand_id = str(i)
-    can_projects = json.load(open(f"../new_data/cands/{cand_id}.json"))['projects']
-    project_titles = [project['title'] for project in can_projects]
+# for i in range(1, 4):
+#     cand_id = str(i)
+#     can_projects = json.load(open(f"../new_data/cands/{cand_id}.json"))['projects']
+#     project_titles = [project['title'] for project in can_projects]
 
-    upsert_model = Upsert_model({'id': cand_id, 'projects': project_titles})
-    upsert_model.delete_candidate()
+#     upsert_model = Upsert_model({'id': cand_id, 'projects': project_titles})
+#     upsert_model.delete_candidate()
 
 print("Total Time Taken: --- %s seconds ---" % (time.time() - abs_start_time))
