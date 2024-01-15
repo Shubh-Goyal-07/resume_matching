@@ -4,9 +4,8 @@
 
 ***Parameters:***
 
-
-> 1. category : string - "jdk" or "candidate"
-> 2. data : dictionary
+1. category : string - "jdk" or "candidate"
+2. 2. data : dictionary
             if "jdk" - 
             {
               "id": string/integer
