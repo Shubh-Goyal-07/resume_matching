@@ -190,12 +190,12 @@ class JobSearchAssistant():
         None
         """
 
-        template = """You are a reasoning agent. We have candidate who wants to apply for a job position in the field of technology.
-        We have multiple job descriptions and the projects the candidate have worked on. And we have calculated a score for the jobs based on the candidate's projects to give the candidate a score for the job.
+        template = """You are a reasoning agent. There is a candidate who wants a job in the field of technology.
+        We have the resume of the candidate. We had a list of job descriptions that might or might not be suitable for thr candidate. So we have calculated a score for each job descriptionwith respect to the candidate's resume. The score is out of 100. The higher the score the more suitable the job is for the candidate.
 
-        We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the job has been given that score.
+        We will give you a job description and the set of projects of the candidate alongwith the score that was obtained for that particular job description. You have to analyse the job description, the projects, and provide a reasoning for why the job is suitable or not suitable for the candidate.
 
-        The score is given out of 100. A job may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the job has a particular score. Say a jod has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the job has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
+        A job may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the job has a particular relevance score with respect to the candidate's resume. Say a job description is given a low score then you need to provide a reasoning as to why that job description is not suitable for the candidate. Similarly, if a job description is given a high score then you need to provide a reasoning as to why that job description is suitable for the candidate. If a job description is given a moderate score then you need to provide a reasoning as to why that job description is neither suitable nor unsuitable for the candidate. Give the reasoning without mentioning about the candidate's skills and experience in detail. Focus more on how the job is suitable or unsuitable for the candidate and less on how the candidate is suitable or unsuitable for the job. And make sure to give the reasoning in second person pronouns, that is, as if you are telling the candidate why the job is suitable or unsuitable for them.
 
         The candidate has worked on the following projects: {candidate_description}.
 
@@ -252,6 +252,7 @@ class JobSearchAssistant():
         self.jdk_dataframe = self.__create_jdk_dataframe(jdk_query_scores)
         self.__normalize_jdk_scores()
         self.__add_job_score_reasons()
+        # pd.DataFrame.to_excel(self.jdk_dataframe, f"./job_suggestions/candidate_{self.candidate_id}.xlsx", index=False)
         result_data_json = self.jdk_dataframe.to_json(orient='records')
 
         return result_data_json
