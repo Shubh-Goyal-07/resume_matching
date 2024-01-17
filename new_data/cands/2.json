@@ -1,5 +1,48 @@
 {
     "id": 2,
-    "description": "The project is titled 'SHAMIYANA APP'. \n\nThis project aims to create an app for Shamiyana Cafe that would help customers to order food online and reduce the time and hassle of ordering food. Additionally, the web portal would enable the cafe to manage the orders easily. Skills used includes Flutter, Dart, Firebase. The project uses Flutter, Dart, Firebase. The project is titled 'RAPID'. \n\nRAPID is a web app that enables users to play games like chess with their friends over a one to one video call using WebSockets and WebRTC APIs for realtime communication and video call features respectively. Skills used includes NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker. The project uses NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker. The project is titled 'SMART SENSING MIDDLEWARE'. \n\nThis project aims to develop a web application that collects data from smart home devices and visualizes it in the form of graphs for analysis and understanding. The application will enable users to monitor and analyze data from their smart home devices in an intuitive and easy to use manner. Skills used includes ReactJS, HTML, CSS. The project uses ReactJS, HTML, CSS. ",
-    "personality_score": 4.5
+    "description": "The project is titled 'SHAMIYANA APP'. \n\n\"SHAMIYANA APP is a food delivery and ordering platform for Shamiyana Cafe. Its objective is to streamline the ordering process and provide a web portal for easy management of the Cafe.\" Skills used includes Flutter, Dart, Firebase. The project uses Flutter, Dart, Firebase. The project is titled 'RAPID'. \n\nRAPID is a web app that allows users to play games like chess with friends while video chatting in real time. It utilizes WebSockets for gameplay communication and the WebRTC API for video call feature. Skills used includes NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker. The project uses NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker. The project is titled 'SMART SENSING MIDDLEWARE'. \n\nThe SMART SENSING MIDDLEWARE is a web application that displays data from smart home devices in the form of easy-to-understand graphs for analysis and monitoring purposes. Skills used includes ReactJS, HTML, CSS. The project uses ReactJS, HTML, CSS. ",
+    "compRecruitScreeningAnswers": {
+        "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",
+        "The career plan you want": "Currently I am in the 3rd year of my college and will graduate after almost 1.5 years. After that I plan to do a stable job preferably in the field of AI/ML and backend development.",
+        "In which country do you want to work after graduation?": "For me, there is no such boundation. I can work in India, the US and even Japan.",
+        "Are you likely to be adaptable to other cultures?": "Although I am quite attached to my Indian roots, I am confident enough that given a sufficient amount of time in a new place, I will be able to adapt to the culture well.",
+        "Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?": "Apart from the amazing work culture and the hard-working people in Japan with whom I want to work, I will get to learn a new language while I work in Japan.",
+        "What are your expectations from the company?": "I want to get a decent package enough to stay comfortably in a foreign country like Japan. Furthermore, I want to work on projects related to my chosen field of interest.",
+        "What would you like to accomplish during the internship with the company?": "I want to contribute to cutting-edge AI/ML technologies by applying by technical skills whilst also getting to learn new skills."
+    },
+    "compRecruitQuestionnaireAnswers": {
+        "Your strengths and characteristics": "I am a hard-worker. I am good at grasping new concepts. I work good with a team.",
+        "Weaknesses or areas where they would like to improve": "It takes time for me to acquire new skills. Also, I prefer not to work alone.",
+        "Steps they are taking or plan to take to address these areas": "I try to work alone to learn to work alone.",
+        "Example of a challenge or setback you have faced and how they overcame it": "During a tight project deadline, our team encountered unexpected technical issues that threatened the completion of the entire project.",
+        "Lessons learned from that experience": "We quickly adopted a collaborative problem-solving approach, fostering open communication. We learned the importance of adaptability and contingency planning, ensuring smoother project execution in the future.",
+        "Do you have any unique background that differentiate you from others?": "My background in both engineering and graphic design sets me apart, allowing me to bridge the gap between technical and creative aspects in projects.",
+        "Do you have any specialty?": "Specializing in data analytics, I excel in deriving meaningful insights from complex datasets, providing valuable information for strategic decision-making."
+    },
+    "projects" : [
+        {
+            "title" : "SHAMIYANA APP",
+            "description" : "A Food Delivery cum ordering App for Shamiyana Cafe. \nObjectives \n- To make the ordering process hassle-free and time-saving. \n- To manage the Cafe easily by a web portal. \nDeliverables \n- An App for Shamiyana Cafe where customers can orderfood online.",
+            "skills" : ["Flutter", "Dart", "Firebase"],
+            "experience" : 4,
+            "startDate": "01/01/2021",
+            "endDate": "01/05/2021"
+        },
+        {
+            "title" : "RAPID",
+            "description" : "A web app where users can play games like chess with their friends, while having a one to one video call with them to increase the engagement. Uses WebSockets forrealtime communication of gameplay information. Uses WebRTC api forthe video call feature.",
+            "skills" : ["NodeJS", "ExpressJS", "Socket.IO", "WebRTC", "HTML", "CSS", "JS", "Docker"],
+            "experience" : 6,
+            "startDate": "01/06/2020",
+            "endDate": "01/12/2020"
+        },
+        {
+            "title" : "SMART SENSING MIDDLEWARE",
+            "description" : "A web application to show data collected from smart home devices and display it in the form of graphs for better understanding and use in the analysis.",
+            "skills" : ["ReactJS", "HTML", "CSS"],
+            "experience" : 6,
+            "startDate": "01/06/2020",
+            "endDate": "01/12/2020"
+        }
+    ]
 }

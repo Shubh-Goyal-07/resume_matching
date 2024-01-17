@@ -61,10 +61,19 @@ class Upsert_model():
             A dictionary containing the raw data of the candidate or the job description.
         """
 
+        _ = load_dotenv(find_dotenv())
+        openai.api_key = os.environ.get("OPENAI_API_KEY")
+        pinecone.init(
+            api_key=os.environ.get('PINECONE_API_KEY'),
+            environment='gcp-starter'
+        )
+
         self.data = data
 
         config = json.load(open('./config.json'))
         self.max_experience_days = config['experience_params']['maximum_experience'] * 30
+
+        self.pinecone_config = config['pinecone_config']
 
     def __create_jdk_prompt(self):
         """
@@ -123,7 +132,7 @@ class Upsert_model():
             The final description of the candidate or the job description.
         """
 
-        llm = OpenAI()
+        llm = OpenAI(model="gpt-3.5-turbo-instruct")
         llm_chain = LLMChain(prompt=self.prompt, llm=llm)
 
         final_description = llm_chain.run(title=title, description=description)
@@ -148,7 +157,7 @@ class Upsert_model():
         None        
         """
 
-        index = pinecone.Index("willings")
+        index = pinecone.Index(self.pinecone_config['index_name'])
 
         index.upsert(
             vectors=embeddings_vector,
@@ -224,9 +233,11 @@ class Upsert_model():
 
         description_embeddings = embeddings[0]
 
-        vector = [{"id": str(jdk_id), "values": description_embeddings}]
+        jdk_namespace = self.pinecone_config['jdk_namespace']
 
-        self.__upsert_to_database("jdks", vector)
+        vector = [{"id": str(jdk_id), "values": description_embeddings, "metadata": {"jdk_id": str(jdk_id)}}]
+
+        self.__upsert_to_database(jdk_namespace, vector)
         description = self.__get_jdk_final_description(
             title, final_description, skills)
 
@@ -287,63 +298,7 @@ class Upsert_model():
 
         return experience
 
-    def __get_personality_score(self):
-        """
-        Returns the personality score of the candidate.
-
-        Returns
-        -------
-        int
-            The personality score of the candidate.
-        """
-
-        client = openai.OpenAI()
-        answers = self.data['compRecruitScreeningAnswers']
-        answers.update(self.data['compRecruitQuestionnaireAnswers'])
-        answers = str(answers)
-
-        personality_prompt = """You are an agent that judges an applicant's personality and his/her willingness to go to Japan to work for the company. 
-        
-        You have to judge the willingness of the applicant to go to Japan based on his/her answers to the following set of questions:
-        1. The reason why you want to come to Japan
-        2. The career plan you want
-        3. In which country do you want to work after graduation?
-        4. Are you likely to be adaptable to other cultures?
-        5. Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?
-        6. What are your expectations from the company?
-        7. What would you like to accomplish during the internship with the company?
-
-        In addition to the willingness, you also have to judge the personality of the applicant based on his/her answers to the following set of questions:
-        1. Your strengths and characteristics
-        2. Weaknesses or areas where they would like to improve
-        3. Steps they are taking or plan to take to address these areas
-        4. Example of a challenge or setback you have faced and how they overcame it
-        5. Lessons learned from that experience
-        6. Do you have any unique background that differentiate you from others?
-        7. Do you have any specialty?
-
-        You will be given the answers to all the questions in a JSON format. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
-
-        You have to return the output in the following JSON format:
-        {
-            score: <GIVE A SCORE OUT OF 5 HERE>,
-        }
-        """
-
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are an agent that judges an applicant's personality and his/her willingness to go to Japan to work for the company."},
-                {"role": "user", "content": personality_prompt +
-                    '\n' + "Here are the answers:\n" + str(answers)},
-            ]
-        )
-
-        score = max(
-            min(json.loads(response.choices[0].message.content)['score'], 5), 0)
-        return score
-
-    def add_candidate(self, save_gen_desc_only=False):
+    def add_candidate(self):
         """
         Adds the candidate to the database.
 
@@ -351,7 +306,7 @@ class Upsert_model():
         ----------
         save_gen_desc_only : bool, optional
             A boolean value that indicates whether to save only the generated description of the candidate or to save the generated description along with the descriptions of the candidate's projects. The default value is False.
-        
+
         Returns
         -------
         dict
@@ -367,6 +322,7 @@ class Upsert_model():
         actual_titles = []
         final_descriptions = []
         skill_info = []
+        metadatas = []
 
         for project in projects:
             title = project['title']
@@ -378,38 +334,66 @@ class Upsert_model():
             start_date = project['startDate']
             experience = self.__get_experience(start_date, end_date)
 
-            titles.append(f"{title}__{experience}")
+            titles.append(f"{candidate_id}__{title}")
             actual_titles.append(f"{title}")
 
             final_description = self.__get_final_description(
                 title, description, skills)
             final_descriptions.append(final_description)
 
+            metadatas.append({"candidate_id": f'{candidate_id}', 'experience': experience})
+
             skill_info.append(skills)
 
         all_projects_desc = self.__get_cand_combined_desc(
             actual_titles, final_descriptions, skill_info)
 
-        if save_gen_desc_only:
-            embeddings = self.__get_embeddings([all_projects_desc])
-        else:
-            final_descriptions.append(all_projects_desc)
-            embeddings = self.__get_embeddings(final_descriptions)
-            namespace = f"candidate_{candidate_id}"
-            description_vector = [
-                {"id": title, "values": embeddings[i]} for i, title in enumerate(titles)]
-            self.__upsert_to_database(namespace, description_vector)
+        final_descriptions.append(all_projects_desc)
+        embeddings = self.__get_embeddings(final_descriptions)
+
+        namespace = self.pinecone_config['projects_namespace']
+        
+        description_vector = [
+            {"id": title, "values": embeddings[i], 'metadata': metadatas[i]} for i, title in enumerate(titles)]
+        self.__upsert_to_database(namespace, description_vector)
 
         gen_desc_vec = [{"id": f"{candidate_id}", "values": embeddings[-1]}]
-        namespace_all = "all_candidates"
-        self.__upsert_to_database(namespace_all, gen_desc_vec)
+        cand_desc_namespace = self.pinecone_config['candidate_description_namespace']
+        self.__upsert_to_database(cand_desc_namespace, gen_desc_vec)
 
-        score = self.__get_personality_score()
+        return all_projects_desc
 
-        return {"final_description": all_projects_desc, "score": score}
+    def delete_candidate(self):
+        index = pinecone.Index(self.pinecone_config['index_name'])
 
+        # deleting general description embedding
+        index.delete(
+            ids=[str(self.data['id'])],
+            namespace=self.pinecone_config['candidate_description_namespace']
+        )
 
-def upsert_to_database(category, data, save_gen_desc_only=False):
+        # deleting project embeddings
+        projects = self.data['projects']
+        titles = [f"{self.data['id']}__{project}" for project in projects]
+
+        index.delete(
+            ids=titles,
+            namespace=self.pinecone_config['projects_namespace']
+        )
+
+        return
+
+    def delete_jdk(self):
+        index = pinecone.Index(self.pinecone_config['index_name'])
+
+        index.delete(
+            ids=[str(self.data['id'])],
+            namespace=self.pinecone_config['jdk_namespace']
+        )
+
+        return
+
+def upsert_to_database(category, data):
     """
     Adds the candidate or the job description to the database.
 
@@ -421,7 +405,7 @@ def upsert_to_database(category, data, save_gen_desc_only=False):
         A dictionary containing the raw data of the candidate or the job description.
     save_gen_desc_only : bool, optional
         A boolean value that indicates whether to save only the generated description of the candidate or to save the generated description along with the descriptions of the candidate's projects. The default value is False.
-    
+
     Returns
     -------
     str
@@ -440,8 +424,7 @@ def upsert_to_database(category, data, save_gen_desc_only=False):
     upsert_model = Upsert_model(data)
 
     if category == "candidate":
-        description = upsert_model.add_candidate(
-            save_gen_desc_only=save_gen_desc_only)
+        description = upsert_model.add_candidate()
     else:
         description = upsert_model.add_jdk()
 

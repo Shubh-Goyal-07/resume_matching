@@ -1,4 +1,5 @@
 {
     "id": 2,
-    "description": "The job title is Frontend Engineer Intern, and the description is as follows: \n\nThis is an unpaid, evaluative 3-month internship at Token Metrics for a Frontend Engineer. The intern will work with a team to ensure web design, user experience, and brand consistency are met. Skills used includes ReactJS, JavaScript, CSS, Frontend Development, NextJS.. The skills required for the job are ReactJS, JavaScript, CSS, Frontend Development, NextJS."
+    "description": "The job title is Frontend Engineer Intern, and the description is as follows: \nSeeking a Frontend Engineer Intern to join our team for a 3-month evaluative unpaid internship. You will work alongside other developers and designers to ensure efficient and visually appealing web design and user experience, with potential for return offers based on company needs. Skills used includes ReactJS, JavaScript, CSS, Frontend Development, NextJS.. The skills required for the job are ReactJS, JavaScript, CSS, Frontend Development, NextJS.",
+    "softSkills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
 }

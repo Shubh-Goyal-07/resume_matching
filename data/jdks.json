@@ -3,18 +3,21 @@
         "id" : 1,
         "title" : "SDE Intern",
         "description" : "This is a MERN Stack Developer Intern role, a remote position where the successful candidate will have the opportunity to work alongside a talented team of developers. The primary responsibility for this role will be to help design and develop high-quality web/mobile applications using the MERN (MongoDB, ExpressJS, ReactJS, NodeJS) stack. Other tasks may include peer code reviews, bug fixes, and documentation updates. \nRoles and Description  \n1. Maintaining the codes \n2. Working on the scalability of the app codes \n3. Further feature development \n4. Suggesting possible features for the product enhancement",
-        "skills" : ["MongoDB", "ReactJS", "JavaScript", "Web Development", "NodeJS"]
+        "skills" : ["MongoDB", "ReactJS", "JavaScript", "Web Development", "NodeJS"],
+        "soft_skills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
     },
     {
         "id" : 2,
         "title" : "Frontend Engineer Intern",
         "description" : "We are looking for programmers with a keen eye for design for the position of front-end developer. Front-end developers are responsible for ensuring the alignment of web design and user experience requirements, optimizing web pages for maximum efficiency, and maintaining brand consistency across all web pages, among other duties. \nFront-end developers are required to work in teams alongside back-end developers, graphic designers, and user experience designers to ensure all elements of web creation are consistent. This requires excellent communication and interpersonal skills. \nThe duration of the Token Metrics internship program is 3 months. It is an evaluative unpaid internship with the possibility of return offers, depending on the company's needs.",
-        "skills" : ["ReactJS", "JavaScript", "CSS", "Frontend Development", "NextJS"]
+        "skills" : ["ReactJS", "JavaScript", "CSS", "Frontend Development", "NextJS"],
+        "soft_skills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
     },
     {
         "id" : 3,
         "title" : "NLP engineer Remote",
         "description" : "Data Analysis and Preprocessing: Collect and preprocess large-scale text corpora to train and fine-tune language models. Conduct data analysis to identify patterns, trends, and insights that can inform model development and improvement. \nPrototypes and do proof of concepts (PoC) in one or all the following areas: LLM, NLP, DL (Deep Learning), ML (Machine Learning), object detection/classification, tracking, etc",
-        "skills" : ["NLP", "Pytorch", "Computer Vision", "Python"]
+        "skills" : ["NLP", "Pytorch", "Computer Vision", "Python"],
+        "soft_skills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
     }
 ]
