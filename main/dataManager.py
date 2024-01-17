@@ -12,7 +12,7 @@ from datetime import datetime
 import json
 
 
-class Upsert_model():
+class Manager_model():
     """
     This class is used to add a new candidate or a new job description to the database.
 
@@ -53,7 +53,7 @@ class Upsert_model():
         Adds the candidate to the database.
     """
 
-    def __init__(self, data):
+    def __init__(self):
         """
         Parameters
         ----------
@@ -67,8 +67,6 @@ class Upsert_model():
             api_key=os.environ.get('PINECONE_API_KEY'),
             environment='gcp-starter'
         )
-
-        self.data = data
 
         config = json.load(open('./config.json'))
         self.max_experience_days = config['experience_params']['maximum_experience'] * 30
@@ -209,7 +207,7 @@ class Upsert_model():
 
         return description
 
-    def add_jdk(self):
+    def add_jdk(self, data):
         """
         Adds the job description to the database.
 
@@ -218,6 +216,7 @@ class Upsert_model():
         str
             The final description of the job description.
         """
+        self.data = data
 
         jdk_id = self.data['id']
         title = self.data['title']
@@ -298,20 +297,22 @@ class Upsert_model():
 
         return experience
 
-    def add_candidate(self):
+    def add_candidate(self, data):
         """
         Adds the candidate to the database.
 
         Parameters
         ----------
-        save_gen_desc_only : bool, optional
-            A boolean value that indicates whether to save only the generated description of the candidate or to save the generated description along with the descriptions of the candidate's projects. The default value is False.
+        data : dict
+            A dictionary containing the raw data of the candidate.
 
         Returns
         -------
-        dict
-            A dictionary containing the final description of the candidate and the personality score of the candidate.
+        string
+            A string containing the final description of the candidate.
         """
+
+        self.data = data
 
         candidate_id = self.data['id']
         projects = self.data['projects']
@@ -352,7 +353,7 @@ class Upsert_model():
         embeddings = self.__get_embeddings(final_descriptions)
 
         namespace = self.pinecone_config['projects_namespace']
-        
+
         description_vector = [
             {"id": title, "values": embeddings[i], 'metadata': metadatas[i]} for i, title in enumerate(titles)]
         self.__upsert_to_database(namespace, description_vector)
@@ -363,7 +364,7 @@ class Upsert_model():
 
         return all_projects_desc
 
-    def delete_candidate(self):
+    def delete_candidate(self, data):
         index = pinecone.Index(self.pinecone_config['index_name'])
 
         # deleting general description embedding
@@ -371,6 +372,8 @@ class Upsert_model():
             ids=[str(self.data['id'])],
             namespace=self.pinecone_config['candidate_description_namespace']
         )
+
+        self.data = data
 
         # deleting project embeddings
         projects = self.data['projects']
@@ -383,8 +386,10 @@ class Upsert_model():
 
         return
 
-    def delete_jdk(self):
+    def delete_jdk(self, data):
         index = pinecone.Index(self.pinecone_config['index_name'])
+
+        self.data = data
 
         index.delete(
             ids=[str(self.data['id'])],
@@ -392,6 +397,7 @@ class Upsert_model():
         )
 
         return
+
 
 def upsert_to_database(category, data):
     """
@@ -421,11 +427,11 @@ def upsert_to_database(category, data):
         environment='gcp-starter'
     )
 
-    upsert_model = Upsert_model(data)
+    upsert_model = Manager_model()
 
     if category == "candidate":
-        description = upsert_model.add_candidate()
+        description = upsert_model.add_candidate(data)
     else:
-        description = upsert_model.add_jdk()
+        description = upsert_model.add_jdk(data)
 
     return description

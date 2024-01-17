@@ -604,7 +604,7 @@ class HRAssistant():
         return candidate_scores
 
 
-def score_candidates(jdk_info, candidates_info):
+def get_candidate_scores(jdk_info, candidates_info):
     """
     Scores the candidates based on their projects and the job description.
 

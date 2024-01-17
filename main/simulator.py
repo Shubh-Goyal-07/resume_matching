@@ -1,7 +1,7 @@
-from upsert import upsert_to_database
-from hrassistant import score_candidates
-from candassistant import get_job_suggestions
-from upsert import Upsert_model
+from dataManager import upsert_to_database
+from hrAssistant import get_candidate_scores
+from candAssistant import get_job_suggestions
+from dataManager import Manager_model
 import json
 import time
 
@@ -36,20 +36,20 @@ abs_start_time = time.time()
 # print("Data Loaded")
 # jdk1 = json.load(open(f"../new_data/jdks/1.json"))
 # start_time = time.time()
-# results = score_candidates(jdk1, cands_data)
+# results = get_candidate_scores(jdk1, cands_data)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("JDK 1 Done")
 # print(results)
 
 # jdk2 = json.load(open(f"../new_data/jdks/2.json"))
 # start_time = time.time()
-# results = score_candidates(jdk2, cands_data)
+# results = get_candidate_scores(jdk2, cands_data)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("JDK 2 Done")
 # # # print(results)
 # jdk3 = json.load(open(f"../new_data/jdks/3.json"))
 # start_time = time.time()
-# results = score_candidates(jdk3, cands_data)
+# results = get_candidate_scores(jdk3, cands_data)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("JDK 3 Done")
 # # print(results)
