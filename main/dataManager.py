@@ -1,8 +1,3 @@
-from langchain.chains import LLMChain
-# from langchain_community.llms import OpenAI
-# from langchain_community.embeddings import OpenAIEmbeddings
-from langchain_openai import OpenAI, OpenAIEmbeddings
-from langchain.prompts import PromptTemplate
 import openai
 from pinecone import Pinecone
 
@@ -63,7 +58,11 @@ class Manager_model():
         """
 
         _ = load_dotenv(find_dotenv())
+
         openai.api_key = os.environ.get("OPENAI_API_KEY")
+
+        self.client = openai.OpenAI()
+
         self.pc = Pinecone(
             api_key=os.environ.get('PINECONE_API_KEY'),
             environment='gcp-starter'
@@ -74,26 +73,26 @@ class Manager_model():
 
         self.pinecone_config = config['pinecone_config']
 
-    def __create_jdk_prompt(self):
+    def __create_jdk_prompt(self, title, description, skills):
         """
         Creates a PromptTemplate object for getting the final description of the job description.
-        
+
         Returns
         -------
         None
         """
-        
-        template = """Job Title: {title}
+
+        system_prompt = """You are an english agent who takes job descriptions and converts them into a more concise and precise two line descriptions."""
+
+        user_prompt = f"""Job Title: {title}
         Job Description: {description}
-        
-        Combine the above information to create a concise and more precise description of the job. Remove irrelevant information from the job description and only include the important information. Convert the job description into a project description. Wrap it in two sentences."""
+        Skills Required: {skills}
 
-        self.prompt = PromptTemplate(template=template, input_variables=[
-                                     "title", "description"])
+        Combine the above information to create a concise and more precise description of the job. Remove irrelevant information from the job description and only include the important information."""
 
-        return
+        return system_prompt, user_prompt
 
-    def __create_candidate_prompt(self):
+    def __create_candidate_prompt(self, title, description, skills):
         """
         Creates a PromptTemplate object for getting the final description of the project description of the candidate.
 
@@ -102,17 +101,17 @@ class Manager_model():
         None
         """
 
-        template = """Project Title: {title}
+        system_prompt = """You are an english agent who takes project descriptions and converts them into a more concise and precise two line descriptions."""
+
+        user_prompt = f"""Project Title: {title}
         Project Description: {description}
-        
-        Combine the above information to create a concise and more precise description of the project. Remove irrelevant information from the project description and only include the important information. Wrap it in two sentences."""
+        Skills Used: {skills}
 
-        self.prompt = PromptTemplate(template=template, input_variables=[
-                                     "title", "description"])
+        Combine the above information to create a concise and more precise description of the project. Remove irrelevant information from the project description and only include the important information."""
 
-        return
+        return system_prompt, user_prompt
 
-    def __get_final_description(self, title, description, skills):
+    def __get_final_description(self, system_prompt, user_prompt):
         """
         Returns the final description of the candidate or the job description using the OpenAI LLM model (GPT-3.5-turbo).
 
@@ -124,19 +123,22 @@ class Manager_model():
             The description of the candidate's project or the job description.
         skills : str
             The skills required for the job or the skills used in the project.
-        
+
         Returns
         -------
         str
             The final description of the candidate or the job description.
         """
 
-        llm = OpenAI(model="gpt-3.5-turbo-instruct")
-        llm_chain = LLMChain(prompt=self.prompt, llm=llm)
+        response = self.client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ]
+        )
 
-        final_description = llm_chain.invoke(input={"title": title, "description": description})
-
-        final_description = f"{final_description} Skills used includes {skills}."
+        final_description = response.choices[0].message.content
 
         return final_description
 
@@ -173,15 +175,16 @@ class Manager_model():
         ----------
         description_list : list
             The list of descriptions whose embeddings have to be calculated.
-        
+
         Returns
         -------
         list
             The list of embeddings of the given descriptions.
         """
 
-        embedding_model = OpenAIEmbeddings()
-        embeddings = embedding_model.embed_documents(description_list)
+        embeddings = self.client.embeddings.create(input=description_list, model="text-embedding-ada-002").data
+        embeddings = [element.embedding for element in embeddings]
+        # print(embeddings)
 
         return embeddings
 
@@ -225,9 +228,8 @@ class Manager_model():
         skills = self.data['skills']
         skills = ", ".join(skills)
 
-        self.__create_jdk_prompt()
-        final_description = self.__get_final_description(
-            title, description, skills)
+        system_prompt, user_prompt = self.__create_jdk_prompt(title, description, skills)
+        final_description = self.__get_final_description(system_prompt, user_prompt)
 
         embeddings = self.__get_embeddings([final_description])
 
@@ -318,7 +320,6 @@ class Manager_model():
         candidate_id = self.data['id']
         projects = self.data['projects']
 
-        self.__create_candidate_prompt()
 
         titles = []
         actual_titles = []
@@ -339,8 +340,8 @@ class Manager_model():
             titles.append(f"{candidate_id}__{title}")
             actual_titles.append(f"{title}")
 
-            final_description = self.__get_final_description(
-                title, description, skills)
+            system_prompt, user_prompt = self.__create_candidate_prompt(title, description, skills)
+            final_description = self.__get_final_description(system_prompt, user_prompt)
             final_descriptions.append(final_description)
 
             metadatas.append({"candidate_id": f'{candidate_id}', 'experience': experience})

@@ -1,9 +1,5 @@
-from langchain.chains import LLMChain
-from langchain_openai import OpenAI
-from langchain.prompts import PromptTemplate
-
-from pinecone import Pinecone
 import openai
+from pinecone import Pinecone
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -103,6 +99,8 @@ class HRAssistant():
 
         # delete the variable answers
         del answers
+
+        self.client = openai.OpenAI()
 
         pc = Pinecone(
             api_key=os.environ.get('PINECONE_API_KEY'),
@@ -418,43 +416,50 @@ class HRAssistant():
 
         return
 
-    def __create_reasoning_llm_chain(self):
+    def __get_technical_reason(self, candidate_description, candidate_score):
         """
         Creates the LLM chain for generating the reasoning.
-        
+
         Parameters:
         ----------
         None
-        
+
         Returns:
         -------
         None
         """
-        
-        template = """You are a reasoning agent. We have job description for a job position in the field of technology.
+
+        system_prompt = """You are a reasoning agent who is trying to help a company find best candidates for recruitment and reasons out why a particular candidate is suitable or unsuitable for a particular job."""
+
+        user_prompt = f"""We have job description for a job position in the field of technology.
         Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
-        
+
         We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score.
 
         The score is given out of 100. A candidate may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the applicant has a particular score. Say an applicant has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the applicant has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
-        
 
-        {jdk_description}
+        {self.jdk_desc}
 
         The candidate has worked on the following projects: {candidate_description}.
 
         The candidate has been given a score of {candidate_score}.
 
         You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
-        
+
         Reasoning: <A VERY SUCCINT REASONING>"""
 
-        prompt = PromptTemplate(template=template, input_variables=[
-                                "jdk_description", "candidate_description", "candidate_score"])
+        technical_reason = self.client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ]
+        )
+        # print(final_reason)
+        technical_reason = technical_reason.choices[0].message.content
+        technical_reason = technical_reason.split("Reasoning: ")[-1]
 
-        self.reasoning_llm_chain = LLMChain(prompt=prompt, llm=OpenAI(model='gpt-3.5-turbo-instruct'))
-
-        return
+        return technical_reason
 
     def __add_cand_score_reasons(self):
         """
@@ -469,32 +474,26 @@ class HRAssistant():
         None
         """
 
-        self.__create_reasoning_llm_chain()
-
         for index, row in self.cands_final_score_dataframe.iterrows():
             candidate_id = row['id']
             candidate_score = row['final_score']
             candidate_projects_info = self.candidate_desc_list[self.candidate_id_list.index(
                 candidate_id)]
 
-            final_reason = self.reasoning_llm_chain.invoke(input={'jdk_description': self.jdk_desc, 'candidate_description': candidate_projects_info, 'candidate_score': candidate_score})['text']
-            # print(final_reason)
-            final_reason = final_reason.split("Reasoning: ")[-1]
+            technical_reason = self.__get_technical_reason(candidate_projects_info, candidate_score)
 
             # final_reason_jap = translator.translate(final_reason, dest='ja')
 
             self.cands_final_score_dataframe.loc[index,
-                                                 'reason'] = final_reason
+                                                 'reason'] = technical_reason
             # self.cands_final_score_dataframe.loc[index, 'jap_reason'] = final_reason_jap
 
         return
 
-    def __get_personality_score(self, candidate_recruit_answers):
-        client = openai.OpenAI()
-
+    def __get_personality_score_reason(self, candidate_recruit_answers):
         system_prompt = """You are an agent that judges an applicant's personality and his/her willingness to go to Japan to work for the company."""
 
-        user_prompt = """You have to judge the willingness of the applicant to go to Japan based on his/her answers to the following set of questions:
+        user_prompt = f"""You have to judge the willingness of the applicant to go to Japan based on his/her answers to the following set of questions:
         1. The reason why you want to come to Japan
         2. The career plan you want
         3. In which country do you want to work after graduation?
@@ -514,20 +513,20 @@ class HRAssistant():
 
         While judging the personality of the applicant, you also have to consider the soft skills that the company is looking for in a candidate. Be sure to consider those skills as they are very important for the company.
 
+        The soft skills that the company is looking for are: {self.jdk_soft_skills}.
+        
+        The answers given by the applicant are: {candidate_recruit_answers}.
+
         You will be given the answers to all the questions in a JSON format. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
 
-        You have to return the output in the following JSON format:
-        {
+        You have to return the output a JSON format having the following two keys:
             score: <GIVE A SCORE OUT OF 5 HERE>,
             reason: <GIVE A REASON FOR THE SCORE HERE>
-        }""" + f"""
-        The soft skills that the company is looking for are: {self.jdk_soft_skills}.
-
-        The answers given by the applicant are: {candidate_recruit_answers}.
         """
 
-        response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
+        response = self.client.chat.completions.create(
+            model="gpt-3.5-turbo-1106",
+            response_format={ "type": "json_object"},
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
@@ -558,7 +557,7 @@ class HRAssistant():
             candidate_recruit_answers = self.candidate_recruit_answers[self.candidate_id_list.index(
                 candidate_id)]
 
-            score, reason = self.__get_personality_score(candidate_recruit_answers)
+            score, reason = self.__get_personality_score_reason(candidate_recruit_answers)
 
             self.cands_final_score_dataframe.loc[index, 'personality_score'] = score
             self.cands_final_score_dataframe.loc[index, 'personality_reason'] = reason
@@ -584,6 +583,7 @@ class HRAssistant():
         self.__calc_project_count_final_normalized_scores()
         self.__add_cand_score_reasons()
         self.__add_cand_personality_scores()
+        # pd.DataFrame.to_excel(self.cands_dataframe, f"./results/{self.jdk_id}.xlsx", index=False)
         # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
         result_data_json = self.cands_final_score_dataframe.to_json(
@@ -629,8 +629,6 @@ def get_candidate_scores(jdk_info, candidates_info):
     _ = load_dotenv(find_dotenv())
 
     # print(os.environ.get('PINECONE_API_KEY'))
-    
-
     jdk_resume_assistant = HRAssistant(jdk_info, candidates_info)
     result = jdk_resume_assistant.score_candidates()
 

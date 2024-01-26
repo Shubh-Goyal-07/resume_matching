@@ -39,7 +39,7 @@ abs_start_time = time.time()
 # results = get_candidate_scores(jdk1, cands_data)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("JDK 1 Done")
-# print(results)
+# # print(results)
 
 # jdk2 = json.load(open(f"../new_data/jdks/2.json"))
 # start_time = time.time()
@@ -57,15 +57,15 @@ abs_start_time = time.time()
 
 # time.sleep(5)
 
-print("Getting job suggestions...")
-start_time = time.time()
-cand_data = json.load(open(f"../new_data/cands/1.json"))
-jobs_data = []
-for i in range(1, 4):
-    jobs_data.append(json.load(open(f"../new_data/jdks/{i}.json")))
-# print(jobs_data)
-result = get_job_suggestions(cand_data, jobs_data)
-print("Candidate 1 Done")
+# print("Getting job suggestions...")
+# start_time = time.time()
+# cand_data = json.load(open(f"../new_data/cands/1.json"))
+# jobs_data = []
+# for i in range(1, 4):
+#     jobs_data.append(json.load(open(f"../new_data/jdks/{i}.json")))
+# # print(jobs_data)
+# result = get_job_suggestions(cand_data, jobs_data)
+# print("Candidate 1 Done")
 # # print(result)
 
 # cand_data = json.load(open(f"../new_data/cands/2.json"))
@@ -73,7 +73,7 @@ print("Candidate 1 Done")
 # print("Candidate 2 Done")
 # # print(result)
 
-# cand_data = json.load(open(f"../new_data/cands/2.json"))
+# cand_data = json.load(open(f"../new_data/cands/3.json"))
 # result = get_job_suggestions(cand_data, jobs_data)
 # print("Candidate 3 Done")
 # # print(result)

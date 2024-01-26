@@ -1,7 +1,4 @@
-from langchain.chains import LLMChain
-from langchain_openai import OpenAI
-from langchain.prompts import PromptTemplate
-
+import openai
 from pinecone import Pinecone
 
 from dotenv import load_dotenv, find_dotenv
@@ -12,7 +9,6 @@ import math
 
 import json
 
-import openai
 
 class JobSearchAssistant():
     """
@@ -66,6 +62,8 @@ class JobSearchAssistant():
         for jdk in jdks_info:
             self.jdk_id_list.append(str(jdk['id']))
             self.jdk_description_list.append(jdk['description'])
+
+        self.client = openai.OpenAI()
 
         pc = Pinecone(
             api_key=os.environ.get('PINECONE_API_KEY'),
@@ -181,7 +179,7 @@ class JobSearchAssistant():
 
         return
 
-    def __create_reasoning_llm_chain(self):
+    def __get_reasoning_prompt(self, jdk_description, jdk_score):
         """
         Creates the LLM chain for generating the reasoning.
 
@@ -194,14 +192,15 @@ class JobSearchAssistant():
         None
         """
 
-        template = """You are a reasoning agent. There is a candidate who wants a job in the field of technology.
-        We have the resume of the candidate. We had a list of job descriptions that might or might not be suitable for thr candidate. So we have calculated a score for each job descriptionwith respect to the candidate's resume. The score is out of 100. The higher the score the more suitable the job is for the candidate.
+        system_prompt = """You are a reasoning agent who is trying to help a candidate get a job and reasons out why a particular job is suitable or unsuitable for the candidate."""
+
+        user_prompt = f"""We have the resume of the candidate. We had a list of job descriptions that might or might not be suitable for the candidate. So we have calculated a score for each job description with respect to the candidate's resume. The score is out of 100. The higher the score the more suitable the job is for the candidate.
 
         We will give you a job description and the set of projects of the candidate alongwith the score that was obtained for that particular job description. You have to analyse the job description, the projects, and provide a reasoning for why the job is suitable or not suitable for the candidate.
 
         A job may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the job has a particular relevance score with respect to the candidate's resume. Say a job description is given a low score then you need to provide a reasoning as to why that job description is not suitable for the candidate. Similarly, if a job description is given a high score then you need to provide a reasoning as to why that job description is suitable for the candidate. If a job description is given a moderate score then you need to provide a reasoning as to why that job description is neither suitable nor unsuitable for the candidate. Give the reasoning without mentioning about the candidate's skills and experience in detail. Focus more on how the job is suitable or unsuitable for the candidate and less on how the candidate is suitable or unsuitable for the job. And make sure to give the reasoning in second person pronouns, that is, as if you are telling the candidate why the job is suitable or unsuitable for them.
 
-        The candidate has worked on the following projects: {candidate_description}.
+        The candidate has worked on the following projects: {self.candidate_description}.
 
         The job description is as follows: {jdk_description}.
 
@@ -211,22 +210,24 @@ class JobSearchAssistant():
         
         Reasoning: <A VERY SUCCINT REASONING>"""
 
-        prompt = PromptTemplate(template=template, input_variables=[
-                                "jdk_description", "candidate_description", "jdk_score"])
-
-        self.reasoning_llm_chain = LLMChain(prompt=prompt, llm=OpenAI(model='gpt-3.5-turbo-instruct'))
-
-        return
+        return system_prompt, user_prompt
 
     def __add_job_score_reasons(self):
-        self.__create_reasoning_llm_chain()
-
         for index, row in self.jdk_dataframe.iterrows():
             jdk_id = row['id']
             jdk_score = row['score']
             jdk_description = self.jdk_description_list[self.jdk_id_list.index(jdk_id)]
 
-            reasoning = self.reasoning_llm_chain.invoke(input={'jdk_description': jdk_description, 'candidate_description': self.candidate_description, 'jdk_score': jdk_score})['text']
+            system_prompt, user_prompt = self.__get_reasoning_prompt(jdk_description, jdk_score)
+
+            reasoning = self.client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                ]
+            )
+            reasoning = reasoning.choices[0].message.content
             reasoning = reasoning.split("Reasoning: ")[-1]
 
             self.jdk_dataframe.at[index, 'reason'] = reasoning
