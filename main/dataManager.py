@@ -1,9 +1,10 @@
 from langchain.chains import LLMChain
-from langchain.llms import OpenAI
-from langchain.embeddings import OpenAIEmbeddings
+# from langchain_community.llms import OpenAI
+# from langchain_community.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAI, OpenAIEmbeddings
 from langchain.prompts import PromptTemplate
 import openai
-import pinecone
+from pinecone import Pinecone
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -63,7 +64,7 @@ class Manager_model():
 
         _ = load_dotenv(find_dotenv())
         openai.api_key = os.environ.get("OPENAI_API_KEY")
-        pinecone.init(
+        self.pc = Pinecone(
             api_key=os.environ.get('PINECONE_API_KEY'),
             environment='gcp-starter'
         )
@@ -133,7 +134,7 @@ class Manager_model():
         llm = OpenAI(model="gpt-3.5-turbo-instruct")
         llm_chain = LLMChain(prompt=self.prompt, llm=llm)
 
-        final_description = llm_chain.run(title=title, description=description)
+        final_description = llm_chain.invoke(input={"title": title, "description": description})
 
         final_description = f"{final_description} Skills used includes {skills}."
 
@@ -152,10 +153,10 @@ class Manager_model():
 
         Returns
         -------
-        None        
+        None     
         """
 
-        index = pinecone.Index(self.pinecone_config['index_name'])
+        index = self.pc.Index(self.pinecone_config['index_name'])
 
         index.upsert(
             vectors=embeddings_vector,
@@ -365,7 +366,7 @@ class Manager_model():
         return all_projects_desc
 
     def delete_candidate(self, data):
-        index = pinecone.Index(self.pinecone_config['index_name'])
+        index = self.pc.Index(self.pinecone_config['index_name'])
 
         # deleting general description embedding
         index.delete(
@@ -387,7 +388,7 @@ class Manager_model():
         return
 
     def delete_jdk(self, data):
-        index = pinecone.Index(self.pinecone_config['index_name'])
+        index = self.pc.Index(self.pinecone_config['index_name'])
 
         self.data = data
 
@@ -422,7 +423,7 @@ def upsert_to_database(category, data):
     _ = load_dotenv(find_dotenv())
     openai.api_key = os.environ.get("OPENAI_API_KEY")
 
-    pinecone.init(
+    pc = Pinecone(
         api_key=os.environ.get('PINECONE_API_KEY'),
         environment='gcp-starter'
     )

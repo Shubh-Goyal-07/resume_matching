@@ -1,8 +1,8 @@
 from langchain.chains import LLMChain
-from langchain.llms import OpenAI
+from langchain_openai import OpenAI
 from langchain.prompts import PromptTemplate
 
-import pinecone
+from pinecone import Pinecone
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -67,7 +67,11 @@ class JobSearchAssistant():
             self.jdk_id_list.append(str(jdk['id']))
             self.jdk_description_list.append(jdk['description'])
 
-        self.index = pinecone.Index("willings")
+        pc = Pinecone(
+            api_key=os.environ.get('PINECONE_API_KEY'),
+            environment='gcp-starter'
+        )
+        self.index = pc.Index("willings")
 
         config = json.load(open('./config.json'))
         self.dev_e_factor = config['job_suggestion_dev_e_factor']
@@ -222,11 +226,7 @@ class JobSearchAssistant():
             jdk_score = row['score']
             jdk_description = self.jdk_description_list[self.jdk_id_list.index(jdk_id)]
 
-            reasoning = self.reasoning_llm_chain.run(
-                jdk_description=jdk_description,
-                candidate_description=self.candidate_description,
-                jdk_score=jdk_score
-            )
+            reasoning = self.reasoning_llm_chain.invoke(input={'jdk_description': jdk_description, 'candidate_description': self.candidate_description, 'jdk_score': jdk_score})['text']
             reasoning = reasoning.split("Reasoning: ")[-1]
 
             self.jdk_dataframe.at[index, 'reason'] = reasoning
@@ -276,10 +276,7 @@ def get_job_suggestions(candidate_info, jdks_info):
     _ = load_dotenv(find_dotenv())
 
     # print(os.environ.get('PINECONE_API_KEY'))
-    pinecone.init(
-        api_key=os.environ.get('PINECONE_API_KEY'),
-        environment='gcp-starter'
-    )
+    
 
     jdk_resume_assistant = JobSearchAssistant(candidate_info, jdks_info)
     results = jdk_resume_assistant.suggest_jobs()

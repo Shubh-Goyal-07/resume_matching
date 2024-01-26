@@ -1,8 +1,8 @@
 from langchain.chains import LLMChain
-from langchain.llms import OpenAI
-from langchain.prompts import PromptTemplate, ChatPromptTemplate
+from langchain_openai import OpenAI
+from langchain.prompts import PromptTemplate
 
-import pinecone
+from pinecone import Pinecone
 import openai
 
 from dotenv import load_dotenv, find_dotenv
@@ -104,7 +104,12 @@ class HRAssistant():
         # delete the variable answers
         del answers
 
-        self.index = pinecone.Index("willings")
+        pc = Pinecone(
+            api_key=os.environ.get('PINECONE_API_KEY'),
+            environment='gcp-starter'
+        )
+
+        self.index = pc.Index("willings")
 
         config = json.load(open('./config.json'))
         self.sim_score_penalty_params = config['similarity_score_penalty_params']
@@ -472,8 +477,8 @@ class HRAssistant():
             candidate_projects_info = self.candidate_desc_list[self.candidate_id_list.index(
                 candidate_id)]
 
-            final_reason = self.reasoning_llm_chain.run(
-                jdk_description=self.jdk_desc, candidate_description=candidate_projects_info, candidate_score=candidate_score)
+            final_reason = self.reasoning_llm_chain.invoke(input={'jdk_description': self.jdk_desc, 'candidate_description': candidate_projects_info, 'candidate_score': candidate_score})['text']
+            # print(final_reason)
             final_reason = final_reason.split("Reasoning: ")[-1]
 
             # final_reason_jap = translator.translate(final_reason, dest='ja')
@@ -579,7 +584,7 @@ class HRAssistant():
         self.__calc_project_count_final_normalized_scores()
         self.__add_cand_score_reasons()
         self.__add_cand_personality_scores()
-        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
+        # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')
@@ -624,10 +629,7 @@ def get_candidate_scores(jdk_info, candidates_info):
     _ = load_dotenv(find_dotenv())
 
     # print(os.environ.get('PINECONE_API_KEY'))
-    pinecone.init(
-        api_key=os.environ.get('PINECONE_API_KEY'),
-        environment='gcp-starter'
-    )
+    
 
     jdk_resume_assistant = HRAssistant(jdk_info, candidates_info)
     result = jdk_resume_assistant.score_candidates()

@@ -57,15 +57,15 @@ abs_start_time = time.time()
 
 # time.sleep(5)
 
-# print("Getting job suggestions...")
-# start_time = time.time()
-# cand_data = json.load(open(f"../new_data/cands/1.json"))
-# jobs_data = []
-# for i in range(1, 4):
-#     jobs_data.append(json.load(open(f"../new_data/jdks/{i}.json")))
-# # print(jobs_data)
-# result = get_job_suggestions(cand_data, jobs_data)
-# print("Candidate 1 Done")
+print("Getting job suggestions...")
+start_time = time.time()
+cand_data = json.load(open(f"../new_data/cands/1.json"))
+jobs_data = []
+for i in range(1, 4):
+    jobs_data.append(json.load(open(f"../new_data/jdks/{i}.json")))
+# print(jobs_data)
+result = get_job_suggestions(cand_data, jobs_data)
+print("Candidate 1 Done")
 # # print(result)
 
 # cand_data = json.load(open(f"../new_data/cands/2.json"))
