@@ -10,6 +10,7 @@ import math
 
 import json
 
+import time
 
 class HRAssistant():
     """
@@ -444,7 +445,7 @@ class HRAssistant():
 
         The candidate has been given a score of {candidate_score}.
 
-        Suppose a candidate have some skills and the job description requires those skills, then strictly mention the common skills in the reason and say that the candidate is suitable for the job because of those skills. Similarly if the candidate does not have some skills and the job description requires those skills, then strictly without fail mention the skills that the candidate does not have and say that the candidate is not suitable for the job because of those skills.
+        There are a few skills mentioned in each candidates description. And a few skills mentioned in the job description. You have to find out the common skills and the skills that are not common and then provide a reasoning based on those skills. Also mention those skills with a tag of common and absent respectively.
 
         You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
 
@@ -495,31 +496,14 @@ class HRAssistant():
     def __get_personality_score_reason(self, candidate_recruit_answers):
         system_prompt = """You are an agent that judges an applicant's personality and his/her willingness to go to Japan to work for the company."""
 
-        user_prompt = f"""You have to judge the willingness of the applicant to go to Japan based on his/her answers to the following set of questions:
-        1. The reason why you want to come to Japan
-        2. The career plan you want
-        3. In which country do you want to work after graduation?
-        4. Are you likely to be adaptable to other cultures?
-        5. Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?
-        6. What are your expectations from the company?
-        7. What would you like to accomplish during the internship with the company?
-
-        In addition to the willingness, you also have to judge the personality of the applicant based on his/her answers to the following set of questions:
-        1. Your strengths and characteristics
-        2. Weaknesses or areas where they would like to improve
-        3. Steps they are taking or plan to take to address these areas
-        4. Example of a challenge or setback you have faced and how they overcame it
-        5. Lessons learned from that experience
-        6. Do you have any unique background that differentiate you from others?
-        7. Do you have any specialty?
+        user_prompt = f"""You will be given a JSON containign all the questions which were asked to the candidate along with the answers candidate gave. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
 
         While judging the personality of the applicant, you also have to consider the soft skills that the company is looking for in a candidate. Be sure to consider those skills as they are very important for the company.
 
         The soft skills that the company is looking for are: {self.jdk_soft_skills}.
         
-        The answers given by the applicant are: {candidate_recruit_answers}.
+        The question answers given by the applicant: {candidate_recruit_answers}.
 
-        You will be given the answers to all the questions in a JSON format. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
 
         You have to return the output a JSON format having the following two keys:
             score: <GIVE A SCORE OUT OF 5 HERE>,
@@ -572,10 +556,13 @@ class HRAssistant():
         """
         project_scores_all = {}
 
+        start_time = time.time()
         for candidate_id in self.candidate_id_list:
             project_scores = self.__fetch_candidate_scores(candidate_id)
             project_scores_all[candidate_id] = project_scores
         # print(project_scores_all)
+        print("Data Fetch Pinecone --- %s seconds ---" % (time.time() - start_time))
+        start_time = time.time()
         self.cands_dataframe = self.__create_dataframe(project_scores_all)
         # print(self.cands_dataframe)
         self.__normalize_project_scores()
@@ -583,13 +570,20 @@ class HRAssistant():
         self.__normalize_experience_scores()
         self.__create_final_scores_dataframe()
         self.__calc_project_count_final_normalized_scores()
+        print("Scoring Done --- %s seconds ---" % (time.time() - start_time))
+        start_time = time.time()
         self.__add_cand_score_reasons()
+        print("Reasoning Done --- %s seconds ---" % (time.time() - start_time))
+        start_time = time.time()
         self.__add_cand_personality_scores()
+        print("Personality Done --- %s seconds ---" % (time.time() - start_time))
         # pd.DataFrame.to_excel(self.cands_dataframe, f"./results/{self.jdk_id}.xlsx", index=False)
         pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')
+        print("JSON Done --- %s seconds ---" % (time.time() - start_time))
+
         return result_data_json
 
     def score_candidates(self):
