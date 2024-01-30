@@ -444,6 +444,8 @@ class HRAssistant():
 
         The candidate has been given a score of {candidate_score}.
 
+        Suppose a candidate have some skills and the job description requires those skills, then strictly mention the common skills in the reason and say that the candidate is suitable for the job because of those skills. Similarly if the candidate does not have some skills and the job description requires those skills, then strictly without fail mention the skills that the candidate does not have and say that the candidate is not suitable for the job because of those skills.
+
         You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
 
         Reasoning: <A VERY SUCCINT REASONING>"""
@@ -526,7 +528,7 @@ class HRAssistant():
 
         response = self.client.chat.completions.create(
             model="gpt-3.5-turbo-1106",
-            response_format={ "type": "json_object"},
+            response_format={"type": "json_object"},
             messages=[
                 {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
@@ -584,7 +586,7 @@ class HRAssistant():
         self.__add_cand_score_reasons()
         self.__add_cand_personality_scores()
         # pd.DataFrame.to_excel(self.cands_dataframe, f"./results/{self.jdk_id}.xlsx", index=False)
-        # pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
+        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')

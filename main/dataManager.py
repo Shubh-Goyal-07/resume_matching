@@ -207,7 +207,8 @@ class Manager_model():
             The final description of the job description.
         """
 
-        description = f"The job title is {title}, and the description is as follows: {description}. The skills required for the job are {skills}."
+        description = f"The job title is {title}, and the description is as follows: {description}"
+                    # + f"The skills required for the job are {skills}."
 
         return description
 
@@ -267,7 +268,8 @@ class Manager_model():
         all_project_desc = ""
 
         for title, description, skills in zip(titles, final_descriptions, skill_info):
-            all_project_desc += f"The project is titled '{title}'. {description} The project uses {skills}. "
+            all_project_desc += f"The project is titled '{title}'. {description}"
+                                #  + f"The project uses {skills}. "
 
         return all_project_desc
 
