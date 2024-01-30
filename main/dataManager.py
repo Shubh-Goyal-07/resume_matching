@@ -82,7 +82,7 @@ class Manager_model():
         None
         """
 
-        system_prompt = """You are an english agent who takes job descriptions and converts them into a more concise and precise two line descriptions."""
+        system_prompt = """You are an english agent who `takes job descriptions and converts them into a more concise and precise two line descriptions."""
 
         user_prompt = f"""Job Title: {title}
         Job Description: {description}
@@ -207,8 +207,7 @@ class Manager_model():
             The final description of the job description.
         """
 
-        description = f"The job title is {title}, and the description is as follows: {description}"
-                    # + f"The skills required for the job are {skills}."
+        description = f"The job title is {title}, and the description is as follows: {description}" + f" SKILLS: {skills}."
 
         return description
 
@@ -241,10 +240,11 @@ class Manager_model():
         vector = [{"id": str(jdk_id), "values": description_embeddings, "metadata": {"jdk_id": str(jdk_id)}}]
 
         self.__upsert_to_database(jdk_namespace, vector)
-        description = self.__get_jdk_final_description(
-            title, final_description, skills)
 
-        return description
+        final_description = self.__get_jdk_final_description(
+            title, final_description, skills)
+        
+        return final_description
 
     def __get_cand_combined_desc(self, titles, final_descriptions, skill_info):
         """
@@ -268,8 +268,7 @@ class Manager_model():
         all_project_desc = ""
 
         for title, description, skills in zip(titles, final_descriptions, skill_info):
-            all_project_desc += f"The project is titled '{title}'. {description}"
-                                #  + f"The project uses {skills}. "
+            all_project_desc += f"The project is titled '{title}'. {description}" + f"The project uses {skills}. "
 
         return all_project_desc
 
@@ -327,12 +326,14 @@ class Manager_model():
         actual_titles = []
         final_descriptions = []
         skill_info = []
+        unique_skills = set()
         metadatas = []
 
         for project in projects:
             title = project['title']
             description = project['description']
             skills = project['skills']
+            unique_skills.update(skills)
             skills = ", ".join(skills)
 
             end_date = project['endDate']
@@ -352,6 +353,7 @@ class Manager_model():
 
         all_projects_desc = self.__get_cand_combined_desc(
             actual_titles, final_descriptions, skill_info)
+        all_projects_desc = f"The candidate has worked on the following projects: {all_projects_desc}" + f"SKILLS:  {', '.join(unique_skills)}."
 
         final_descriptions.append(all_projects_desc)
         embeddings = self.__get_embeddings(final_descriptions)

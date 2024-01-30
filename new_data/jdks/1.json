@@ -1,5 +1,5 @@
 {
     "id": 1,
-    "description": "The job title is SDE Intern, and the description is as follows: \n\nProject Description: Seeking a remote MERN Stack Developer Intern to join our team and assist in designing and developing high-quality web/mobile applications. Responsibilities include maintaining and improving code, ensuring scalability, and suggesting new features for product enhancement.  Skills used includes MongoDB, ReactJS, JavaScript, Web Development, NodeJS.. The skills required for the job are MongoDB, ReactJS, JavaScript, Web Development, NodeJS.",
+    "description": "The job title is SDE Intern, and the description is as follows: SDE Intern: Remote MERN Stack Developer Intern role, responsible for designing and developing high-quality web/mobile applications using MongoDB, ExpressJS, ReactJS, and NodeJS. Tasks include code maintenance, scalability, feature development, and suggesting enhancements. Skills required: MongoDB, ReactJS, JavaScript, Web Development, NodeJS.SKILLS: MongoDB, ReactJS, JavaScript, Web Development, NodeJS.",
     "softSkills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
 }

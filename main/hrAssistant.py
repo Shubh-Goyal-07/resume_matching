@@ -85,6 +85,7 @@ class HRAssistant():
 
         self.jdk_id = jdk_info['id']
         self.jdk_desc = jdk_info['description']
+        self.jdk_desc, self.jdk_tech_skills = self.jdk_desc.split("SKILLS: ") 
         self.jdk_soft_skills = ', '.join(jdk_info['softSkills'])
 
         self.candidate_id_list = []
@@ -430,6 +431,8 @@ class HRAssistant():
         None
         """
 
+        candidate_description, candidate_tech_skills = candidate_description.split("SKILLS: ")
+
         system_prompt = """You are a reasoning agent who is trying to help a company find best candidates for recruitment and reasons out why a particular candidate is suitable or unsuitable for a particular job."""
 
         user_prompt = f"""We have job description for a job position in the field of technology.
@@ -445,8 +448,12 @@ class HRAssistant():
 
         The candidate has been given a score of {candidate_score}.
 
-        There are a few skills mentioned in each candidates description. And a few skills mentioned in the job description. You have to find out the common skills and the skills that are not common and then provide a reasoning based on those skills. Also mention those skills with a tag of common and absent respectively.
 
+        Required skills: {self.jdk_tech_skills}.
+        Candidate skills: {candidate_tech_skills}.
+
+        The above are a few skills mentioned in each candidates description. And a few skills mentioned in the job description that are requires skills. You have to find out the common skills in the required skills and the candidate skills, and the skills that are required but the candidate lack and finally provide a reasoning based on those skills along with the previously given project andf job descriptions. Also mention those skills with a tag of common and absent respectively. You do not need to justify all the extra skills of the candidate to be relevant to the job description. You only need to justify the skills that are required for the job but the candidate lacks.
+        
         You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
 
         Reasoning: <A VERY SUCCINT REASONING>"""
@@ -501,7 +508,7 @@ class HRAssistant():
         While judging the personality of the applicant, you also have to consider the soft skills that the company is looking for in a candidate. Be sure to consider those skills as they are very important for the company.
 
         The soft skills that the company is looking for are: {self.jdk_soft_skills}.
-        
+
         The question answers given by the applicant: {candidate_recruit_answers}.
 
 
@@ -556,6 +563,7 @@ class HRAssistant():
         """
         project_scores_all = {}
 
+        abs_start_time = time.time()
         start_time = time.time()
         for candidate_id in self.candidate_id_list:
             project_scores = self.__fetch_candidate_scores(candidate_id)
@@ -566,6 +574,7 @@ class HRAssistant():
         self.cands_dataframe = self.__create_dataframe(project_scores_all)
         # print(self.cands_dataframe)
         self.__normalize_project_scores()
+        # print(self.cands_dataframe)
         self.__drop_irrelevant_projects()
         self.__normalize_experience_scores()
         self.__create_final_scores_dataframe()
@@ -582,7 +591,8 @@ class HRAssistant():
 
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')
-        print("JSON Done --- %s seconds ---" % (time.time() - start_time))
+        # print("JSON Done --- %s seconds ---" % (time.time() - start_time))
+        print("Total Time --- %s seconds ---" % (time.time() - abs_start_time))
 
         return result_data_json
 
