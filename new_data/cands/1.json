@@ -1,7 +1,7 @@
 {
     "id": 1,
     "description": "The candidate has worked on the following projects: The project is titled 'LLMGuard'. LLMGuard is a pipeline that detects bias and toxicity in outputs of language models like GPT-2 and BERT. It provides a user-friendly platform with a ReactJS UI and Django Rest Framework backend for easy integration and usage of the detection pipeline.The project uses ReactJS, Django, Python, JavaScript. The project is titled 'Literature Society IITJ Website'. Literature Society IITJ website: A user-friendly platform for managing literary activities, including profile management, library management, uploading and reviewing written works.The project uses ReactJS, Django, Python, JavaScript. The project is titled 'CloudPhysician's Vital Extraction Challenge'. CloudPhysician's Vital Extraction Challenge involved fine-tuning DETR and detectron models to segment ICU monitor images and extract vital signs. The project also included developing a graph digitization algorithm for ECG strip digitization.The project uses Computer Vision, Image Processing. The project is titled 'Multi Model Data Analysis for Annotation of Human Activities'. Performing multi-model data analysis on accelerometer and gyroscope readings to detect and annotate human activities through a pipeline that includes cleaning and outlier detection.The project uses Data Analysis, PyTorch, Tensorflow, Sklearn, Python. The project is titled 'FaceNet Implementation'. Implemented FaceNet research paper and Standard Siamese network from scratch using PyTorch and trained on CelebA dataset.The project uses PyTorch, Python. SKILLS:  JavaScript, PyTorch, Django, Data Analysis, Computer Vision, Python, Sklearn, Image Processing, ReactJS, Tensorflow.",
-    "compRecruitScreeningAnswers": {
+    "galkRecruitScreeningAnswers": {
         "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",
         "The career plan you want": "Currently I am in the 3rd year of my college and will graduate after almost 1.5 years. After that I plan to do a stable job preferably in the field of AI/ML and backend development.",
         "In which country do you want to work after graduation?": "For me, there is no such boundation. I can work in India, the US and even Japan.",
@@ -10,7 +10,7 @@
         "What are your expectations from the company?": "I want to get a decent package enough to stay comfortably in a foreign country like Japan. Furthermore, I want to work on projects related to my chosen field of interest.",
         "What would you like to accomplish during the internship with the company?": "I want to contribute to cutting-edge AI/ML technologies by applying by technical skills whilst also getting to learn new skills."
     },
-    "compRecruitQuestionnaireAnswers": {
+    "galkRecruitQuestionnaireAnswers": {
         "Your strengths and characteristics": "I am a hard-worker. I am good at grasping new concepts. I work good with a team.",
         "Weaknesses or areas where they would like to improve": "It takes time for me to acquire new skills. Also, I prefer not to work alone.",
         "Steps they are taking or plan to take to address these areas": "I try to work alone to learn to work alone.",

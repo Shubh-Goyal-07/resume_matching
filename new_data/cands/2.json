@@ -1,7 +1,7 @@
 {
     "id": 2,
     "description": "The candidate has worked on the following projects: The project is titled 'SHAMIYANA APP'. The SHAMIYANA APP is a food delivery and ordering platform for Shamiyana Cafe, providing hassle-free online ordering and easy cafe management via a web portal.The project uses Flutter, Dart, Firebase. The project is titled 'RAPID'. RAPID is a web app enabling users to play chess with friends in real-time, engaging with them through one-to-one video calls using WebSockets and WebRTC.The project uses NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, Docker. The project is titled 'SMART SENSING MIDDLEWARE'. A web application for analyzing and visualizing data from smart home devices.The project uses ReactJS, HTML, CSS. SKILLS:  CSS, Docker, NodeJS, HTML, Dart, Socket.IO, JS, WebRTC, ExpressJS, Firebase, ReactJS, Flutter.",
-    "compRecruitScreeningAnswers": {
+    "galkRecruitScreeningAnswers": {
         "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",
         "The career plan you want": "Currently I am in the 3rd year of my college and will graduate after almost 1.5 years. After that I plan to do a stable job preferably in the field of AI/ML and backend development.",
         "In which country do you want to work after graduation?": "For me, there is no such boundation. I can work in India, the US and even Japan.",
@@ -10,7 +10,7 @@
         "What are your expectations from the company?": "I want to get a decent package enough to stay comfortably in a foreign country like Japan. Furthermore, I want to work on projects related to my chosen field of interest.",
         "What would you like to accomplish during the internship with the company?": "I want to contribute to cutting-edge AI/ML technologies by applying by technical skills whilst also getting to learn new skills."
     },
-    "compRecruitQuestionnaireAnswers": {
+    "galkRecruitQuestionnaireAnswers": {
         "Your strengths and characteristics": "I am a hard-worker. I am good at grasping new concepts. I work good with a team.",
         "Weaknesses or areas where they would like to improve": "It takes time for me to acquire new skills. Also, I prefer not to work alone.",
         "Steps they are taking or plan to take to address these areas": "I try to work alone to learn to work alone.",

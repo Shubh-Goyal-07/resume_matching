@@ -77,7 +77,7 @@ class HRAssistant():
             The dictionary containing the id and the description of the job description.
         candidates_info : list
             The list of dictionaries containing the id and the description of the candidates.
-        
+
         Returns:
         -------
         None
@@ -86,7 +86,8 @@ class HRAssistant():
         self.jdk_id = jdk_info['id']
         self.jdk_desc = jdk_info['description']
         self.jdk_desc, self.jdk_tech_skills = self.jdk_desc.split("SKILLS: ") 
-        self.jdk_soft_skills = ', '.join(jdk_info['softSkills'])
+        # self.jdk_soft_skills = ', '.join(jdk_info['softSkills'])
+        self.jdk_soft_skills = jdk_info['softSkills']
 
         self.candidate_id_list = []
         self.candidate_desc_list = []
@@ -95,8 +96,8 @@ class HRAssistant():
         for candidate in candidates_info:
             self.candidate_id_list.append(candidate['id'])
             self.candidate_desc_list.append(candidate['description'])
-            answers = candidate['compRecruitScreeningAnswers']
-            answers.update(candidate['compRecruitQuestionnaireAnswers'])
+            answers = candidate['galkRecruitScreeningAnswers']
+            answers.update(candidate['galkRecruitQuestionnaireAnswers'])
             self.candidate_recruit_answers.append(str(answers))
 
         # delete the variable answers
@@ -247,7 +248,6 @@ class HRAssistant():
 
         minimum_mean = self.sim_score_penalty_params['minimum_mean']
         dev_e_factor = self.sim_score_penalty_params['dev_e_factor']
-        cutoff = self.sim_score_penalty_params['cutoff_score_after_penalty']
 
         # Step 1: Get the mean of the column
         project_score_mean = max(
@@ -270,7 +270,7 @@ class HRAssistant():
 
         # Step 6: Apply a lambda function to the first column
         self.cands_dataframe['project_score'] = self.cands_dataframe['project_score'].apply(
-            lambda x: 0 if x < cutoff else round(x*100, 2))
+            lambda x: round(x*100, 2))
 
         return 1
 
@@ -287,7 +287,13 @@ class HRAssistant():
         None
         """
 
-        self.cands_dataframe = self.cands_dataframe[self.cands_dataframe['project_score'] != 0]
+        cutoff = self.sim_score_penalty_params['cutoff_score_after_penalty']*100
+
+        temp_dataframe = self.cands_dataframe[self.cands_dataframe['project_score'] >= cutoff]
+
+        if len(temp_dataframe) != 0:
+            self.cands_dataframe = temp_dataframe
+
         return
 
     def __normalize_experience_scores(self):
@@ -418,22 +424,10 @@ class HRAssistant():
 
         return
 
-    def __get_technical_reason(self, candidate_description, candidate_score):
-        """
-        Creates the LLM chain for generating the reasoning.
-
-        Parameters:
-        ----------
-        None
-
-        Returns:
-        -------
-        None
-        """
-
+    def __get_score_reasons_and_personality_scores(self, candidate_recruit_answers, candidate_score, candidate_description):
         candidate_description, candidate_tech_skills = candidate_description.split("SKILLS: ")
 
-        system_prompt = """You are a reasoning agent who is trying to help a company find best candidates for recruitment and reasons out why a particular candidate is suitable or unsuitable for a particular job."""
+        system_prompt = """You are a reasoning agent who is trying to help a company find best candidates for recruitment and reasons out why a particular candidate is suitable or unsuitable for a particular job based on the candidate's past projects and skills. Aditionally, you also judge an applicant's personality and his/her willingness to go to Japan to work for the company."""
 
         user_prompt = f"""We have job description for a job position in the field of technology.
         Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
@@ -455,66 +449,20 @@ class HRAssistant():
         The above are a few skills mentioned in each candidates description. And a few skills mentioned in the job description that are requires skills. You have to find out the common skills in the required skills and the candidate skills, and the skills that are required but the candidate lack and finally provide a reasoning based on those skills along with the previously given project andf job descriptions. Also mention those skills with a tag of common and absent respectively. You do not need to justify all the extra skills of the candidate to be relevant to the job description. You only need to justify the skills that are required for the job but the candidate lacks.
         
         You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
-
-        Reasoning: <A VERY SUCCINT REASONING>"""
-
-        technical_reason = self.client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ]
-        )
-        # print(final_reason)
-        technical_reason = technical_reason.choices[0].message.content
-        technical_reason = technical_reason.split("Reasoning: ")[-1]
-
-        return technical_reason
-
-    def __add_cand_score_reasons(self):
-        """
-        Adds the reasoning for the candidate scores.
-
-        Parameters:
-        ----------
-        None
-
-        Returns:
-        -------
-        None
-        """
-
-        for index, row in self.cands_final_score_dataframe.iterrows():
-            candidate_id = row['id']
-            candidate_score = row['final_score']
-            candidate_projects_info = self.candidate_desc_list[self.candidate_id_list.index(
-                candidate_id)]
-
-            technical_reason = self.__get_technical_reason(candidate_projects_info, candidate_score)
-
-            # final_reason_jap = translator.translate(final_reason, dest='ja')
-
-            self.cands_final_score_dataframe.loc[index,
-                                                 'reason'] = technical_reason
-            # self.cands_final_score_dataframe.loc[index, 'jap_reason'] = final_reason_jap
-
-        return
-
-    def __get_personality_score_reason(self, candidate_recruit_answers):
-        system_prompt = """You are an agent that judges an applicant's personality and his/her willingness to go to Japan to work for the company."""
-
-        user_prompt = f"""You will be given a JSON containign all the questions which were asked to the candidate along with the answers candidate gave. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
+        
+        
+        You will be given a JSON containing all the questions which were asked to the candidate along with the answers candidate gave. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
 
         While judging the personality of the applicant, you also have to consider the soft skills that the company is looking for in a candidate. Be sure to consider those skills as they are very important for the company.
 
         The soft skills that the company is looking for are: {self.jdk_soft_skills}.
 
-        The question answers given by the applicant: {candidate_recruit_answers}.
-
-
-        You have to return the output a JSON format having the following two keys:
+        The question answers given by the applicant: {candidate_recruit_answers}.""" + """
+        
+        You have to return the output in the following JSON format:
+            tech_reason: <GIVE A REASON FOR THE SCORE HERE>,
             score: <GIVE A SCORE OUT OF 5 HERE>,
-            reason: <GIVE A REASON FOR THE SCORE HERE>
+            reason: <GIVE A REASON FOR THE PERSONALITY SCORE HERE>
         """
 
         response = self.client.chat.completions.create(
@@ -530,12 +478,13 @@ class HRAssistant():
 
         response = json.loads(response.choices[0].message.content, strict=False)
 
+        techreason = response['tech_reason']
         score = max(min(response['score'], 5), 0)
         reason = response['reason']
 
-        return score, reason
+        return techreason, score, reason
 
-    def __add_cand_personality_scores(self):
+    def __add_reasons_and_scores(self):
         """
         Returns the personality score of the candidate.
 
@@ -550,8 +499,14 @@ class HRAssistant():
             candidate_recruit_answers = self.candidate_recruit_answers[self.candidate_id_list.index(
                 candidate_id)]
 
-            score, reason = self.__get_personality_score_reason(candidate_recruit_answers)
+            candidate_score = row['final_score']
+            candidate_projects_info = self.candidate_desc_list[self.candidate_id_list.index(
+                candidate_id)]
 
+
+            techreason, score, reason = self.__get_score_reasons_and_personality_scores(candidate_recruit_answers, candidate_score, candidate_projects_info)
+
+            self.cands_final_score_dataframe.loc[index, 'tech_reason'] = techreason
             self.cands_final_score_dataframe.loc[index, 'personality_score'] = score
             self.cands_final_score_dataframe.loc[index, 'personality_reason'] = reason
 
@@ -563,14 +518,14 @@ class HRAssistant():
         """
         project_scores_all = {}
 
-        abs_start_time = time.time()
-        start_time = time.time()
+        # abs_start_time = time.time()
+        # start_time = time.time()
         for candidate_id in self.candidate_id_list:
             project_scores = self.__fetch_candidate_scores(candidate_id)
             project_scores_all[candidate_id] = project_scores
         # print(project_scores_all)
-        print("Data Fetch Pinecone --- %s seconds ---" % (time.time() - start_time))
-        start_time = time.time()
+        # print("Data Fetch Pinecone --- %s seconds ---" % (time.time() - start_time))
+        # start_time = time.time()
         self.cands_dataframe = self.__create_dataframe(project_scores_all)
         # print(self.cands_dataframe)
         self.__normalize_project_scores()
@@ -579,20 +534,20 @@ class HRAssistant():
         self.__normalize_experience_scores()
         self.__create_final_scores_dataframe()
         self.__calc_project_count_final_normalized_scores()
-        print("Scoring Done --- %s seconds ---" % (time.time() - start_time))
-        start_time = time.time()
-        self.__add_cand_score_reasons()
-        print("Reasoning Done --- %s seconds ---" % (time.time() - start_time))
-        start_time = time.time()
-        self.__add_cand_personality_scores()
-        print("Personality Done --- %s seconds ---" % (time.time() - start_time))
-        # pd.DataFrame.to_excel(self.cands_dataframe, f"./results/{self.jdk_id}.xlsx", index=False)
+        # print("Scoring Done --- %s seconds ---" % (time.time() - start_time))
+        # start_time = time.time()
+        # self.__add_cand_score_reasons()
+        # print("Reasoning Done --- %s seconds ---" % (time.time() - start_time))
+        # start_time = time.time()
+        self.__add_reasons_and_scores()
+        # print("Personality Done --- %s seconds ---" % (time.time() - start_time))
+        pd.DataFrame.to_excel(self.cands_dataframe, f"./results/{self.jdk_id}.xlsx", index=False)
         pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
 
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')
         # print("JSON Done --- %s seconds ---" % (time.time() - start_time))
-        print("Total Time --- %s seconds ---" % (time.time() - abs_start_time))
+        # print("Total Time --- %s seconds ---" % (time.time() - abs_start_time))
 
         return result_data_json
 
