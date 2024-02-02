@@ -430,28 +430,28 @@ class HRAssistant():
         system_prompt = """You are a reasoning agent who is trying to help a company find best candidates for recruitment and reasons out why a particular candidate is suitable or unsuitable for a particular job based on the candidate's past projects and skills. Aditionally, you also judge an applicant's personality and his/her willingness to go to Japan to work for the company."""
 
         user_prompt = f"""We have job description for a job position in the field of technology.
-        Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position.
+        Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position. You are supposed to carry out the following 2 tasks.
+
+        TASK-1: Providing a reasoning for the suitability/unsuitability of the applicant for the job based on his/her projects and skills
 
         We will give you a job description and the set of projects of the applicant alongwith the score that we calculated. You have to analyse the job description, the projects, and provide a reasoning for why the applicant has been given that score.
 
-        The score is given out of 100. A candidate may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the applicant has a particular score. Say an applicant has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the applicant has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
+        The score is given out of 100. An applicant may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the applicant has a particular score. Say an applicant has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the applicant has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
 
-        {self.jdk_desc}
+        Furthermore, the resume also contains the skills of the applicant. Alongwith the job description, the company has also provided us with a list of skills that it requires the applicants to have. You will be given a list of both the skills, the applicant skills as well as the skills required by the company. Your task is to list out the skills that are common in both alongwith the skills that are required but are not possessed by the applicant. You have to provide a reasoning based on those skills that are required but are not possessed by the applicant.
 
-        The candidate has worked on the following projects: {candidate_description}.
+        The job description provided by the company: {self.jdk_desc}
 
-        The candidate has been given a score of {candidate_score}.
+        The applicant has worked on the following projects: {candidate_description}.
 
+        The applicant has been given a score of {candidate_score}.
 
-        Required skills: {self.jdk_tech_skills}.
-        Candidate skills: {candidate_tech_skills}.
-
-        The above are a few skills mentioned in each candidates description. And a few skills mentioned in the job description that are requires skills. You have to find out the common skills in the required skills and the candidate skills, and the skills that are required but the candidate lack and finally provide a reasoning based on those skills along with the previously given project andf job descriptions. Also mention those skills with a tag of common and absent respectively. You do not need to justify all the extra skills of the candidate to be relevant to the job description. You only need to justify the skills that are required for the job but the candidate lacks.
+        Required skills set shared by the company: {self.jdk_tech_skills}.
+        Applicant skills: {candidate_tech_skills}.
         
-        You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
-        
-        
-        You will be given a JSON containing all the questions which were asked to the candidate along with the answers candidate gave. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
+        TASK-2: Determining the applicant's personality and his/her willingness to work in Japan based on the answers given by him/her
+
+        As mentioned earlier, one of your jobs is to determine the applicant's personality and his/her willingness to work in Japan. To do this task, you will be given a JSON containing all the questions which were asked to the candidate along with the answers that the applicant gave. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
 
         While judging the personality of the applicant, you also have to consider the soft skills that the company is looking for in a candidate. Be sure to consider those skills as they are very important for the company.
 
@@ -459,10 +459,10 @@ class HRAssistant():
 
         The question answers given by the applicant: {candidate_recruit_answers}.""" + """
         
-        You have to return the output in the following JSON format:
-            tech_reason: <GIVE A REASON FOR THE SCORE HERE>,
-            score: <GIVE A SCORE OUT OF 5 HERE>,
-            reason: <GIVE A REASON FOR THE PERSONALITY SCORE HERE>
+        You have to return the output of all the above 3 tasks in the following JSON format:
+            tech_reason: <GIVE THE REASONING HERE THAT IS ASKED FOR IN TASK-1>,
+            score: <GIVE A SCORE OUT OF 5 HERE FOR TASK-2>,
+            reason: <GIVE A REASON FOR THE SCORE YOU GAVE IN TASK-2>
         """
 
         response = self.client.chat.completions.create(
