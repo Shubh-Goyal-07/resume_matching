@@ -340,8 +340,7 @@ class HRAssistant():
         None
         """
         
-        self.cands_dataframe['final_score'] = self.cands_dataframe['project_score'] * \
-            self.cands_dataframe['experience']
+        self.cands_dataframe['final_score'] = self.cands_dataframe['project_score'] * self.cands_dataframe['experience']
         self.cands_dataframe['final_score'] = self.cands_dataframe['final_score'].apply(
             lambda x: min(round(x, 2), 100))
 
@@ -349,8 +348,7 @@ class HRAssistant():
             'id')['final_score'].transform('count')
         self.cands_final_score_dataframe = self.cands_dataframe.groupby('id').agg(
             {'final_score': 'sum', 'project_count': 'first'}).reset_index()
-        self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'] / \
-            self.cands_final_score_dataframe['project_count']
+        self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'] / self.cands_final_score_dataframe['project_count']
 
         # print(self.cands_final_score_dataframe)
 
@@ -370,6 +368,8 @@ class HRAssistant():
         """
 
         total_entries = len(self.cands_final_score_dataframe)
+        self.cands_final_score_dataframe['project_count'] = self.cands_final_score_dataframe['project_count'].apply(
+            lambda x: min(x, 5))
         # mode = self.cands_final_score_dataframe['project_count'].mode()[0]
 
         count_dataframe = pd.DataFrame(
@@ -447,10 +447,10 @@ class HRAssistant():
         Candidate skills: {candidate_tech_skills}.
 
         The above are a few skills mentioned in each candidates description. And a few skills mentioned in the job description that are requires skills. You have to find out the common skills in the required skills and the candidate skills, and the skills that are required but the candidate lack and finally provide a reasoning based on those skills along with the previously given project andf job descriptions. Also mention those skills with a tag of common and absent respectively. You do not need to justify all the extra skills of the candidate to be relevant to the job description. You only need to justify the skills that are required for the job but the candidate lacks.
-        
+
         You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
-        
-        
+
+
         You will be given a JSON containing all the questions which were asked to the candidate along with the answers candidate gave. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
 
         While judging the personality of the applicant, you also have to consider the soft skills that the company is looking for in a candidate. Be sure to consider those skills as they are very important for the company.
@@ -458,7 +458,7 @@ class HRAssistant():
         The soft skills that the company is looking for are: {self.jdk_soft_skills}.
 
         The question answers given by the applicant: {candidate_recruit_answers}.""" + """
-        
+
         You have to return the output in the following JSON format:
             tech_reason: <GIVE A REASON FOR THE SCORE HERE>,
             score: <GIVE A SCORE OUT OF 5 HERE>,
