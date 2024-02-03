@@ -448,7 +448,14 @@ class HRAssistant():
 
         Required skills set shared by the company: {self.jdk_tech_skills}.
         Applicant skills: {candidate_tech_skills}.
-        
+
+        You also need to consider the following points while providing the reasoning:
+
+        1. Keep the reasoning concise and to the point and do not exceed more than 50 words or 3 lines.
+        2. Speak with conviction and do not be ambiguous. You have to provide a clear reasoning for the score that has been given to the applicant. Do not use words like "maybe", "perhaps", "probably", etc.
+        3. Do not need to mention that the score is high or low or is it justifiable or not. You just need to provide a reasoning for the score that has been given to the applicant without giving your opinion on the suitability.
+        4. Let the final reasoning be based both on the job description and the projects of the applicant and the skills that are required by the company and the skills that the applicant possesses.
+
         TASK-2: Determining the applicant's personality and his/her willingness to work in Japan based on the answers given by him/her
 
         As mentioned earlier, one of your jobs is to determine the applicant's personality and his/her willingness to work in Japan. To do this task, you will be given a JSON containing all the questions which were asked to the candidate along with the answers that the applicant gave. You have to give a single score based on the applicant's personality and his/her willingness to go to Japan.
@@ -457,7 +464,11 @@ class HRAssistant():
 
         The soft skills that the company is looking for are: {self.jdk_soft_skills}.
 
-        The question answers given by the applicant: {candidate_recruit_answers}.""" + """
+        The question answers given by the applicant: {candidate_recruit_answers}.
+        
+        You need to keep the following points in mind while providing the score:
+
+        1. Make sure not to mention any technical reasoning, skills or any other stuff that is not related to the personality of the applicant. Do not mention 'AI/ML' or 'Python' or 'Java' or any other technical stuff.
         
         You have to return the output of all the above 2 tasks in the following JSON format:
             tech_reason: <GIVE THE REASONING HERE THAT IS ASKED FOR IN TASK-1>,
