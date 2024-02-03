@@ -198,7 +198,15 @@ class JobSearchAssistant():
 
         We will give you a job description and the set of projects of the candidate alongwith the score that was obtained for that particular job description. You have to analyse the job description, the projects, and provide a reasoning for why the job is suitable or not suitable for the candidate.
 
-        A job may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the job has a particular relevance score with respect to the candidate's resume. Say a job description is given a low score then you need to provide a reasoning as to why that job description is not suitable for the candidate. Similarly, if a job description is given a high score then you need to provide a reasoning as to why that job description is suitable for the candidate. If a job description is given a moderate score then you need to provide a reasoning as to why that job description is neither suitable nor unsuitable for the candidate. Give the reasoning without mentioning about the candidate's skills and experience in detail. Focus more on how the job is suitable or unsuitable for the candidate and less on how the candidate is suitable or unsuitable for the job. And make sure to give the reasoning in second person pronouns, that is, as if you are telling the candidate why the job is suitable or unsuitable for them.
+        A job may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the job has a particular relevance score with respect to the candidate's resume. Say a job description is given a low score then you need to provide a reasoning as to why that job is not suitable for the candidate. Similarly, if a job description is given a high score then you need to provide a reasoning as to why that job is suitable for the candidate. If a job description is given a moderate score then you need to provide a reasoning as to why that job is neither suitable nor unsuitable for the candidate.
+        
+        Make sure to keep a note of the following points while reasoning:
+
+        1. Give the reasoning without mentioning about the candidate's skills and experience in detail.
+        
+        2. Focus more on how the job is suitable or unsuitable for the candidate and less on how the candidate is suitable or unsuitable for the job. 
+        
+        3. Give the reasoning in second person pronouns, that is, as if you are telling the candidate why the job is suitable or unsuitable for them.
 
         The candidate has worked on the following projects: {self.candidate_description}.
 
