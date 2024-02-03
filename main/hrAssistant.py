@@ -443,7 +443,7 @@ class HRAssistant():
         
         You need to consider the following points while providing the reasoning:
 
-        1. Speak with conviction and do not be ambiguous. You have to provide a clear reasoning for the score that has been given to the applicant. Do not use any modal verbs whatsover in any scenario. The reasoning should be clear and concise.
+        1. Do not use any modal verbs that will indicate a probability of any kind.
 
         2. Do not mention that the score is high or low or is it justifiable or not in any sentence. You just need to provide a reasoning for the score that has been given to the applicant without giving your opinion on the suitability. Do not even mention the score. Just provide a reasoning for the score that has been given to the applicant.
 

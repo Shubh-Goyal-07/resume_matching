@@ -82,13 +82,14 @@ class Manager_model():
         None
         """
 
-        system_prompt = """You are an english agent who `takes job descriptions and converts them into a more concise and precise two line descriptions."""
+        system_prompt = """You are a summarizing agent who takes job descriptions and converts them into concise and precise two line descriptions."""
 
-        user_prompt = f"""Job Title: {title}
+        user_prompt = f"""We have jobs to offer to interested people. Each job has a title, a job description, and the skills required for that job. To help people understand the job position in a better manner, your task is to combine all these three separate things to create a concise and more precise description of the job. Remove irrelevant information from the job description and only include the important information that will help people understand the job position better.
+
+        Job Title: {title}
         Job Description: {description}
         Skills Required: {skills}
-
-        Combine the above information to create a concise and more precise description of the job. Remove irrelevant information from the job description and only include the important information."""
+        """
 
         return system_prompt, user_prompt
 
@@ -101,13 +102,14 @@ class Manager_model():
         None
         """
 
-        system_prompt = """You are an english agent who takes project descriptions and converts them into a more concise and precise two line descriptions."""
+        system_prompt = """You are a summarizing agent who takes project descriptions and converts them into a more concise and precise two line descriptions."""
 
-        user_prompt = f"""Project Title: {title}
+        user_prompt = f"""All the candidates who have applied for jobs have submiited their resumes. All resumes contain the details about the projects that the candidate has worked on. Each project has a title, a description, and the skills that were put to use to complete that project. Your task is to combine all these three separate things to create a concise and more precise description of the project. Remove irrelevant information from the project description and only include the important information that will be relevant when applying for a job.
+        
+        Project Title: {title}
         Project Description: {description}
         Skills Used: {skills}
-
-        Combine the above information to create a concise and more precise description of the project. Remove irrelevant information from the project description and only include the important information."""
+        """
 
         return system_prompt, user_prompt
 
