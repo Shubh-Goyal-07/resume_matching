@@ -427,7 +427,7 @@ class HRAssistant():
     def __get_score_reasons_and_personality_scores(self, candidate_recruit_answers, candidate_score, candidate_description):
         candidate_description, candidate_tech_skills = candidate_description.split("SKILLS: ")
 
-        system_prompt = """You are a reasoning agent who is trying to help a company find best candidates for recruitment and reasons out why a particular candidate is suitable or unsuitable for a particular job based on the candidate's past projects and skills. Aditionally, you also judge an applicant's personality and his/her willingness to go to Japan to work for the company."""
+        system_prompt = """You are a hiring recruiter's assisstant who is finding best candidates for recruitment and reasons out why a particular candidate is suitable or unsuitable for the job based on the candidate's past projects and skills. Aditionally, you also help the recruiter judge an applicant's personality and his/her willingness to go to Japan to work for the company. You have to provide the recruiter raw reviews of the candidates based on your assessment of the candidate's projects and skills and his/her personality and willingness to work in Japan. The recruiter will then use your reviews to make the final decision."""
 
         user_prompt = f"""We have job description for a job position in the field of technology.
         Multiple candidates applied for the job. All of them submitted their resumes and we have calculated a score that shows the aptness of the applicant for the job position. You are supposed to carry out the following 2 tasks.
@@ -445,9 +445,11 @@ class HRAssistant():
 
         1. Do not use any modal verbs that will indicate a probability of any kind.
 
-        2. Do not mention that the score is high or low or is it justifiable or not in any sentence. You just need to provide a reasoning for the score that has been given to the applicant without giving your opinion on the suitability. Do not even mention the score. Just provide a reasoning for the score that has been given to the applicant.
+        2. Do not mention anything about the score that has been given to the candidate. You have to provide a reasoning based on the job description and the projects of the applicant and not on the score of the candidate. Use the score for your internal understanding only.
 
-        3. Let the final reasoning be based both on the job description and the projects of the applicant and the skills that are required by the company and the skills that the applicant possesses. Also, try to beautifully integrate the skills that are common in both. Mention the skills that are required but are not possessed by the applicant in your reasoning very subtly.
+        3. Consider both the job description and the projects of the applicant while providing the reasoning. Additionally, consider the skills that are required by the company and the skills that the applicant possesses. You have to provide a reasoning based on the skills as well. If some skills are required by the company but are not possessed by the applicant then you have to provide a reasoning based on those skills as well. Try to beautify the positive points and use high level vocabulary to make the reasoning more appealing.
+
+        4. Keep the reasoning more towards the technical side and try to keep it as positive as possible.
 
         The job description provided by the company: {self.jdk_desc}
 
