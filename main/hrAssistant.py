@@ -438,7 +438,16 @@ class HRAssistant():
 
         The score is given out of 100. An applicant may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the applicant has a particular score. Say an applicant has a bad score then you need to justify how the applicant is not so well suited for the job based on the job description and the applicant's projects. Similarly if the applicant has a high score then you need to provide a reasoning as to why the applicant is suited for the job.
 
-        Furthermore, the resume also contains the skills of the applicant. Alongwith the job description, the company has also provided us with a list of skills that it requires the applicants to have. You will be given a list of both the skills, the applicant skills as well as the skills required by the company. Your task is to list out the skills that are common in both alongwith the skills that are required but are not possessed by the applicant. You have to provide a reasoning based on those skills that are required but are not possessed by the applicant.
+        Furthermore, the resume also contains the skills of the applicant. Alongwith the job description, the company has also provided us with a list of skills that it requires the applicants to have. You will be given a list of both the skills, the applicant skills as well as the skills required by the company. Your task is to first list out the skills that are common in both, and then the skills that are required but are not possessed by the applicant. You have to provide a reasoning based on those skills that are required but are not possessed by the applicant.
+
+        
+        You need to consider the following points while providing the reasoning:
+
+        1. Speak with conviction and do not be ambiguous. You have to provide a clear reasoning for the score that has been given to the applicant. Do not use any modal verbs whatsover in any scenario. The reasoning should be clear and concise.
+
+        2. Do not mention that the score is high or low or is it justifiable or not in any sentence. You just need to provide a reasoning for the score that has been given to the applicant without giving your opinion on the suitability. Do not even mention the score. Just provide a reasoning for the score that has been given to the applicant.
+
+        3. Let the final reasoning be based both on the job description and the projects of the applicant and the skills that are required by the company and the skills that the applicant possesses. Also, try to beautifully integrate the skills that are common in both. Mention the skills that are required but are not possessed by the applicant in your reasoning very subtly.
 
         The job description provided by the company: {self.jdk_desc}
 
@@ -449,12 +458,6 @@ class HRAssistant():
         Required skills set shared by the company: {self.jdk_tech_skills}.
         Applicant skills: {candidate_tech_skills}.
 
-        You also need to consider the following points while providing the reasoning:
-
-        1. Keep the reasoning concise and to the point and do not exceed more than 50 words or 3 lines.
-        2. Speak with conviction and do not be ambiguous. You have to provide a clear reasoning for the score that has been given to the applicant. Do not use words like "maybe", "perhaps", "probably", etc.
-        3. Do not need to mention that the score is high or low or is it justifiable or not. You just need to provide a reasoning for the score that has been given to the applicant without giving your opinion on the suitability.
-        4. Let the final reasoning be based both on the job description and the projects of the applicant and the skills that are required by the company and the skills that the applicant possesses.
 
         TASK-2: Determining the applicant's personality and his/her willingness to work in Japan based on the answers given by him/her
 
@@ -465,16 +468,15 @@ class HRAssistant():
         The soft skills that the company is looking for are: {self.jdk_soft_skills}.
 
         The question answers given by the applicant: {candidate_recruit_answers}.
-        
+
         You need to keep the following points in mind while providing the score:
 
         1. Make sure not to mention any technical reasoning, skills or any other stuff that is not related to the personality of the applicant. Do not mention 'AI/ML' or 'Python' or 'Java' or any other technical stuff.
-        
+
         You have to return the output of all the above 2 tasks in the following JSON format:
             tech_reason: <GIVE THE REASONING HERE THAT IS ASKED FOR IN TASK-1>,
             score: <GIVE A SCORE OUT OF 5 HERE FOR TASK-2>,
             reason: <GIVE A REASON FOR THE SCORE YOU GAVE IN TASK-2>
-
         """
 
         response = self.client.chat.completions.create(
