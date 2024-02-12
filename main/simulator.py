@@ -15,7 +15,7 @@ abs_start_time = time.time()
 # start_time = time.time()
 # for jdk in jdks:
 #     desc = upsert_to_database("jdk", jdk)
-#    # json.dump({'id': jdk['id'], 'description':desc}, open(f"../new_data/jdks/{jdk['id']}.json", 'w'), indent=4)
+#     # json.dump({'id': jdk['id'], 'description':desc}, open(f"../new_data/jdks/{jdk['id']}.json", 'w'), indent=4)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("Done")
 
@@ -23,7 +23,7 @@ abs_start_time = time.time()
 # start_time = time.time()
 # for resume in resumes:
 #     desc = upsert_to_database("candidate", resume)
-#    # json.dump({'id': resume['id'], 'description':desc}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
+#     # json.dump({'id': resume['id'], 'description':desc}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("Done")
 
@@ -31,7 +31,7 @@ abs_start_time = time.time()
 
 print("Getting candidate scores...")
 cands_data = []
-for i in range(1, 4):
+for i in range(1, 5):
     cands_data.append(json.load(open(f"../new_data/cands/{i}.json")))
 
 print("Data Loaded")
@@ -56,18 +56,26 @@ print("JDK 3 Done")
 # print(results)
 # print("--- %s seconds ---" % (time.time() - start_time))
 
+jdk4 = json.load(open(f"../new_data/jdks/4.json"))
+start_time = time.time()
+results = get_candidate_scores(jdk4, cands_data)
+print("--- %s seconds ---" % (time.time() - start_time))
+print("JDK 4 Done")
+# print(results)
+print("--- %s seconds ---" % (time.time() - abs_start_time))
+
 # time.sleep(5)
 
 # print("Getting job suggestions...")
 # start_time = time.time()
 # cand_data = json.load(open(f"../new_data/cands/1.json"))
 # jobs_data = []
-# for i in range(1, 4):
+# for i in range(1, 5):
 #     jobs_data.append(json.load(open(f"../new_data/jdks/{i}.json")))
 # # print(jobs_data)
 # result = get_job_suggestions(cand_data, jobs_data)
 # print("Candidate 1 Done")
-# # print(result)
+# print(result)
 
 # cand_data = json.load(open(f"../new_data/cands/2.json"))
 # result = get_job_suggestions(cand_data, jobs_data)
@@ -78,7 +86,12 @@ print("JDK 3 Done")
 # result = get_job_suggestions(cand_data, jobs_data)
 # print("Candidate 3 Done")
 # # print(result)
-# print("--- %s seconds ---" % (time.time() - start_time))
+
+# cand_data = json.load(open(f"../new_data/cands/4.json"))
+# result = get_job_suggestions(cand_data, jobs_data)
+# print("Candidate 4 Done")
+# # print(result)
+print("--- %s seconds ---" % (time.time() - start_time))
 
 # time.sleep(5)
 

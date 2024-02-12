@@ -209,7 +209,7 @@ class Manager_model():
             The final description of the job description.
         """
 
-        description = f"The job title is {title}, and the description is as follows: {description}" + f" SKILLS: {skills}."
+        description = f"{description}" + f"SKILLS: {skills}"
 
         return description
 
@@ -245,7 +245,7 @@ class Manager_model():
 
         final_description = self.__get_jdk_final_description(
             title, final_description, skills)
-        
+
         return final_description
 
     def __get_cand_combined_desc(self, titles, final_descriptions, skill_info):
@@ -284,7 +284,7 @@ class Manager_model():
             The start date of the candidate's project.
         end_date : str
             The end date of the candidate's project.
-        
+
         Returns
         -------
         int

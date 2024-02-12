@@ -19,5 +19,12 @@
         "description" : "Data Analysis and Preprocessing: Collect and preprocess large-scale text corpora to train and fine-tune language models. Conduct data analysis to identify patterns, trends, and insights that can inform model development and improvement. \nPrototypes and do proof of concepts (PoC) in one or all the following areas: LLM, NLP, DL (Deep Learning), ML (Machine Learning), object detection/classification, tracking, etc",
         "skills" : ["NLP", "Pytorch", "Computer Vision", "Python"],
         "soft_skills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
+    },
+    {
+        "id" : 4,
+        "title" : "Applicantion Development",
+        "description" : "Coding under a scrum master in the front-end development of a sweat amino acid analysis application",
+        "skills" : ["Computer Science", "Equivalent experience", "Flutter", "Dart", "Android", "iOS ", "Firestore", "Firebase Authentication", "Cloud Storage", "Cloud Messaging", "Mobile application architecture", "Mobile application design patterns", "Understanding of best practice", "Understanding of version control system(Ex: Git)"],
+        "soft_skills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
     }
 ]

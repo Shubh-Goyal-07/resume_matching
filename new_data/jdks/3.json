@@ -1,5 +1,5 @@
 {
     "id": 3,
-    "description": "The job title is NLP engineer Remote, and the description is as follows: NLP Engineer: Collect and preprocess text data for language model training. Conduct data analysis to inform model development, prototyping in NLP, DL, ML, and computer vision using Pytorch and Python.SKILLS: NLP, Pytorch, Computer Vision, Python.",
-    "softSkills" : "Communication, Teamwork, Problem Solving, Time Management, Adaptability"
+    "description": "NLP Engineer (Remote): Collect and preprocess text corpora for language model training. Analyze data, develop and improve models. Skills: NLP, Pytorch, Computer Vision, Python.SKILLS: NLP, Pytorch, Computer Vision, Python",
+    "softSkills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
 }

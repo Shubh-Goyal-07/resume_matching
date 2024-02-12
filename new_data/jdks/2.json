@@ -1,5 +1,5 @@
 {
     "id": 2,
-    "description": "The job title is Frontend Engineer Intern, and the description is as follows: Frontend Engineer Intern: Responsible for aligning web design and user experience requirements, optimizing web pages, and maintaining brand consistency. Collaborate with back-end developers, graphic designers, and UX designers. Required skills: ReactJS, JavaScript, CSS, NextJS. 3-month evaluative unpaid internship with potential for return offers.SKILLS: ReactJS, JavaScript, CSS, Frontend Development, NextJS.",
-    "softSkills" : "Communication, Teamwork, Problem Solving, Time Management, Adaptability"
+    "description": "Frontend Engineer Intern - Work in a team to ensure consistent web design and user experience, optimize web pages, and maintain brand consistency. Requires excellent communication skills and proficiency in ReactJS, JavaScript, CSS, and NextJS. 3-month evaluative unpaid internship with potential return offers.SKILLS: ReactJS, JavaScript, CSS, Frontend Development, NextJS",
+    "softSkills" : ["Communication", "Teamwork", "Problem Solving", "Time Management", "Adaptability"]
 }

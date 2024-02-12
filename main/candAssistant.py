@@ -9,6 +9,8 @@ import math
 
 import json
 
+import numpy as np
+
 
 class JobSearchAssistant():
     """
@@ -54,7 +56,8 @@ class JobSearchAssistant():
         """
 
         self.candidate_id = candidate_info['id']
-        self.candidate_description = candidate_info['description']
+        self.candidate_description, self.candidate_skills = candidate_info['description'].split("SKILLS: ")
+        self.candidate_skills = self.candidate_skills.split(", ")
 
         self.jdk_id_list = []
         self.jdk_description_list = []
@@ -75,6 +78,9 @@ class JobSearchAssistant():
         self.dev_e_factor = config['job_suggestion_dev_e_factor']
 
         self.pinecone_config = config['pinecone_config']
+
+        self.skill_count_percentile_penalties = config['candAsst_skill_count_penalties']
+
 
     def __fetch_candidate_embedding(self):
         """
@@ -141,12 +147,18 @@ class JobSearchAssistant():
 
         jdk_ids = []
         jdk_scores = []
+        jdk_descs = []
+        jdk_skills = []
 
         for jdk in jdk_query_scores:
             jdk_ids.append(jdk['id'])
             jdk_scores.append(jdk['score'])
+            desc, skills = self.jdk_description_list[self.jdk_id_list.index(jdk['id'])].split("SKILLS: ")
+            skills = skills.split(", ")
+            jdk_descs.append(desc)
+            jdk_skills.append(skills)
 
-        jdk_data_dict = {"id": jdk_ids, "score": jdk_scores}
+        jdk_data_dict = {"id": jdk_ids, "score": jdk_scores, "description": jdk_descs, "skills": jdk_skills}
         jdk_dataframe = pd.DataFrame(jdk_data_dict)
 
         return jdk_dataframe
@@ -179,6 +191,42 @@ class JobSearchAssistant():
 
         return
 
+    def __score_skills(self):
+        self.jdk_dataframe['skills'] = self.jdk_dataframe['skills'].apply(lambda x: len(list(set(x).intersection(self.candidate_skills))))
+
+        # print(self.jdk_dataframe)
+
+        column_percentiles = np.percentile(
+            self.jdk_dataframe['skills'], [90, 75, 50, 25])
+
+        # The result will be an array containing the 75th, 50th, and 25th percentiles
+        percentile_90th = column_percentiles[0]
+        percentile_75th = column_percentiles[1]
+        percentile_50th = column_percentiles[2]
+        percentile_25th = column_percentiles[3]
+
+        penalty_90_100 = self.skill_count_percentile_penalties['90_100']
+        penalty_75_90 = self.skill_count_percentile_penalties['75_90']
+        penalty_50_75 = self.skill_count_percentile_penalties['50_75']
+        penalty_25_50 = self.skill_count_percentile_penalties['25_50']
+        penalty_0_25 = self.skill_count_percentile_penalties['0_25']
+
+        self.jdk_dataframe['skills'] = self.jdk_dataframe['skills'].apply(lambda x: penalty_90_100 if x >= percentile_90th else (
+            penalty_75_90 if x >= percentile_75th else (
+                penalty_50_75 if x >= percentile_50th else (
+                    penalty_25_50 if x >= percentile_25th else penalty_0_25
+                )
+            )
+        ))
+
+        return
+
+    def __normalize_with_skill_scores(self):
+        self.jdk_dataframe['score'] = self.jdk_dataframe['score'] * self.jdk_dataframe['skills']
+        self.jdk_dataframe.drop('skills', axis=1, inplace=True)
+
+        return
+
     def __get_reasoning_prompt(self, jdk_description, jdk_score):
         """
         Creates the LLM chain for generating the reasoning.
@@ -199,13 +247,13 @@ class JobSearchAssistant():
         We will give you a job description and the set of projects of the candidate alongwith the score that was obtained for that particular job description. You have to analyse the job description, the projects, and provide a reasoning for why the job is suitable or not suitable for the candidate.
 
         A job may get a high, low, or a moderate score. So carefully analyze the job description, the projects and then provide a reasoning as to why the job has a particular relevance score with respect to the candidate's resume. Say a job description is given a low score then you need to provide a reasoning as to why that job is not suitable for the candidate. Similarly, if a job description is given a high score then you need to provide a reasoning as to why that job is suitable for the candidate. If a job description is given a moderate score then you need to provide a reasoning as to why that job is neither suitable nor unsuitable for the candidate.
-        
+
         Make sure to keep a note of the following points while reasoning:
 
         1. Give the reasoning without mentioning about the candidate's skills and experience in detail.
-        
-        2. Focus more on how the job is suitable or unsuitable for the candidate and less on how the candidate is suitable or unsuitable for the job. 
-        
+
+        2. Focus more on how the job is suitable or unsuitable for the candidate and less on how the candidate is suitable or unsuitable for the job.
+
         3. Give the reasoning in second person pronouns, that is, as if you are telling the candidate why the job is suitable or unsuitable for them.
 
         The candidate has worked on the following projects: {self.candidate_description}.
@@ -215,7 +263,7 @@ class JobSearchAssistant():
         The job has been given a score of {jdk_score}.
 
         You have to return the output in the following format. Remember to be very brief while providing the reasoning. Try not to exceed 60 words.
-        
+
         Reasoning: <A VERY SUCCINT REASONING>"""
 
         return system_prompt, user_prompt
@@ -260,8 +308,11 @@ class JobSearchAssistant():
         jdk_query_scores = self.__fetch_jdk_scores()
         self.jdk_dataframe = self.__create_jdk_dataframe(jdk_query_scores)
         self.__normalize_jdk_scores()
+        # print(self.jdk_dataframe)
+        self.__score_skills()
+        self.__normalize_with_skill_scores()
         self.__add_job_score_reasons()
-        # pd.DataFrame.to_excel(self.jdk_dataframe, f"./job_suggestions/candidate_{self.candidate_id}.xlsx", index=False)
+        pd.DataFrame.to_excel(self.jdk_dataframe, f"./job_suggestions/candidate_{self.candidate_id}.xlsx", index=False)
         result_data_json = self.jdk_dataframe.to_json(orient='records')
 
         return result_data_json

@@ -209,5 +209,55 @@
                 "endDate": "01/12/2020"
             }
         ]
+    },
+
+    {
+        "id": 4,
+        "name": "Rahul",
+        "compRecruitScreeningAnswers": {
+            "The reason why you want to come to Japan  (Multiple choice)": [
+              "Want to learn from Japanese work culture"
+            ],
+            "Steps they are taking or plan to take to address these areas": "To address these areas, I'm actively participating in relevant workshops and online courses to bolster my skills, and I also make a conscious effort to seek feedback and implement it in my day-to-day tasks.",
+            "Weaknesses or areas where they would like to improve": "I am always striving for self-improvement and continuously seek opportunities to enhance my communication skills and expand my technical knowledge.",
+            "Lessons learned from that experience": "Consistency is the secret of compound interest, so don't let your hopes to be shattered in a short run , keep going and you will achieve what you desired.",
+            "Example of a challenge or setback you have faced and how they overcame it": "Beacuse of health reasons, I had a major setback in my preparation for JEE during COVID lockdown. But with determination and support from my teachers and parents , I managed to overcome it and secured a good rank in JEE.",
+            "The career plan you want": "Engineer",
+            "In which country do you want to work after graduation?": "Work in Japan",
+            "Your strengths and characteristics": "My driving factor which keeps me pushing for newer things is my curiosity towards , \"How It Works\". This has been my idealogy, responsible for my engineering career.\nApart from it , I have a great ability to understand and make others understand complex things in a simpler way.",
+            "Do you have any unique background that differentiate you from others?": "JEE Advanced Rank:590 out of 1,50,000 candidates\nJEE mains Rank:438 out of 10,00,000 candidates\nNTSE Scholar\nKVPY Scholar 2020 and 2021"
+        },
+        "galkRecruitQuestionnaireAnswers": {
+            "Instead of English-speaking countries like the U.S., the U.K. and Singapore, why are you interested in working in Japan?": "I'm interested in working in Japan because I've always felt a strong connection to values like hard work, punctuality, and dedication in my professional life. Japan is renowned for embodying these principles, and I believe working with individuals who share these traits would be an ideal match for someone like me, fostering holistic personal development. Additionally, despite the cultural differences between India and Japan, I'm drawn to the shared values of humility, groundedness, and the expression of respect for others, which motivate me to pursue opportunities in the \"Land of the Rising Sun.\"",
+            "What are your expectations from the company?": "I have several expectations from the company, including:\n\nA positive and supportive work culture that fosters creativity and collaboration.\n\nAmple opportunities to express my ideas and contribute to the company's goals.\n\nAccess to a wealth of learning experiences and the chance to acquire new skills.\n\nMentorship from experienced professionals to help me thrive in my role.\n\nAn inspiring environment that motivates me to push my limits and excel in my work.\n\nAn opportunity to immerse myself in Japanese culture to facilitate a smooth transition into the new work environment.",
+            "Do you have any specialty?": "Indeed, I do possess a specialty. Beyond my academic pursuits, I have a natural inclination towards curiosity. I consistently find myself deeply interested in a wide array of subjects, driven by a strong desire to comprehend them thoroughly, to delve into the intricacies of \"how\" and \"why,\" and to apply the knowledge I acquire to further expand my understanding of these topics. This innate curiosity fuels my passion for continuous learning and exploration.",
+            "What would you like to accomplish during the internship with the company?": "During the internship with the company, my goals include the following:\n\nExploring new areas and potentially venturing into different fields.\n\nCollaborating with a diverse group of individuals with various talents and a strong desire to learn from one another.\n\nReceiving guidance and mentorship to advance my technical expertise.\n\nAcquiring and enhancing a range of skills to broaden my skillset.\n\nApplying my knowledge and skills to contribute to valuable projects.\n\nInnovating and developing new solutions.\n\nGaining hands-on experience with various tools and technologies.",
+            "What is your Strength and Weakness?": "My strength lies in my ability to distill complex concepts into simpler, more understandable points. I have a knack for making these concepts accessible to others, and my unique perspective often sets my thoughts apart from my peers, adding a distinct dimension to my expression.\n\nHowever, on the flip side, I consider myself a deliberate learner rather than a fast one. I prefer taking my time to grasp new concepts thoroughly, which enhances my clarity of understanding but may lead to a slightly longer learning curve.",
+            "Are you likely to be adaptable to other cultures?": "Certainly, I believe I have a natural adaptability to different cultures. I come from a country where diversity thrives, with distinct dialects and cultural variations every 100 kilometers. Despite these differences, we coexist harmoniously and lovingly as a unified whole.\n\nGrowing up in such an environment has equipped me with the skills to seamlessly integrate into new cultures. Moreover, the shared values of humility and groundedness between Japan and India act as a bonding agent, helping bridge cultural gaps and fostering a sense of unity and understanding between the two cultures.",
+            "What project have you worked on that you are most proud of?And what was your contribution to this project?": "One project that stands out as a source of great pride for me was a video conferencing project I undertook during a summer break. This project marked a significant milestone in my journey as it introduced me to the intricate world of web development, encompassing both frontend and backend aspects of website creation, in addition to working with APIs. Notably, it kindled my fascination for the networking field, offering insights into the intricate workings of computer connectivity, network formation, and maintenance.\n\nThe project involved delving into subtle nuances of networking, particularly through the utilization of webRTC API and the socket.io library. I take immense pride in the fact that this was a personal project that I undertook independently, from conceptualization to execution, and it served as a testament to my capabilities and commitment to advancing my skills in web development and networking."
+        },
+        "projects" : [
+            {
+                "title" : "Video Conferencing Project",
+                "description": "This is a clone of the video conferencing website, Google Meet, which implements many features such as messaging system, file sharing system, screen sharing and recording along with video and audio call.",
+                "startDate": "01/06/2023",
+                "endDate": "15/06/2023",
+                "skills": ["JavaScript", "HTML", "CSS", "API Integration"]
+            },
+            {
+                "title": "TEDxIITGuwahati Website",
+                "description": "This Group Project is the website for the main event of the TEDxIITGuwahati which hosted TED talk this year at IIT Guwahati.",
+                "skills": ["JavaScript", "HTML", "CSS"],
+                "startDate": "01/11/2022",
+                "endDate": "01/02/2023"
+            },
+            {
+                "title": "Alcheringa Pass Portal",
+                "description": "The Pass Portal is the main website for the distribution of the Passes to the non IITG participants for the Alcheringa, largest cultural fest of North-East India.",
+                "skills": ["JavaScript", "HTML", "CSS"],
+                "startDate": "01/08/2022",
+                "endDate": "01/02/2023"
+            }
+        ]
     }
 ]

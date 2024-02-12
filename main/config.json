@@ -40,5 +40,13 @@
         }
     },
 
-    "job_suggestion_dev_e_factor" : 5
+    "job_suggestion_dev_e_factor" : 5,
+
+    "candAsst_skill_count_penalties" : {
+        "90_100" : 1,
+        "75_90" : 0.9,
+        "50_75" : 0.8,
+        "25_50" : 0.75,
+        "0_25" : 0.5
+    }
 }
