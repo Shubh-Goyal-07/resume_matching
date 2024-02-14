@@ -475,6 +475,12 @@ class HRAssistant():
 
         1. Make sure not to mention any technical reasoning, skills or any other stuff that is not related to the personality of the applicant. Do not mention 'AI/ML' or 'Python' or 'Java' or any other technical stuff.
 
+        2. Do not mention anything about the score that has been given to the candidate. You have to provide a reasoning based on the company's soft skill requirement and the answers given by the candidate and not on the score of the candidate. Use the score for your internal understanding only.
+
+        3. There should be no line in the reasoning mentioning the candidate got this much score out of 5.
+
+        Make sure not to mention score in any of the technical of soft skill score reasonings in any way.
+
         You have to return the output of all the above 2 tasks in the following JSON format:
             tech_reason: <GIVE THE REASONING HERE THAT IS ASKED FOR IN TASK-1>,
             score: <GIVE A SCORE OUT OF 5 HERE FOR TASK-2>,
