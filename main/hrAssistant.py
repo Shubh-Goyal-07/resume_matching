@@ -1,5 +1,6 @@
 import openai
 from pinecone import Pinecone
+from google.cloud import translate_v2 as translate
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -506,6 +507,16 @@ class HRAssistant():
 
         return techreason, score, reason
 
+    def __translate_en_ja(self, reason):
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"../google-credentials.json"
+
+        translate_client = translate.Client()
+        target = "ja"
+
+        output = translate_client.translate(reason, target_language=target)
+
+        return output['translatedText']
+
     def __add_reasons_and_scores(self):
         """
         Returns the personality score of the candidate.
@@ -526,14 +537,19 @@ class HRAssistant():
                 candidate_id)]
 
 
-            techreason, score, reason = self.__get_score_reasons_and_personality_scores(candidate_recruit_answers, candidate_score, candidate_projects_info)
+            techreason, score, personalityreason = self.__get_score_reasons_and_personality_scores(candidate_recruit_answers, candidate_score, candidate_projects_info)
+
+            techreason_jap = self.__translate_en_ja(techreason)
+            personalityreason_jap = self.__translate_en_ja(personalityreason)
 
             self.cands_final_score_dataframe.loc[index, 'tech_reason'] = techreason
+            self.cands_final_score_dataframe.loc[index, 'tech_reason_japanese'] = techreason_jap
             self.cands_final_score_dataframe.loc[index, 'personality_score'] = score
-            self.cands_final_score_dataframe.loc[index, 'personality_reason'] = reason
+            self.cands_final_score_dataframe.loc[index, 'personality_reason'] = personalityreason
+            self.cands_final_score_dataframe.loc[index, 'personality_reason_japanese'] = personalityreason_jap
 
         return
-
+    
     def __get_all_candidate_scores(self):
         """
 

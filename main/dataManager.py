@@ -1,5 +1,6 @@
 import openai
 from pinecone import Pinecone
+from google.cloud import translate_v2 as translate
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -72,6 +73,16 @@ class Manager_model():
         self.max_experience_days = config['experience_params']['maximum_experience'] * 30
 
         self.pinecone_config = config['pinecone_config']
+
+    def __translate_ja_en(self, description):
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"../google-credentials.json"
+
+        translate_client = translate.Client()
+        target = "en"
+
+        output = translate_client.translate(description, target_language=target)
+
+        return output['translatedText']
 
     def __create_jdk_prompt(self, title, description, skills):
         """
@@ -230,6 +241,7 @@ class Manager_model():
         skills = self.data['skills']
         skills = ", ".join(skills)
 
+        description = self.__translate_ja_en(description)
         system_prompt, user_prompt = self.__create_jdk_prompt(title, description, skills)
         final_description = self.__get_final_description(system_prompt, user_prompt)
 
