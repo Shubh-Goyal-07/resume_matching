@@ -11,118 +11,190 @@ import math
 
 import json
 
-import time
 
 class HRAssistant():
     """
-    This class is used to score candidates based on their projects and the job description.
+    This class contains the methods to score the candidates based on their projects for a particular job description.
+
+    The flow of the scoring process is as follows:
+    1. Fetch the job description and the candidate's projects from the pinecone index.
+    2. Normalize the project scores of the candidates through an exponential function.
+    3. Drop the projects which have a score less than the cutoff score.
+    4. Assign a experience score to each project based on the experiences of the candidates on each project.
+    5. Averages the projects of each individual candidate and creates a new dataframe containing the final scores of the candidates.
+    6. Calculates the final scores of the candidates scores by penalizing the scores based on the project count of the candidates.
+    7. Generates the reasoning for a candidate's score and also generates the personality score of the candidate along with the reasoning.
+    8. Adds the reasoning for the candidate scores and the personality scores of the candidates to the dataframe 'cands_final_score_dataframe'.
 
     Attributes:
     ----------
-    jdk_id : int
-        The id of the job description.
-    jdk_desc : str
-        The job description.
-    candidate_id_list : list
-        The list of ids of the candidates.
-    candidate_desc_list : list
-        The list of projects of the candidates.
-    index : pinecone.Index
-        The pinecone index object used for querying.
-    sim_score_penalty_params : dict
-        The parameters used for penalizing the similarity scores.
-    experience_penalties : dict
-        The parameters used for penalizing the experience scores.
-    project_count_penalties : dict
-        The parameters used for penalizing the project count scores.
-    jdk_embedding : list
-        The embedding of the job description.
-    cands_dataframe : pandas.DataFrame
-        The dataframe containing the project scores of the candidates.
+    __jdk_id : str
+        The id of the jdk.
+
+    __jdk_desc : str
+        The description of the jdk.
+
+    __jdk_tech_skills : str
+        The technical skills required for the jdk.
+
+    __jdk_soft_skills : str
+        The soft skills required for the jdk.
+
+    __candidate_id_list : list
+        The list of the ids of the candidates.
+
+    __candidate_desc_list : list
+        The list of the descriptions of the candidates.
+
+    __candidate_recruit_answers : list  
+        The list of the answers of the candidates for the screening questions and the questionnaire.
+
+    __client : openai.OpenAI
+        The instance of the OpenAI class.
+
+    __pinecone_config : dict
+        The dictionary containing the configuration of the pinecone index.
+
+    __index : pinecone.Index
+        The index object for the pinecone index of the index name "willings".
+
+    __sim_score_penalty_params : dict
+        The dictionary containing the parameters for the similarity score penalty.
+
+    __experience_penalties : dict
+        The dictionary containing the parameters for the experience penalties.
+
+    __project_count_penalties : dict
+        The dictionary containing the parameters for the project count penalties.
+
+    __cands_dataframe : pandas.DataFrame
+        A dataframe containing the project scores of the candidates.
+
     cands_final_score_dataframe : pandas.DataFrame
-        The dataframe containing the final scores of the candidates.
+        A dataframe containing the final scores of the candidates.
 
     Methods:
-    -------
+    --------
+    __init__(jdk_info, candidates_info)
+        The constructor for HRAssistant class.
+
     __fetch_jdk_embeddings()
-        Fetches the embedding of the job description.
+        Fetches the embedding of the jdk from the pinecone index.
+
     __fetch_candidate_scores(candidate_id)
         Fetches the scores of the projects of the candidate.
+
     __create_dataframe(project_scores)
         Creates a dataframe containing the project scores of the candidates.
+
     __normalize_project_scores()
-        Normalizes the project scores of the candidates.
+        Normalizes the project scores of the candidates through an exponential function.
+
     __drop_irrelevant_projects()
-        Drops the projects with zero scores.
+        Drops the projects which have a score less than the cutoff score.
+
     __normalize_experience_scores()
-        Normalizes the experience scores of the candidates.
+        Assigns a experience score to each project based on the experiences of the candidates on each project.
+
     __create_final_scores_dataframe()
-        Creates a dataframe containing the final scores of the candidates.
+        Averages the projects of each individual candidate in the dataframe 'cands_dataframe' and creates a new dataframe containing the final scores of the candidates.
+
     __calc_project_count_final_normalized_scores()
-        Calculates the final normalized scores of the candidates based on the project count.
-    __create_llm_chain()
-        Creates the LLM chain for generating the reasoning.
-    __add_cand_score_reasons()
-        Adds the reasoning for the candidate scores.
-    __get_all_candidate_scores()
-        Fetches the scores of the projects of all the candidates.
+        Calculates the final scores of the candidates scores by penalizing the scores based on the project count of the candidates.
+
+    __get_score_reasons_and_personality_scores(candidate_recruit_answers, candidate_score, candidate_description)
+        Generates the reasoning for a candidate's score and also generates the personality score of the candidate along with the reasoning.
+
+    __translate_en_ja(reason)
+        Translates a text (in any language) to Japanese using the Google Cloud Translate API.
+
+    __add_reasons_and_scores()
+        Adds the reasoning for the candidate scores and the personality scores of the candidates to the dataframe 'cands_final_score_dataframe'.
+
     score_candidates()
-        Scores the candidates based on their projects and the job description.
+        Scores the candidates based on their projects for a particular job description.
     """
 
     def __init__(self, jdk_info, candidates_info):
         """
+        The constructor for HRAssistant class.
+
         Parameters:
         ----------
         jdk_info : dict
-            The dictionary containing the id and the description of the job description.
+            The dictionary containing the data of the jdk.
+            The dictionary should contain the following
+            - id (str) : The id of the jdk.
+            - description (str) : The description of the jdk which was generated during upserting the jdk.
+
         candidates_info : list
-            The list of dictionaries containing the id and the description of the candidates.
+            The list of dictionaries containing the data of the candidates.
+            Each dictionary should contain the following
+            - id (str) : The id of the candidate.
+            - description (str) : The description of the candidate which was generated during upserting the candidate.
+            - galkRecruitScreeningAnswers (dict) : The dictionary containing the answers of the candidate for the screening questions.
+            - galkRecruitQuestionnaireAnswers (dict) : The dictionary containing the answers of the candidate for the questionnaire.
 
         Returns:
         -------
         None
         """
 
-        self.jdk_id = jdk_info['id']
-        self.jdk_desc = jdk_info['description']
-        self.jdk_desc, self.jdk_tech_skills = self.jdk_desc.split("SKILLS: ") 
-        # self.jdk_soft_skills = ', '.join(jdk_info['softSkills'])
-        self.jdk_soft_skills = jdk_info['softSkills']
+        # Load .env file
+        _ = load_dotenv(find_dotenv())
 
-        self.candidate_id_list = []
-        self.candidate_desc_list = []
-        self.candidate_recruit_answers = []
+        # Extracting the jdk data from the jdk_info dictionary
+        self.__jdk_id = jdk_info['id']
+        self.__jdk_desc = jdk_info['description']
+        self.__jdk_desc, self.__jdk_tech_skills = self.__jdk_desc.split(
+            "SKILLS: ")
+        self.__jdk_soft_skills = jdk_info['softSkills']
+
+        # Extracting the candidate data from the candidates_info list
+        self.__candidate_id_list = []
+        self.__candidate_desc_list = []
+        self.__candidate_recruit_answers = []
 
         for candidate in candidates_info:
-            self.candidate_id_list.append(candidate['id'])
-            self.candidate_desc_list.append(candidate['description'])
+            self.__candidate_id_list.append(candidate['id'])
+            self.__candidate_desc_list.append(candidate['description'])
+            # Creating one dictionary of the answers of the candidate for the screening questions and the questionnaire
             answers = candidate['galkRecruitScreeningAnswers']
             answers.update(candidate['galkRecruitQuestionnaireAnswers'])
-            self.candidate_recruit_answers.append(str(answers))
+            self.__candidate_recruit_answers.append(str(answers))
 
         # delete the variable answers
         del answers
 
-        self.client = openai.OpenAI()
+        # Set the openai api key and create an instance of the OpenAI class
+        openai.api_key = os.environ.get("OPENAI_API_KEY")
+        self.__client = openai.OpenAI()
 
+        # Load the configuration file
+        config = json.load(open('./config.json'))
+        # Load the pinecone config
+        self.__pinecone_config = config['pinecone_config']
+
+        # Create an instance of the Pinecone class
+        pinecone_key = os.environ.get('PINECONE_API_KEY')
         pc = Pinecone(
-            api_key=os.environ.get('PINECONE_API_KEY'),
+            api_key=pinecone_key,
             environment='gcp-starter'
         )
 
-        self.index = pc.Index("willings")
+        # Create an index object for the pinecone index of the index name "willings"
+        self.__index = pc.Index(self.__pinecone_config['index_name'])
 
-        config = json.load(open('./config.json'))
-        self.sim_score_penalty_params = config['similarity_score_penalty_params']
-        self.experience_penalties = config['experience_params']['experience_percentile_penalties']
-        self.project_count_penalties = config['project_count_penalties']
-
-        self.pinecone_config = config['pinecone_config']
+        # Similarity score penalty parameters (applied on each project)
+        self.__sim_score_penalty_params = config['similarity_score_penalty_params']
+        # Experience months percentile penalties (applied on each project)
+        self.__experience_penalties = config['experience_params']['experience_percentile_penalties']
+        # Project count penalties (applied on the final score of the candidate)
+        self.__project_count_penalties = config['project_count_penalties']
 
     def __fetch_jdk_embeddings(self):
         """
-        Fetches the embedding of the job description from the pinecone index.
+        Fetches the embedding of the jdk from the pinecone index through job id
 
         Parameters:
         ----------
@@ -134,10 +206,16 @@ class HRAssistant():
             The embedding of the job description.
         """
 
-        jdk_id_str = str(self.jdk_id)
+        # Convert the jdk_id to a string (in case it is not a string)
+        # As the vector ids of upserted vectors are always strings
+        jdk_id_str = str(self.__jdk_id)
 
-        jdk_embedding = self.index.fetch(
-            ids=[jdk_id_str], namespace="jdks").to_dict()
+        # Fetch the embedding of the jdk from the pinecone index
+        # creating list as pinecone fetch function takes list of ids
+        ids = [jdk_id_str]
+        namespace = self.__pinecone_config['jdk_namespace']
+        jdk_embedding = self.__index.fetch(
+            ids=ids, namespace=namespace).to_dict()
         jdk_embedding = jdk_embedding['vectors'][jdk_id_str]['values']
 
         return jdk_embedding
@@ -148,8 +226,8 @@ class HRAssistant():
 
         Parameters:
         ----------
-        candidate_id : int
-            The id of the candidate whose projects are to be scored.
+        candidate_id : str
+            The id of the candidate whose projects are to be fetched from the pinecone index.
 
         Returns:
         -------
@@ -157,39 +235,46 @@ class HRAssistant():
             The dictionary containing the scores of the projects of the candidate.
         """
 
-        projects_namespace = self.pinecone_config['projects_namespace']
+        projects_namespace = self.__pinecone_config['projects_namespace']
 
-        cand_project_query_response = self.index.query(
-            vector=self.jdk_embedding,
+        # Create filter to fetch the project scores of a particular candidate (searches in metadata)
+        filter = {
+            "candidate_id": {"$eq": f'{candidate_id}'},
+        }
+        # Fetch the projects of the candidate from the pinecone index
+        # The query will return the top 10 projects of the candidate
+        # Returns cosine similarity scores of the projects with the jdk_embedding
+        cand_project_query_response = self.__index.query(
+            vector=self.__jdk_embedding,
             namespace=projects_namespace,
-            filter={
-                "candidate_id": {"$eq": f'{candidate_id}'},
-            },
+            filter=filter,
             top_k=10,
             include_values=False,
             include_metadata=True
         )['matches']
 
-        # print(cand_project_query_response)
-
+        # Dictionary to store the scores of the projects of the candidate
         project_scores = {}
 
+        # Iterate through the project in the query response and store the scores in the dictionary
         for cand_project in cand_project_query_response:
+            # experience stored in metadata
             experience = cand_project['metadata']['experience']
             cand_project_id = f"{cand_project['id']}__{experience}"
             cand_project_score = cand_project['score']
 
+            # Apply some enhancements and penalties to the scores
+            # Reason: 0.9 is a very high score for cosine and is rarely reached
+            #         <0.75 is a very low score for cosine
             if cand_project_score >= 0.9:
                 cand_project_score = 1
             elif cand_project_score >= 0.8:
                 cand_project_score += 0.05
             elif cand_project_score <= 0.75:
                 cand_project_score -= 0.05
-            elif cand_project_score <= 0.7:
-                cand_project_score = 0
 
-            if (cand_project_score):
-                project_scores[cand_project_id] = round(cand_project_score, 2)
+            # Round off the score to 2 decimal places
+            project_scores[cand_project_id] = round(cand_project_score, 2)
 
         return project_scores
 
@@ -201,42 +286,68 @@ class HRAssistant():
         ----------
         project_scores : dict
             The dictionary containing the scores of the projects of the candidate.
+            The dictionary contains the following:
+            - The key is the id of the candidate.
+            - The value is a dictionary containing following:
+                - The key is the id of the project.
+                - The value is the score of the project.
 
         Returns:
         -------
         cands_dataframe : pandas.DataFrame
-            The dataframe containing the project scores of the candidates.
+            A dataframe containing the following columns:
+                - id : The id of the candidate.
+                - name : The name of the project.
+                - project_score : The score of the project.
+                - experience : The experience of the candidate.
+            Each row corresponds to only one candidate-project pair.
         """
 
+        # Lists to store the data of the candidates
         project_names = []
         project_scores_list = []
-        # num_projects = []
         cand_ids = []
         project_experiences = []
 
+        # Traverse through each candidate
         for candidate_id in project_scores:
-
             projects = project_scores[candidate_id]
-            # num_projects.append(len(projects))
-
+            # Traverse through each project of the candidate
             for project in projects:
                 cand_ids.append(candidate_id)
                 project_scores_list.append(projects[project])
 
+                # Split the project id to get the name and the experience
+                # Example: "1__Project1__2" -> "1", "Project1", "2"
                 _, name, experience = project.split("__")
                 project_names.append(name)
                 project_experiences.append(float(experience))
 
+        # Create a dictionary that can be directly converted to a dataframe
         cands_data_dict = {"id": cand_ids, "name": project_names,
                            "project_score": project_scores_list, "experience": project_experiences}
-        # print(cands_data_dict)
+
+        # Create a dataframe from the dictionary
         cands_dataframe = pd.DataFrame(cands_data_dict)
 
         return cands_dataframe
 
     def __normalize_project_scores(self):
         """
-        Normalizes the project scores of the candidates.
+        This function normalizes the project scores of the candidates through an exponential function.
+
+        The function applies the following steps:
+        1. Get the mean of the project scores
+        2. Subtract the mean from the project scores (i.e. get the deviation) to create a new column
+        3. Multiply the project scores with the following exponential function:
+                            2 - exp(-deviation*dev_e_factor) OR 0 if the result is negative
+                    Here, dev_e_factor is a an arbitrary constant taken from config file
+
+            (This is done on the same column as step 2 to avoid creating a new column and save memory)
+
+        4. Multiply the project scores with 100 and rounf off to 2 decimal places
+
+        This normalization penalizes the projects more than it rewards for the same amount of deviation from the mean.
 
         Parameters:
         ----------
@@ -247,37 +358,41 @@ class HRAssistant():
         None
         """
 
-        minimum_mean = self.sim_score_penalty_params['minimum_mean']
-        dev_e_factor = self.sim_score_penalty_params['dev_e_factor']
+        # Minimum mean parameter defines the lower bound of the project score means
+        # This ensures that if all the projects are irrelevant, then rather than rewarding any, it penalizes all of them
+        minimum_mean = self.__sim_score_penalty_params['minimum_mean']
+        dev_e_factor = self.__sim_score_penalty_params['dev_e_factor']
 
-        # Step 1: Get the mean of the column
+        # Step 1: Get the mean of the project scores
         project_score_mean = max(
-            self.cands_dataframe['project_score'].mean(), minimum_mean)
+            self.__cands_dataframe['project_score'].mean(), minimum_mean)
 
-        # Step 2: Subtract the mean from the column to create a new column
-        self.cands_dataframe['project_devs'] = self.cands_dataframe['project_score'] - \
+        # Step 2: Subtract the mean from the column to get the deviation from the score mean and store the deviation onto column 'project_devs'
+        self.__cands_dataframe['project_devs'] = self.__cands_dataframe['project_score'] - \
             project_score_mean
 
-        # Step 3: Apply a lambda function on the new column
-        self.cands_dataframe['project_devs'] = self.cands_dataframe['project_devs'].apply(
+        # Step 3: Apply exponential function on the deviation column amd get the penalty values
+        self.__cands_dataframe['project_devs'] = self.__cands_dataframe['project_devs'].apply(
             lambda x: max(round(2-math.exp(-dev_e_factor*x), 2), 0))
 
-        # Step 4: Multiply the first column and the new column and store the value in the first column
-        self.cands_dataframe['project_score'] = self.cands_dataframe['project_score'] * \
-            self.cands_dataframe['project_devs']
+        # Step 4: Multiply the project scores and the penalty values
+        self.__cands_dataframe['project_score'] = self.__cands_dataframe['project_score'] * \
+            self.__cands_dataframe['project_devs']
 
-        # Step 5: Delete the new column
-        self.cands_dataframe.drop('project_devs', axis=1, inplace=True)
+        # Step 5: Delete the project_devs column
+        self.__cands_dataframe.drop('project_devs', axis=1, inplace=True)
 
-        # Step 6: Apply a lambda function to the first column
-        self.cands_dataframe['project_score'] = self.cands_dataframe['project_score'].apply(
+        # Step 6: Multiply the final project scores by 100 and round off to 2 decimal places
+        self.__cands_dataframe['project_score'] = self.__cands_dataframe['project_score'].apply(
             lambda x: round(x*100, 2))
 
-        return 1
+        return
 
     def __drop_irrelevant_projects(self):
         """
-        Drops the projects with zero scores.
+        Drops the projects which have a score less than the cutoff score.
+
+        This step ensures that the projects with less scores are not considered for the final score. Otherwise, they may affect the final score negatively.
 
         Parameters:
         ----------
@@ -288,18 +403,27 @@ class HRAssistant():
         None
         """
 
-        cutoff = self.sim_score_penalty_params['cutoff_score_after_penalty']*100
+        # Get the cutoff score
+        cutoff = self.__sim_score_penalty_params['cutoff_score_after_penalty']*100
 
-        temp_dataframe = self.cands_dataframe[self.cands_dataframe['project_score'] >= cutoff]
+        # Drop the projects with scores less than the cutoff score and make a new dataframe
+        temp_dataframe = self.__cands_dataframe[self.__cands_dataframe['project_score'] >= cutoff]
 
+        # If all the projects had score less than cutoff then do not drop any project
         if len(temp_dataframe) != 0:
-            self.cands_dataframe = temp_dataframe
+            self.__cands_dataframe = temp_dataframe
 
         return
 
     def __normalize_experience_scores(self):
         """
-        Normalizes the experience scores of the candidates.
+        This function assigns a experience score to each project based on the experiences of the candidates on each project.
+        The score of the project is then multiplied by the experience score.
+
+        The experience score is calculated as follows:
+        1. Get the 75th, 50th, and 25th percentiles of the experience column
+        2. Assign experience scores to the experiences based on the percentiles
+        3. Multiply the project scores with the experience scores
 
         Parameters:
         ----------
@@ -310,54 +434,80 @@ class HRAssistant():
         None
         """
 
+        # Calculate the percentile breakpoints of the experience column
         column_percentiles = np.percentile(
-            self.cands_dataframe['experience'], [75, 50, 25])
+            self.__cands_dataframe['experience'], [75, 50, 25])
 
-        # The result will be an array containing the 75th, 50th, and 25th percentiles
         percentile_75th = column_percentiles[0]
         percentile_50th = column_percentiles[1]
         percentile_25th = column_percentiles[2]
 
-        penalty_75_100 = self.experience_penalties['75_100']
-        penalty_50_75 = self.experience_penalties['50_75']
-        penalty_25_50 = self.experience_penalties['25_50']
-        penalty_0_25 = self.experience_penalties['0_25']
+        # Get the experience scores for each percentile slot from the config file
+        # Slots being 75-100, 50-75, 25-50, 0-25
+        penalty_75_100 = self.__experience_penalties['75_100']
+        penalty_50_75 = self.__experience_penalties['50_75']
+        penalty_25_50 = self.__experience_penalties['25_50']
+        penalty_0_25 = self.__experience_penalties['0_25']
 
-        self.cands_dataframe['experience'] = self.cands_dataframe['experience'].apply(lambda x: penalty_75_100 if x >= percentile_75th else (
+        # Assign the experience scores to the experiences based on the percentiles
+        self.__cands_dataframe['experience'] = self.__cands_dataframe['experience'].apply(lambda x: penalty_75_100 if x >= percentile_75th else (
             penalty_50_75 if x >= percentile_50th else (penalty_25_50 if x >= percentile_25th else penalty_0_25)))
 
-        return 1
+        # Multiply the project scores with the experience scores
+        self.__cands_dataframe['final_score'] = self.__cands_dataframe['project_score'] * \
+            self.__cands_dataframe['experience']
+
+        # Round off the final scores to 2 decimal places and limit the maximum score to 100
+        self.__cands_dataframe['final_score'] = self.__cands_dataframe['final_score'].apply(
+            lambda x: min(round(x, 2), 100))
+
+        return
 
     def __create_final_scores_dataframe(self):
         """
-        Creates a dataframe containing the final scores of the candidates.
-        
+        This function averages the projects of each individual candidate in the dataframe 'cands_dataframe' and creates a new dataframe containing the final scores of the candidates.
+
+        It also calculates the project count of each candidate and stores it in the new dataframe 'cands_final_score_dataframe'.    
+
+        The 'cands_final_score_dataframe' contains the following columns:
+        - id : The id of the candidate.
+        - final_score : The final score of the candidate.
+        - project_count : The project count of the candidate.
+
         Parameters:
         ----------
         None
-        
+
         Returns:
         -------
         None
         """
-        
-        self.cands_dataframe['final_score'] = self.cands_dataframe['project_score'] * self.cands_dataframe['experience']
-        self.cands_dataframe['final_score'] = self.cands_dataframe['final_score'].apply(
-            lambda x: min(round(x, 2), 100))
 
-        self.cands_dataframe['project_count'] = self.cands_dataframe.groupby(
+        # Calculate the project count of each candidate
+        self.__cands_dataframe['project_count'] = self.__cands_dataframe.groupby(
             'id')['final_score'].transform('count')
-        self.cands_final_score_dataframe = self.cands_dataframe.groupby('id').agg(
+
+        # Calculate the final scores of the candidates
+        # Sum over the final scores of the projects of each candidate
+        self.cands_final_score_dataframe = self.__cands_dataframe.groupby('id').agg(
             {'final_score': 'sum', 'project_count': 'first'}).reset_index()
-        self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'] / self.cands_final_score_dataframe['project_count']
 
-        # print(self.cands_final_score_dataframe)
+        # Divide the sum by the project count to get the average
+        self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'] / \
+            self.cands_final_score_dataframe['project_count']
 
-        return 1
+        return
 
     def __calc_project_count_final_normalized_scores(self):
         """
-        Calculates the final normalized scores of the candidates based on the project count.
+        This function calculates the final scores of the candidates scores by penalizing the scores based on the project count of the candidates.
+
+        The following steps are performed:
+        1. The project count of each candidate is capped at 5.
+        2. The mode of the project count is calculated.
+        3. The percentage of the mode is calculated.
+        4. The penalties are calculated based on the mode and the percentage.
+        5. The final scores are multiplied by the penalties.
 
         Parameters:
         ----------
@@ -368,18 +518,21 @@ class HRAssistant():
         None
         """
 
+        # Step 1: Cap the project count at 5
         total_entries = len(self.cands_final_score_dataframe)
         self.cands_final_score_dataframe['project_count'] = self.cands_final_score_dataframe['project_count'].apply(
             lambda x: min(x, 5))
-        # mode = self.cands_final_score_dataframe['project_count'].mode()[0]
 
+        # Step 2: Calculate the mode of the project count
+        # Create a dataframe containing the count of each possible project count i.e. 1, 2, 3, 4, 5
         count_dataframe = pd.DataFrame(
             self.cands_final_score_dataframe['project_count'].value_counts())
         count_dataframe['percentage'] = (
             count_dataframe['count'] / total_entries) * 100
 
+        # Step 3: Calculate the percentage of the mode
+        # List to store the percentages of each project count (0th index for project count 1)
         percentage_list = [0, 0, 0, 0, 0]
-        penalties = [1, 1, 1, 1, 1]
         max_percentage = 0
         for index, row in count_dataframe.iterrows():
             percentage_list[index-1] = row['percentage']
@@ -387,47 +540,82 @@ class HRAssistant():
                 max_percentage = row['percentage']
                 mode = index
 
+        # Step 4: Calculate the penalties based on the mode and the percentage
+        # The penalties are stored in the config file
+        penalties = [1, 1, 1, 1, 1]
         if mode == 1:
             if percentage_list[0] >= 50:
-                penalties = self.project_count_penalties['mode_1']['more_than_50']
+                penalties = self.__project_count_penalties['mode_1']['more_than_50']
             else:
-                penalties = self.project_count_penalties['mode_1']['less_than_50']
+                penalties = self.__project_count_penalties['mode_1']['less_than_50']
 
         elif mode == 2:
             percentage_345 = sum(percentage_list[2:])
-            if percentage_345 > self.project_count_penalties['equivalence_factor']*percentage_list[1]:
-                penalties = self.project_count_penalties['mode_2']['3_5_equivalent']
+            if percentage_345 > self.__project_count_penalties['equivalence_factor']*percentage_list[1]:
+                penalties = self.__project_count_penalties['mode_2']['3_5_equivalent']
             else:
-                penalties = self.project_count_penalties['mode_2']['normal']
+                penalties = self.__project_count_penalties['mode_2']['normal']
 
         elif mode == 3:
             percentage_45 = sum(percentage_list[3:])
-            if percentage_45 > self.project_count_penalties['equivalence_factor']*percentage_list[2]:
-                penalties = self.project_count_penalties['mode_3']['4_5_equivalent']
+            if percentage_45 > self.__project_count_penalties['equivalence_factor']*percentage_list[2]:
+                penalties = self.__project_count_penalties['mode_3']['4_5_equivalent']
             else:
-                penalties = self.project_count_penalties['mode_3']['normal']
+                penalties = self.__project_count_penalties['mode_3']['normal']
 
         elif mode == 4:
-            penalties = self.project_count_penalties['mode_4']
+            penalties = self.__project_count_penalties['mode_4']
 
         elif mode == 5:
-            penalties = self.project_count_penalties['mode_5']
+            penalties = self.__project_count_penalties['mode_5']
 
+        # Step 5: Multiply the final scores by the penalties
         self.cands_final_score_dataframe['project_count'] = self.cands_final_score_dataframe['project_count'].apply(
-            lambda x: penalties[x-1])
+            lambda x: penalties[x-1])                       # x-1 because the list is 0-indexed
         self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'] * \
             self.cands_final_score_dataframe['project_count']
+
+        # Round off the final scores to 2 decimal places
         self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'].apply(
             lambda x: round(x, 2))
 
+        # Drop the project count column to save memory
         self.cands_final_score_dataframe.drop(
             'project_count', axis=1, inplace=True)
 
         return
 
     def __get_score_reasons_and_personality_scores(self, candidate_recruit_answers, candidate_score, candidate_description):
-        candidate_description, candidate_tech_skills = candidate_description.split("SKILLS: ")
+        """
+        This function generates the reasoning for a candidate's score on the basis of his/her projects and skills and the job description and skills required by the company.
 
+        Additionally, it also generates the personality score (out of 5) of the candidate along with the reasoning based on the answers given by the candidate on a fixed set of questions and the soft skills required by the company.
+
+        Uses the OpenAI GPT-3.5-turbo-1106 model to generate the reasoning and the personality score.
+        The model is used because it supports the chat completions and the JSON response format.
+
+        Parameters:
+        ----------
+        candidate_recruit_answers : str
+            The answers given by the candidate for the screening questions and the questionnaire.
+
+        candidate_score : float
+            The score of the candidate.
+
+        candidate_description : str
+            The description of the candidate which was generated during upserting the candidate.
+
+        Returns:
+        -------
+        tuple[str, float, str]
+            The reasoning for the candidate's score, the personality score of the candidate, and the reasoning for the personality score.
+        """
+
+        # Get the candidate's projects and technical skills
+        candidate_description, candidate_tech_skills = candidate_description.split(
+            "SKILLS: ")
+
+        # Defines the system and user prompts for the OpenAI model
         system_prompt = """You are a hiring recruiter's assisstant who is finding best candidates for recruitment and reasons out why a particular candidate is suitable or unsuitable for the job based on the candidate's past projects and skills. Aditionally, you also help the recruiter judge an applicant's personality and his/her willingness to go to Japan to work for the company. You have to provide the recruiter raw reviews of the candidates based on your assessment of the candidate's projects and skills and his/her personality and willingness to work in Japan. The recruiter will then use your reviews to make the final decision."""
 
         user_prompt = f"""We have job description for a job position in the field of technology.
@@ -452,13 +640,20 @@ class HRAssistant():
 
         4. Keep the reasoning more towards the technical side and try to keep it as positive as possible.
 
-        The job description provided by the company: {self.jdk_desc}
+        5. Also, make sure not to mention anything about soft skills in the technical reasoning as it has to be strictly based on the projects and the skills of the applicant which match or differ from the skills required by the company.
+        And strictly remember to mention the similar skills and the skills that are required but are not possessed by the applicant in the technical reasoning as it is very important as per the company's policy.
+
+        6. Do not show the irrelevant projects of the applicant in a positive light. If the project is irrelevant then avoid mentioning the project in the reasoning. If you use the project in the reasoning then it should be used to show the applicant's skills in a positive light but not relevancy of the project.
+
+        7. If very less skills are common between the applicant and the company then critcize the candidate a bit and do not strongly support the candidate.
+
+        The job description provided by the company: {self.__jdk_desc}
 
         The applicant has worked on the following projects: {candidate_description}.
 
         The applicant has been given a score of {candidate_score}.
 
-        Required skills set shared by the company: {self.jdk_tech_skills}.
+        Required skills set shared by the company: {self.__jdk_tech_skills}.
         Applicant skills: {candidate_tech_skills}.
 
 
@@ -468,7 +663,7 @@ class HRAssistant():
 
         While judging the personality of the applicant, you also have to consider the soft skills that the company is looking for in a candidate. Be sure to consider those skills as they are very important for the company.
 
-        The soft skills that the company is looking for are: {self.jdk_soft_skills}.
+        The soft skills that the company is looking for are: {self.__jdk_soft_skills}.
 
         The question answers given by the applicant: {candidate_recruit_answers}.
 
@@ -488,110 +683,63 @@ class HRAssistant():
             reason: <GIVE A REASON FOR THE SCORE YOU GAVE IN TASK-2>
         """
 
-        response = self.client.chat.completions.create(
-            model="gpt-3.5-turbo-1106",
+        # Generate a response for the system and user prompts using the model
+        # The response is in the JSON format
+        model = "gpt-3.5-turbo-1106"
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ]
+
+        response = self.__client.chat.completions.create(
+            model=model,
             response_format={"type": "json_object"},
-            messages=[
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ]
+            messages=messages
         )
 
-        # print(response)
+        # Convert the response to a dictionary
+        response = json.loads(
+            response.choices[0].message.content, strict=False)
 
-        response = json.loads(response.choices[0].message.content, strict=False)
-
+        # Extract the reasoning and the personality score and it's reasoning from the response
         techreason = response['tech_reason']
-        score = max(min(response['score'], 5), 0)
+        # Cap the score between 0 and 5
+        score = int(round(max(min(response['score'], 5), 0), 0))
         reason = response['reason']
 
         return techreason, score, reason
 
     def __translate_en_ja(self, reason):
+        """
+        Translates a text (in any language) to Japanese using the Google Cloud Translate API.
+
+        Parameters:
+        ----------
+        description : str
+            The text to be translated.
+
+        Returns:
+        -------
+        str:
+            The translated text in Japanese.
+        """
+
+        # Set the environment variable for the Google Cloud credentials
         os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"../google-credentials.json"
 
+        # Create an instance of the Google Cloud Translate API
         translate_client = translate.Client()
-        target = "ja"
 
-        output = translate_client.translate(reason, target_language=target)
+        # Translate the given text to English and get the translated text
+        target = "ja"                       # Set the target language to Japanese
+        output = translate_client.translate(reason, target_language=target)[
+            'translatedText']
 
-        return output['translatedText']
+        return output
 
     def __add_reasons_and_scores(self):
         """
-        Returns the personality score of the candidate.
-
-        Returns
-        -------
-        int
-            The personality score of the candidate.
-        """
-
-        for index, row in self.cands_final_score_dataframe.iterrows():
-            candidate_id = row['id']
-            candidate_recruit_answers = self.candidate_recruit_answers[self.candidate_id_list.index(
-                candidate_id)]
-
-            candidate_score = row['final_score']
-            candidate_projects_info = self.candidate_desc_list[self.candidate_id_list.index(
-                candidate_id)]
-
-
-            techreason, score, personalityreason = self.__get_score_reasons_and_personality_scores(candidate_recruit_answers, candidate_score, candidate_projects_info)
-
-            techreason_jap = self.__translate_en_ja(techreason)
-            personalityreason_jap = self.__translate_en_ja(personalityreason)
-
-            self.cands_final_score_dataframe.loc[index, 'tech_reason'] = techreason
-            self.cands_final_score_dataframe.loc[index, 'tech_reason_japanese'] = techreason_jap
-            self.cands_final_score_dataframe.loc[index, 'personality_score'] = score
-            self.cands_final_score_dataframe.loc[index, 'personality_reason'] = personalityreason
-            self.cands_final_score_dataframe.loc[index, 'personality_reason_japanese'] = personalityreason_jap
-
-        return
-    
-    def __get_all_candidate_scores(self):
-        """
-
-        """
-        project_scores_all = {}
-
-        # abs_start_time = time.time()
-        # start_time = time.time()
-        for candidate_id in self.candidate_id_list:
-            project_scores = self.__fetch_candidate_scores(candidate_id)
-            project_scores_all[candidate_id] = project_scores
-        # print(project_scores_all)
-        # print("Data Fetch Pinecone --- %s seconds ---" % (time.time() - start_time))
-        # start_time = time.time()
-        self.cands_dataframe = self.__create_dataframe(project_scores_all)
-        # print(self.cands_dataframe)
-        self.__normalize_project_scores()
-        # print(self.cands_dataframe)
-        self.__drop_irrelevant_projects()
-        self.__normalize_experience_scores()
-        self.__create_final_scores_dataframe()
-        self.__calc_project_count_final_normalized_scores()
-        # print("Scoring Done --- %s seconds ---" % (time.time() - start_time))
-        # start_time = time.time()
-        # self.__add_cand_score_reasons()
-        # print("Reasoning Done --- %s seconds ---" % (time.time() - start_time))
-        # start_time = time.time()
-        self.__add_reasons_and_scores()
-        # print("Personality Done --- %s seconds ---" % (time.time() - start_time))
-        pd.DataFrame.to_excel(self.cands_dataframe, f"./results/{self.jdk_id}.xlsx", index=False)
-        pd.DataFrame.to_excel(self.cands_final_score_dataframe, f"./results/jdk_{self.jdk_id}.xlsx", index=False)
-
-        result_data_json = self.cands_final_score_dataframe.to_json(
-            orient='records')
-        # print("JSON Done --- %s seconds ---" % (time.time() - start_time))
-        # print("Total Time --- %s seconds ---" % (time.time() - abs_start_time))
-
-        return result_data_json
-
-    def score_candidates(self):
-        """
-        Scores the candidates based on their projects and the job description.
+        This function adds the reasoning for the candidate scores and the personality scores of the candidates to the dataframe 'cands_final_score_dataframe'.
 
         Parameters:
         ----------
@@ -599,36 +747,118 @@ class HRAssistant():
 
         Returns:
         -------
-        candidate_scores : list
-            The list of dictionaries containing the id and the score of the candidates.
+        None
         """
 
-        self.jdk_embedding = self.__fetch_jdk_embeddings()
-        candidate_scores = self.__get_all_candidate_scores()
-        return candidate_scores
+        # Iterate through the dataframe and add the reasoning and the personality scores to the dataframe
+        for index, row in self.cands_final_score_dataframe.iterrows():
+            # Get the candidate's id and score in the current row
+            candidate_id = row['id']
+            candidate_score = row['final_score']
 
+            # Extract the candidates quistionairee answers and their projects through the candidate_id
+            # See the index of the candidate_id in the candidate_id_list and extract the:
+            #       1. corresponding answers from the candidate_recruit_answers list
+            #       2. corresponding description (projet details) from the candidate_desc_list list
+            idx_temp = self.__candidate_id_list.index(candidate_id)
+            candidate_recruit_answers = self.__candidate_recruit_answers[idx_temp]
+            candidate_projects_info = self.__candidate_desc_list[idx_temp]
 
-def get_candidate_scores(jdk_info, candidates_info):
-    """
-    Scores the candidates based on their projects and the job description.
+            # Get the reasoning for the candidate's score and the personality score of the candidate
+            techreason, score, personalityreason = self.__get_score_reasons_and_personality_scores(
+                candidate_recruit_answers, candidate_score, candidate_projects_info)
 
-    Parameters:
-    ----------
-    jdk_info : dict
-        The dictionary containing the id and the description of the job description.
-    candidates_info : list
-        The list of dictionaries containing the id and the description of the candidates.
+            # Translate both the reasonings to Japanese
+            techreason_jap = self.__translate_en_ja(
+                techreason)                     # tech reasoning
+            personalityreason_jap = self.__translate_en_ja(
+                personalityreason)       # personality reasoning
 
-    Returns:
-    -------
-    result : list
-        The list of dictionaries containing the id and the score of the candidates.
-    """
+            # Add the technical reasoning and the personality scores and reasoning to the dataframe 'cands_final_score_dataframe'
+            self.cands_final_score_dataframe.loc[index,
+                                                 'tech_reason'] = techreason
+            self.cands_final_score_dataframe.loc[index,
+                                                 'tech_reason_japanese'] = techreason_jap
+            self.cands_final_score_dataframe.loc[index,
+                                                 'personality_score'] = score
+            self.cands_final_score_dataframe.loc[index,
+                                                 'personality_reason'] = personalityreason
+            self.cands_final_score_dataframe.loc[index,
+                                                 'personality_reason_japanese'] = personalityreason_jap
 
-    _ = load_dotenv(find_dotenv())
+        return
 
-    # print(os.environ.get('PINECONE_API_KEY'))
-    jdk_resume_assistant = HRAssistant(jdk_info, candidates_info)
-    result = jdk_resume_assistant.score_candidates()
+    def score_candidates(self):
+        """
+        This function can be called to score the candidates based on their projects for a particular job description.
 
-    return result
+        It uses the given jdk and the candidates' projects to calculate the final scores of the candidates in the following steps:
+        1. Fetch the embedding of the jdk from the pinecone index.
+        2. Loop through the candidate ids and fetch the scores of the projects of the candidates.
+        3. Create a dataframe containing the project scores of the candidates, 'cands_dataframe'.
+        4. Normalize the project scores of the candidates and drop the irrelevant projects and apply the experience scores normalization.
+        5. Create a dataframe containing the final scores of the candidates, 'cands_final_score_dataframe'.
+        6. Calculate the final scores of the candidates and the project count penalties.
+        7. Add the reasoning for the candidate scores and the personality scores of the candidates to the dataframe 'cands_final_score_dataframe'.
+
+        Parameters:
+        ----------
+        None
+
+        Returns:
+        -------
+        str
+            The 'cands_final_score_dataframe' in form of a JSON object.
+            Each dictionary in the list contains the following:
+            - id (str): The unique id of the candidate.
+            - final_score (float): The final score of the candidate for the jdk.
+            - tech_reason (str): The reasoning behind the final score.
+            - tech_reason_japanese (str): tech_reason translated to Japanese.
+            - personality_score (int): Soft skills based personality score of the candidate.
+            - personality_reason (str): The reasoning behind the personality_score.
+            - personality_reason_japanese (str): personality_reason translated to Japanese.
+
+        Optional output:
+        ---------------
+        Uncomment the relevant lines to save the intermediate DataFrames (`cands_dataframe` and `cands_final_score_dataframe`) as Excel files in the './results' folder.
+        """
+
+        # Step 1: Fetch the embedding of the jdk from the pinecone index
+        self.__jdk_embedding = self.__fetch_jdk_embeddings()
+
+        # Step 2: Loop through the candidate ids and fetch the scores of the projects of the candidates
+        project_scores_all = {}
+
+        for candidate_id in self.__candidate_id_list:
+            project_scores = self.__fetch_candidate_scores(candidate_id)
+            project_scores_all[candidate_id] = project_scores
+
+        # Step 3: Create a dataframe containing the project scores of the candidates, 'cands_dataframe'
+        self.__cands_dataframe = self.__create_dataframe(project_scores_all)
+
+        # Step 4: Normalize the project scores of the candidates and drop the irrelevant projects and apply the experience scores normalization
+        self.__normalize_project_scores()
+        self.__drop_irrelevant_projects()
+        self.__normalize_experience_scores()
+
+        # Step 5: Create a dataframe containing the final scores of the candidates, 'cands_final_score_dataframe'
+        self.__create_final_scores_dataframe()
+
+        # Step 6: Calculate the final scores of the candidates and the project count penalties
+        self.__calc_project_count_final_normalized_scores()
+
+        # Step 7: Add the reasoning for the candidate scores and the personality scores of the candidates to the dataframe 'cands_final_score_dataframe'
+        self.__add_reasons_and_scores()
+
+        # Convert the dataframe to a JSON object
+        result_data_json = self.cands_final_score_dataframe.to_json(
+            orient='records')
+
+        # Uncomment the below line to save the 'cands_datframe', which contains the project scores
+        # pd.DataFrame.to_excel(self.__cands_dataframe, f"./results/{self.__jdk_id}.xlsx", index=False)
+
+        # Uncomment the below line to save the 'cands_final_score_dataframe', which contains the final scores of the candidates (FINAL RESULT)
+        pd.DataFrame.to_excel(self.cands_final_score_dataframe,
+                              f"./results/jdk_{self.__jdk_id}.xlsx", index=False)
+
+        return result_data_json

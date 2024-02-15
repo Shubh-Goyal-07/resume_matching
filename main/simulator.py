@@ -1,6 +1,5 @@
-from dataManager import upsert_to_database
-from hrAssistant import get_candidate_scores
-from candAssistant import get_job_suggestions
+from hrAssistant import HRAssistant
+from candAssistant import JobSearchAssistant
 from dataManager import Manager_model
 import json
 import time
@@ -14,7 +13,8 @@ abs_start_time = time.time()
 # print("Upserting jdks to database...")
 # start_time = time.time()
 # for jdk in jdks:
-#     desc = upsert_to_database("jdk", jdk)
+#     c = Manager_model()
+#     desc = c.add_jdk(jdk)
 #     # json.dump({'id': jdk['id'], 'description':desc}, open(f"../new_data/jdks/{jdk['id']}.json", 'w'), indent=4)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("Done")
@@ -22,45 +22,63 @@ abs_start_time = time.time()
 # print("Upserting cands to database...")
 # start_time = time.time()
 # for resume in resumes:
-#     desc = upsert_to_database("candidate", resume)
+#     c = Manager_model()
+#     desc = c.add_candidate(resume)
 #     # json.dump({'id': resume['id'], 'description':desc}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("Done")
 
+
+# print("Deleting candidates...")
+# for i in resumes:
+#     cand_id = i['id']
+#     can_projects = i['projects']
+#     project_titles = [project['title'] for project in can_projects]
+
+#     upsert_model = Manager_model()
+#     upsert_model.delete_candidate({'id': cand_id, 'projects': project_titles})
+
+# print("Deleting jdks...")
+# for j in jdks:
+#     jdk_id = j['id']
+#     upsert_model = Manager_model()
+#     upsert_model.delete_jdk({'id': jdk_id})
+
 # time.sleep(5)
 
-print("Getting candidate scores...")
-cands_data = []
-for i in range(1, 5):
-    cands_data.append(json.load(open(f"../new_data/cands/{i}.json")))
+# print("Getting candidate scores...")
+# cands_data = []
+# for i in range(1, 5):
+#     cands_data.append(json.load(open(f"../new_data/cands/{i}.json")))
 
-print("Data Loaded")
-jdk1 = json.load(open(f"../new_data/jdks/1.json"))
-start_time = time.time()
-results = get_candidate_scores(jdk1, cands_data)
-print("--- %s seconds ---" % (time.time() - start_time))
-print("JDK 1 Done")
-# print(results)
-
-jdk2 = json.load(open(f"../new_data/jdks/2.json"))
-start_time = time.time()
-results = get_candidate_scores(jdk2, cands_data)
-print("--- %s seconds ---" % (time.time() - start_time))
-print("JDK 2 Done")
-# # print(results)
-jdk3 = json.load(open(f"../new_data/jdks/3.json"))
-start_time = time.time()
-results = get_candidate_scores(jdk3, cands_data)
-print("--- %s seconds ---" % (time.time() - start_time))
-print("JDK 3 Done")
-# print(results)
+# print("Data Loaded")
+# jdk1 = json.load(open(f"../new_data/jdks/1.json"))
+# start_time = time.time()
+# jdk_resume_assistant = HRAssistant(jdk1, cands_data)
+# result = jdk_resume_assistant.score_candidates()
 # print("--- %s seconds ---" % (time.time() - start_time))
+# print("JDK 1 Done")
+# # print(results)
 
-jdk4 = json.load(open(f"../new_data/jdks/4.json"))
-start_time = time.time()
-results = get_candidate_scores(jdk4, cands_data)
-print("--- %s seconds ---" % (time.time() - start_time))
-print("JDK 4 Done")
+# jdk2 = json.load(open(f"../new_data/jdks/2.json"))
+# start_time = time.time()
+# results = get_candidate_scores(jdk2, cands_data)
+# print("--- %s seconds ---" % (time.time() - start_time))
+# print("JDK 2 Done")
+# # # print(results)
+# jdk3 = json.load(open(f"../new_data/jdks/3.json"))
+# start_time = time.time()
+# results = get_candidate_scores(jdk3, cands_data)
+# print("--- %s seconds ---" % (time.time() - start_time))
+# print("JDK 3 Done")
+# # print(results)
+# # print("--- %s seconds ---" % (time.time() - start_time))
+
+# jdk4 = json.load(open(f"../new_data/jdks/4.json"))
+# start_time = time.time()
+# results = get_candidate_scores(jdk4, cands_data)
+# print("--- %s seconds ---" % (time.time() - start_time))
+# print("JDK 4 Done")
 # print(results)
 # print("--- %s seconds ---" % (time.time() - abs_start_time))
 
@@ -73,9 +91,10 @@ print("JDK 4 Done")
 # for i in range(1, 5):
 #     jobs_data.append(json.load(open(f"../new_data/jdks/{i}.json")))
 # # print(jobs_data)
-# result = get_job_suggestions(cand_data, jobs_data)
+# jdk_resume_assistant = JobSearchAssistant(cand_data, jobs_data)
+# results = jdk_resume_assistant.suggest_jobs()
 # print("Candidate 1 Done")
-# print(result)
+# # print(result)
 
 # cand_data = json.load(open(f"../new_data/cands/2.json"))
 # result = get_job_suggestions(cand_data, jobs_data)
