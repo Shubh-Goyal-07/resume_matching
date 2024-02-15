@@ -479,7 +479,7 @@ class HRAssistant():
 
         3. There should be no line in the reasoning mentioning the candidate got this much score out of 5.
 
-        Make sure not to mention score in any of the technical of soft skill score reasonings in any way.
+        Make sure not to mention score in any of the technical of soft skill score reasonings in any way. It is strictly prohibited to mention the score in the reasoning as per the company's policy.
 
         You have to return the output of all the above 2 tasks in the following JSON format:
             tech_reason: <GIVE THE REASONING HERE THAT IS ASKED FOR IN TASK-1>,

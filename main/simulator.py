@@ -62,7 +62,7 @@ results = get_candidate_scores(jdk4, cands_data)
 print("--- %s seconds ---" % (time.time() - start_time))
 print("JDK 4 Done")
 # print(results)
-print("--- %s seconds ---" % (time.time() - abs_start_time))
+# print("--- %s seconds ---" % (time.time() - abs_start_time))
 
 # time.sleep(5)
 
@@ -91,7 +91,7 @@ print("--- %s seconds ---" % (time.time() - abs_start_time))
 # result = get_job_suggestions(cand_data, jobs_data)
 # print("Candidate 4 Done")
 # # print(result)
-print("--- %s seconds ---" % (time.time() - start_time))
+# print("--- %s seconds ---" % (time.time() - start_time))
 
 # time.sleep(5)
 
