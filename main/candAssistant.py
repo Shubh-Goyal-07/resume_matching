@@ -503,3 +503,36 @@ class JobSearchAssistant():
         # pd.DataFrame.to_excel(self.jdk_dataframe, f"./job_suggestions/candidate_{self.__candidate_id}.xlsx", index=False)
 
         return result_data_json
+
+
+def get_job_suggestions(candidate_info, jdks_info):
+    """
+    This function can be called to get the job suggestions for the candidate.
+
+    Parameters:
+    ----------
+    candidate_info : dict
+        The dictionary containing the candidate's id and resume.
+        The dictionary should contain the following
+        - id (str) : The id of the candidate.
+        - description (str) : The description of the candidate which was generated during upserting the candidate's resume into the pinecone index.
+    
+    jdks_info : list
+        The list of dictionaries containing the job ids and descriptions.
+        The dictionary should contain the following
+        - id (str) : The id of the job.
+        - description (str) : The description of the job.
+
+    Returns:
+    -------
+    results : str
+        The 'jdk_dataframe' dataframe in form of a JSON string.
+        Each dictionary in the JSON string contains the following:
+        - id : The id of the job.
+        - score : The score of the job.
+        - reason : The reasoning for the score of the job.
+    """
+
+    cand_assistant = JobSearchAssistant(candidate_info, jdks_info)
+    results = cand_assistant.suggest_jobs()
+    return results

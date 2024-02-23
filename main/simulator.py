@@ -10,21 +10,21 @@ resumes = json.load(open('../data/resumes.json'))
 
 abs_start_time = time.time()
 
-print("Upserting jdks to database...")
-start_time = time.time()
-for jdk in jdks:
-    upsert_to_database('jdk', jdk)
-    # json.dump({'id': jdk['id'], 'description':desc}, open(f"../new_data/jdks/{jdk['id']}.json", 'w'), indent=4)
-print("--- %s seconds ---" % (time.time() - start_time))
-print("Done")
+# print("Upserting jdks to database...")
+# start_time = time.time()
+# for jdk in jdks:
+#     upsert_to_database('jdk', jdk)
+#     # json.dump({'id': jdk['id'], 'description':desc}, open(f"../new_data/jdks/{jdk['id']}.json", 'w'), indent=4)
+# print("--- %s seconds ---" % (time.time() - start_time))
+# print("Done")
 
-print("Upserting cands to database...")
-start_time = time.time()
-for resume in resumes:
-    upsert_to_database('candidate', resume)
-    # json.dump({'id': resume['id'], 'description':desc}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
-print("--- %s seconds ---" % (time.time() - start_time))
-print("Done")
+# print("Upserting cands to database...")
+# start_time = time.time()
+# for resume in resumes:
+#     upsert_to_database('candidate', resume)
+#     # json.dump({'id': resume['id'], 'description':desc}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
+# print("--- %s seconds ---" % (time.time() - start_time))
+# print("Done")
 
 
 # print("Deleting candidates...")
@@ -44,18 +44,18 @@ print("Done")
 
 # time.sleep(5)
 
-# print("Getting candidate scores...")
-# cands_data = []
-# for i in range(1, 5):
-#     cands_data.append(json.load(open(f"../new_data/cands/{i}.json")))
+print("Getting candidate scores...")
+cands_data = []
+for i in range(1, 5):
+    cands_data.append(json.load(open(f"../new_data/cands/{i}.json")))
 
-# print("Data Loaded")
-# jdk1 = json.load(open(f"../new_data/jdks/1.json"))
-# start_time = time.time()
-# jdk_resume_assistant = HRAssistant(jdk1, cands_data)
-# result = jdk_resume_assistant.score_candidates()
-# print("--- %s seconds ---" % (time.time() - start_time))
-# print("JDK 1 Done")
+print("Data Loaded")
+jdk1 = json.load(open(f"../new_data/jdks/1.json"))
+start_time = time.time()
+jdk_resume_assistant = HRAssistant(jdk1, cands_data)
+result = jdk_resume_assistant.score_candidates()
+print("--- %s seconds ---" % (time.time() - start_time))
+print("JDK 1 Done")
 # print(results)
 
 # jdk2 = json.load(open(f"../new_data/jdks/2.json"))

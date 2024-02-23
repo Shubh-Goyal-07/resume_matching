@@ -11,6 +11,8 @@ import math
 
 import json
 
+import tiktoken
+
 
 class HRAssistant():
     """
@@ -683,6 +685,12 @@ class HRAssistant():
             reason: <GIVE A REASON FOR THE SCORE YOU GAVE IN TASK-2>
         """
 
+        # encoding = tiktoken.encoding_for_model("gpt-3.5-turbo-1106")
+        # enc1 = encoding.encode(system_prompt)
+        # enc2 = encoding.encode(user_prompt)
+        # print(len(enc1) + len(enc2))
+
+
         # Generate a response for the system and user prompts using the model
         # The response is in the JSON format
         model = "gpt-3.5-turbo-1106"
@@ -769,22 +777,22 @@ class HRAssistant():
                 candidate_recruit_answers, candidate_score, candidate_projects_info)
 
             # Translate both the reasonings to Japanese
-            techreason_jap = self.__translate_en_ja(
-                techreason)                     # tech reasoning
-            personalityreason_jap = self.__translate_en_ja(
-                personalityreason)       # personality reasoning
+            # techreason_jap = self.__translate_en_ja(
+            #     techreason)                     # tech reasoning
+            # personalityreason_jap = self.__translate_en_ja(
+            #     personalityreason)       # personality reasoning
 
             # Add the technical reasoning and the personality scores and reasoning to the dataframe 'cands_final_score_dataframe'
             self.cands_final_score_dataframe.loc[index,
                                                  'tech_reason'] = techreason
-            self.cands_final_score_dataframe.loc[index,
-                                                 'tech_reason_japanese'] = techreason_jap
+            # self.cands_final_score_dataframe.loc[index,
+            #                                      'tech_reason_japanese'] = techreason_jap
             self.cands_final_score_dataframe.loc[index,
                                                  'personality_score'] = score
             self.cands_final_score_dataframe.loc[index,
                                                  'personality_reason'] = personalityreason
-            self.cands_final_score_dataframe.loc[index,
-                                                 'personality_reason_japanese'] = personalityreason_jap
+            # self.cands_final_score_dataframe.loc[index,
+            #                                      'personality_reason_japanese'] = personalityreason_jap
 
         return
 
@@ -862,3 +870,43 @@ class HRAssistant():
                               f"./results/jdk_{self.__jdk_id}.xlsx", index=False)
 
         return result_data_json
+
+
+def get_candidate_scores(jdk_info, candidates_info):
+    """
+    This function scores the candidates based on their projects for a particular job description.
+
+    Parameters:
+    ----------
+    jdk_info : dict
+        The dictionary containing the data of the jdk.
+        The dictionary should contain the following
+        - id (str) : The id of the jdk.
+        - description (str) : The description of the jdk which was generated during upserting the jdk.
+    
+    candidates_info : list
+        The list of dictionaries containing the data of the candidates.
+        Each dictionary should contain the following
+        - id (str) : The id of the candidate.
+        - description (str) : The description of the candidate which was generated during upserting the candidate.
+        - galkRecruitScreeningAnswers (dict) : The dictionary containing the answers of the candidate for the screening questions.
+        - galkRecruitQuestionnaireAnswers (dict) : The dictionary containing the answers of the candidate for the questionnaire.
+
+    Returns:
+    -------
+    str
+        The 'cands_final_score_dataframe' in form of a JSON object.
+        Each dictionary in the list contains the following:
+        - id (str): The unique id of the candidate.
+        - final_score (float): The final score of the candidate for the jdk.
+        - tech_reason (str): The reasoning behind the final score.
+        - tech_reason_japanese (str): tech_reason translated to Japanese.
+        - personality_score (int): Soft skills based personality score of the candidate.
+        - personality_reason (str): The reasoning behind the personality_score.
+        - personality_reason_japanese (str): personality_reason translated to Japanese.
+    """
+
+    jdk_resume_assistant = HRAssistant(jdk_info, candidates_info)
+    result = jdk_resume_assistant.score_candidates()
+
+    return result
