@@ -88,13 +88,13 @@ abs_start_time = time.time()
 # start_time = time.time()
 # cand_data = json.load(open(f"../new_data/cands/1.json"))
 # jobs_data = []
-# for i in range(1, 5):
+# for i in range(1, 4):
 #     jobs_data.append(json.load(open(f"../new_data/jdks/{i}.json")))
 # # print(jobs_data)
 # jdk_resume_assistant = JobSearchAssistant(cand_data, jobs_data)
 # results = jdk_resume_assistant.suggest_jobs()
 # print("Candidate 1 Done")
-# # print(result)
+# print(result)
 
 # cand_data = json.load(open(f"../new_data/cands/2.json"))
 # result = get_job_suggestions(cand_data, jobs_data)

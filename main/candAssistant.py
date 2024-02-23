@@ -226,6 +226,10 @@ class JobSearchAssistant():
 
         # Traverse through the jdk_query_scores list and extract the job ids and scores
         for jdk in jdk_query_scores:
+            # Check if the job id is in the list of job ids required for the candidate
+            if jdk['id'] not in self.__jdk_id_list:
+                continue
+
             jdk_ids.append(jdk['id'])
             jdk_scores.append(jdk['score'])
 
@@ -441,7 +445,7 @@ class JobSearchAssistant():
 
         # Drop the description column
         self.jdk_dataframe.drop('description', axis=1, inplace=True)
-        
+
         return
 
     def suggest_jobs(self):
