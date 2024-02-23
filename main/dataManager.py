@@ -692,3 +692,68 @@ class Manager_model():
         index.delete(ids=ids, namespace=namespace)
 
         return
+
+
+def upsert_to_database(category, data):
+    """
+    This function can be called to add a job description or a candidate to the database. It is a wrapper function for the add_jdk and add_candidate functions of the Manager_model class.
+
+    It takes the category and the raw data of the job description or the candidate and:
+    
+    1. Calls the add_jdk function if the category is "jdk" and returns the final description of the job description.
+    2. Calls the add_candidate function if the category is "candidate" and returns the combined description of all the projects of the candidate.
+
+    Parameters
+    ----------
+    category : str
+        The category of the data to be added to the database. It can be either "jdk" or "candidate".
+    
+    data : dict
+        A dictionary containing the raw data of the job description or the candidate. Please see the add_jdk and add_candidate functions for the structure of the dictionary.
+
+    Returns
+    -------
+    str
+        The final description of the job description if the category is "jdk" or the combined description of all the projects of the candidate if the category is "candidate".
+    """
+
+    upsert_model = Manager_model()
+
+    if category == "candidate":
+        description = upsert_model.add_candidate(data)
+    else:
+        description = upsert_model.add_jdk(data)
+
+    return description
+
+
+def delete_from_database(category, data):
+    """
+    This function can be called to delete a job description or a candidate from the database. It is a wrapper function for the delete_jdk and delete_candidate functions of the Manager_model class.
+
+    It takes the category and the raw data of the job description or the candidate and:
+
+    1. Calls the delete_jdk function if the category is "jdk".
+    2. Calls the delete_candidate function if the category is "candidate".
+
+    Parameters
+    ----------
+    category : str
+        The category of the data to be deleted from the database. It can be either "jdk" or "candidate".
+
+    data : dict
+        A dictionary containing the raw data of the job description or the candidate. Please see the delete_jdk and delete_candidate functions for the structure of the dictionary.
+
+    Returns
+    -------
+    None
+    """
+
+    delete_model = Manager_model()
+
+    if category == "candidate":
+        delete_model.delete_candidate(data)
+    else:
+        delete_model.delete_jdk(data)
+
+    return

@@ -1,6 +1,6 @@
 from hrAssistant import HRAssistant
 from candAssistant import JobSearchAssistant
-from dataManager import Manager_model
+from dataManager import delete_from_database, upsert_to_database
 import json
 import time
 
@@ -10,23 +10,21 @@ resumes = json.load(open('../data/resumes.json'))
 
 abs_start_time = time.time()
 
-# print("Upserting jdks to database...")
-# start_time = time.time()
-# for jdk in jdks:
-#     c = Manager_model()
-#     desc = c.add_jdk(jdk)
-#     # json.dump({'id': jdk['id'], 'description':desc}, open(f"../new_data/jdks/{jdk['id']}.json", 'w'), indent=4)
-# print("--- %s seconds ---" % (time.time() - start_time))
-# print("Done")
+print("Upserting jdks to database...")
+start_time = time.time()
+for jdk in jdks:
+    upsert_to_database('jdk', jdk)
+    # json.dump({'id': jdk['id'], 'description':desc}, open(f"../new_data/jdks/{jdk['id']}.json", 'w'), indent=4)
+print("--- %s seconds ---" % (time.time() - start_time))
+print("Done")
 
-# print("Upserting cands to database...")
-# start_time = time.time()
-# for resume in resumes:
-#     c = Manager_model()
-#     desc = c.add_candidate(resume)
-#     # json.dump({'id': resume['id'], 'description':desc}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
-# print("--- %s seconds ---" % (time.time() - start_time))
-# print("Done")
+print("Upserting cands to database...")
+start_time = time.time()
+for resume in resumes:
+    upsert_to_database('candidate', resume)
+    # json.dump({'id': resume['id'], 'description':desc}, open(f"../new_data/cands/{resume['id']}.json", 'w'), indent=4)
+print("--- %s seconds ---" % (time.time() - start_time))
+print("Done")
 
 
 # print("Deleting candidates...")
@@ -58,7 +56,7 @@ abs_start_time = time.time()
 # result = jdk_resume_assistant.score_candidates()
 # print("--- %s seconds ---" % (time.time() - start_time))
 # print("JDK 1 Done")
-# # print(results)
+# print(results)
 
 # jdk2 = json.load(open(f"../new_data/jdks/2.json"))
 # start_time = time.time()
@@ -118,16 +116,15 @@ abs_start_time = time.time()
 # start_time = time.time()
 
 # jdk_id = '3'
-# upsert_model = Upsert_model({'id': jdk_id})
-# upsert_model.delete_jdk()
+# delete_from_database('jdk', {'id': jdk_id})
 
 
-# for i in range(1, 4):
-#     cand_id = str(i)
-#     can_projects = json.load(open(f"../new_data/cands/{cand_id}.json"))['projects']
+# resumes = json.load(open('../data/resumes.json'))
+# for i in resumes:
+#     cand_id = i['id']
+#     can_projects = i['projects']
 #     project_titles = [project['title'] for project in can_projects]
 
-#     upsert_model = Upsert_model({'id': cand_id, 'projects': project_titles})
-#     upsert_model.delete_candidate()
+#     delete_from_database('candidate', {'id': cand_id, 'projects': project_titles})
 
-print("Total Time Taken: --- %s seconds ---" % (time.time() - abs_start_time))
+# print("Total Time Taken: --- %s seconds ---" % (time.time() - abs_start_time))
