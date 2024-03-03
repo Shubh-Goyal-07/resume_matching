@@ -411,7 +411,7 @@ class Manager_model():
 
         # Get the embeddings for the final description
         embeddings = self.__create_openai_embeddings([gpt_description])
-        # Extract the embeddings from the list, as it contains only one element
+        # Extract the embeddings from the list as it contains only one element
         description_embeddings = embeddings[0]
 
         # Get the namespace from the Pinecone configuration

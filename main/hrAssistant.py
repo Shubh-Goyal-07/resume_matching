@@ -10,6 +10,7 @@ import numpy as np
 import math
 
 import json
+import time
 
 import tiktoken
 
@@ -631,7 +632,7 @@ class HRAssistant():
 
         Furthermore, the resume also contains the skills of the applicant. Alongwith the job description, the company has also provided us with a list of skills that it requires the applicants to have. You will be given a list of both the skills, the applicant skills as well as the skills required by the company. Your task is to first list out the skills that are common in both, and then the skills that are required but are not possessed by the applicant. You have to provide a reasoning based on those skills that are required but are not possessed by the applicant.
 
-        
+
         You need to consider the following points while providing the reasoning:
 
         1. Do not use any modal verbs that will indicate a probability of any kind.
@@ -679,17 +680,20 @@ class HRAssistant():
 
         Make sure not to mention score in any of the technical of soft skill score reasonings in any way. It is strictly prohibited to mention the score in the reasoning as per the company's policy.
 
+        Also, you have to give the reasons in japanese language as well. So, make sure to translate the reasons in japanese language as well.
+
         You have to return the output of all the above 2 tasks in the following JSON format:
             tech_reason: <GIVE THE REASONING HERE THAT IS ASKED FOR IN TASK-1>,
+            tech_reason_japanese: <GIVE THE REASONING IN JAPANESE LANGUAGE HERE THAT IS ASKED FOR IN TASK-1>,
             score: <GIVE A SCORE OUT OF 5 HERE FOR TASK-2>,
-            reason: <GIVE A REASON FOR THE SCORE YOU GAVE IN TASK-2>
+            reason: <GIVE A REASON FOR THE SCORE YOU GAVE IN TASK-2>,
+            reason_japanese: <GIVE THE REASON IN JAPANESE LANGUAGE HERE FOR THE SCORE YOU GAVE IN TASK-2>
         """
+
 
         # encoding = tiktoken.encoding_for_model("gpt-3.5-turbo-1106")
         # enc1 = encoding.encode(system_prompt)
         # enc2 = encoding.encode(user_prompt)
-        # print(len(enc1) + len(enc2))
-
 
         # Generate a response for the system and user prompts using the model
         # The response is in the JSON format
@@ -699,23 +703,40 @@ class HRAssistant():
             {"role": "user", "content": user_prompt},
         ]
 
-        response = self.__client.chat.completions.create(
-            model=model,
-            response_format={"type": "json_object"},
-            messages=messages
-        )
+        try:
+            # strt_time = time.time()
+            response = self.__client.chat.completions.create(
+                model=model,
+                response_format={"type": "json_object"},
+                messages=messages
+            )
 
-        # Convert the response to a dictionary
+            # print(response.usage)
+            # print("Time taken for OpenAI: ", time.time() - strt_time)
+            # Convert the response to a dictionary
+            
+        except openai.RateLimitError:
+            # print("OpenAI limit reahced.")
+            time.sleep(60)
+            response = self.__client.chat.completions.create(
+                model=model,
+                response_format={"type": "json_object"},
+                messages=messages
+            )
+
         response = json.loads(
-            response.choices[0].message.content, strict=False)
+                response.choices[0].message.content, strict=False)
 
         # Extract the reasoning and the personality score and it's reasoning from the response
         techreason = response['tech_reason']
         # Cap the score between 0 and 5
         score = int(round(max(min(response['score'], 5), 0), 0))
         reason = response['reason']
+        techreason_jap = response['tech_reason_japanese']
+        reason_jap = response['reason_japanese']
 
-        return techreason, score, reason
+        return techreason, score, reason, techreason_jap, reason_jap
+
 
     def __translate_en_ja(self, reason):
         """
@@ -762,6 +783,9 @@ class HRAssistant():
         for index, row in self.cands_final_score_dataframe.iterrows():
             # Get the candidate's id and score in the current row
             candidate_id = row['id']
+
+            # print("Candidate ID: ", candidate_id)
+
             candidate_score = row['final_score']
 
             # Extract the candidates quistionairee answers and their projects through the candidate_id
@@ -773,7 +797,7 @@ class HRAssistant():
             candidate_projects_info = self.__candidate_desc_list[idx_temp]
 
             # Get the reasoning for the candidate's score and the personality score of the candidate
-            techreason, score, personalityreason = self.__get_score_reasons_and_personality_scores(
+            techreason, score, personalityreason, techreason_jap, personalityreason_jap = self.__get_score_reasons_and_personality_scores(
                 candidate_recruit_answers, candidate_score, candidate_projects_info)
 
             # Translate both the reasonings to Japanese
@@ -785,14 +809,14 @@ class HRAssistant():
             # Add the technical reasoning and the personality scores and reasoning to the dataframe 'cands_final_score_dataframe'
             self.cands_final_score_dataframe.loc[index,
                                                  'tech_reason'] = techreason
-            # self.cands_final_score_dataframe.loc[index,
-            #                                      'tech_reason_japanese'] = techreason_jap
+            self.cands_final_score_dataframe.loc[index,
+                                                 'tech_reason_ja'] = techreason_jap
             self.cands_final_score_dataframe.loc[index,
                                                  'personality_score'] = score
             self.cands_final_score_dataframe.loc[index,
                                                  'personality_reason'] = personalityreason
-            # self.cands_final_score_dataframe.loc[index,
-            #                                      'personality_reason_japanese'] = personalityreason_jap
+            self.cands_final_score_dataframe.loc[index,
+                                                 'personality_reason_ja'] = personalityreason_jap
 
         return
 
@@ -866,8 +890,8 @@ class HRAssistant():
         # pd.DataFrame.to_excel(self.__cands_dataframe, f"./results/{self.__jdk_id}.xlsx", index=False)
 
         # Uncomment the below line to save the 'cands_final_score_dataframe', which contains the final scores of the candidates (FINAL RESULT)
-        pd.DataFrame.to_excel(self.cands_final_score_dataframe,
-                              f"./results/jdk_{self.__jdk_id}.xlsx", index=False)
+        # pd.DataFrame.to_excel(self.cands_final_score_dataframe,
+                            #   f"./results/jdk_{self.__jdk_id}.xlsx", index=False)
 
         return result_data_json
 
@@ -883,7 +907,7 @@ def get_candidate_scores(jdk_info, candidates_info):
         The dictionary should contain the following
         - id (str) : The id of the jdk.
         - description (str) : The description of the jdk which was generated during upserting the jdk.
-    
+
     candidates_info : list
         The list of dictionaries containing the data of the candidates.
         Each dictionary should contain the following
