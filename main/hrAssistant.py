@@ -711,32 +711,28 @@ class HRAssistant():
                 messages=messages
             )
 
+            response = json.loads(
+                response.choices[0].message.content, strict=False)
+            
+            # Extract the reasoning and the personality score and it's reasoning from the response
+            techreason = response['tech_reason']
+            # Cap the score between 0 and 5
+            score = int(round(max(min(response['score'], 5), 0), 0))
+            reason = response['reason']
+            techreason_jap = response['tech_reason_japanese']
+            reason_jap = response['reason_japanese']
+
+            return [techreason, techreason_jap, score, reason, reason_jap]
+
             # print(response.usage)
             # print("Time taken for OpenAI: ", time.time() - strt_time)
             # Convert the response to a dictionary
             
         except openai.RateLimitError:
             # print("OpenAI limit reahced.")
-            time.sleep(60)
-            response = self.__client.chat.completions.create(
-                model=model,
-                response_format={"type": "json_object"},
-                messages=messages
-            )
-
-        response = json.loads(
-                response.choices[0].message.content, strict=False)
-
-        # Extract the reasoning and the personality score and it's reasoning from the response
-        techreason = response['tech_reason']
-        # Cap the score between 0 and 5
-        score = int(round(max(min(response['score'], 5), 0), 0))
-        reason = response['reason']
-        techreason_jap = response['tech_reason_japanese']
-        reason_jap = response['reason_japanese']
-
-        return techreason, score, reason, techreason_jap, reason_jap
-
+            time.sleep(10)
+            
+            return self.__get_score_reasons_and_personality_scores(candidate_recruit_answers, candidate_score, candidate_description)
 
     def __translate_en_ja(self, reason):
         """
@@ -797,8 +793,10 @@ class HRAssistant():
             candidate_projects_info = self.__candidate_desc_list[idx_temp]
 
             # Get the reasoning for the candidate's score and the personality score of the candidate
-            techreason, score, personalityreason, techreason_jap, personalityreason_jap = self.__get_score_reasons_and_personality_scores(
+            response = self.__get_score_reasons_and_personality_scores(
                 candidate_recruit_answers, candidate_score, candidate_projects_info)
+            
+            techreason, score, personalityreason, techreason_jap, personalityreason_jap = response
 
             # Translate both the reasonings to Japanese
             # techreason_jap = self.__translate_en_ja(
@@ -891,7 +889,7 @@ class HRAssistant():
 
         # Uncomment the below line to save the 'cands_final_score_dataframe', which contains the final scores of the candidates (FINAL RESULT)
         # pd.DataFrame.to_excel(self.cands_final_score_dataframe,
-                            #   f"./results/jdk_{self.__jdk_id}.xlsx", index=False)
+                            #   f"./results/jdk_{self-.__jdk_id}.xlsx", index=False)
 
         return result_data_json
 
