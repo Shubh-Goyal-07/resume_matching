@@ -1,5 +1,9 @@
 {
     "id": 4,
+    "name": "Se",
+    "img": "Hello",
+    "collegeName": "IITJ",
+    "major": "CSE",
     "description": "The candidate has worked on the following projects: The project is titled 'Video Conferencing Project'. Video Conferencing Project: Implemented a clone of Google Meet with messaging, file sharing, screen sharing/recording, video/audio calls. Skills used: JavaScript, HTML, CSS, API integration.The project is titled 'TEDxIITGuwahati Website'. TEDxIITGuwahati Website - Group project for the main event hosting TED talk at IIT Guwahati, utilizing JavaScript, HTML, CSS.The project is titled 'Alcheringa Pass Portal'. Alcheringa Pass Portal: Website for distributing passes to non IITG participants for the largest cultural fest in North-East India. Skills used: JavaScript, HTML, CSS.SKILLS:  API Integration, JavaScript, HTML, CSS.",
     "galkRecruitScreeningAnswers": {
         "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",

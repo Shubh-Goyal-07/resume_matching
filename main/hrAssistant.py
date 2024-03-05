@@ -157,17 +157,31 @@ class HRAssistant():
         self.__candidate_id_list = []
         self.__candidate_desc_list = []
         self.__candidate_recruit_answers = []
+        self.__candidate_name = []
+        self.__candidate_img = []
+        self.__candidate_college = []
+        self.__candidate_major = []
 
         for candidate in candidates_info:
             self.__candidate_id_list.append(candidate['id'])
             self.__candidate_desc_list.append(candidate['description'])
+
+            self.__candidate_name.append(candidate['name'])
+            self.__candidate_img.append(candidate['img'])
+            self.__candidate_college.append(candidate['collegeName'])
+            self.__candidate_major.append(candidate['major'])
+
             # Creating one dictionary of the answers of the candidate for the screening questions and the questionnaire
             answers = candidate['galkRecruitScreeningAnswers']
             answers.update(candidate['galkRecruitQuestionnaireAnswers'])
             self.__candidate_recruit_answers.append(str(answers))
 
-        # delete the variable answers
-        del answers
+        self.__cand_raw_data_dataframe = pd.DataFrame(
+            {"id": self.__candidate_id_list, "description": self.__candidate_desc_list, "answers": self.__candidate_recruit_answers, "name": self.__candidate_name, "img": self.__candidate_img, "collegeName": self.__candidate_college, "major": self.__candidate_major})
+
+        # delete the temporary lists
+        del answers, self.__candidate_desc_list, self.__candidate_recruit_answers, self.__candidate_name, self.__candidate_img, self.__candidate_college, self.__candidate_major
+
 
         # Set the openai api key and create an instance of the OpenAI class
         openai.api_key = os.environ.get("OPENAI_API_KEY")
@@ -639,7 +653,7 @@ class HRAssistant():
 
         2. Do not mention anything about the score that has been given to the candidate. You have to provide a reasoning based on the job description and the projects of the applicant and not on the score of the candidate. Use the score for your internal understanding only.
 
-        3. Consider both the job description and the projects of the applicant while providing the reasoning. Additionally, consider the skills that are required by the company and the skills that the applicant possesses. You have to provide a reasoning based on the skills as well. If some skills are required by the company but are not possessed by the applicant then you have to provide a reasoning based on those skills as well. Try to beautify the positive points and use high level vocabulary to make the reasoning more appealing.
+        3. Consider both the job description and the projects of the applicant while providing the reasoning. Additionally, consider the skills that are required by the company and the skills that the applicant possesses. You have to provide a reasoning based on the skills as well. If some skills are required by the company but are not possessed by the applicant then you have to provide a reasoning based on those skills as well. Try to beautify the positive points.
 
         4. Keep the reasoning more towards the technical side and try to keep it as positive as possible.
 
@@ -649,6 +663,11 @@ class HRAssistant():
         6. Do not show the irrelevant projects of the applicant in a positive light. If the project is irrelevant then avoid mentioning the project in the reasoning. If you use the project in the reasoning then it should be used to show the applicant's skills in a positive light but not relevancy of the project.
 
         7. If very less skills are common between the applicant and the company then critcize the candidate a bit and do not strongly support the candidate.
+
+        8. Strictly use simple level english vocabulary and grammar which can be easily understood by the recruiter and can be easily translated to japanese. The is no need to use any complex words or sentences.
+
+        9. Write the reasoning such that it has been written by a human and not by a machine.
+
 
         The job description provided by the company: {self.__jdk_desc}
 
@@ -680,8 +699,15 @@ class HRAssistant():
 
         Make sure not to mention score in any of the technical of soft skill score reasonings in any way. It is strictly prohibited to mention the score in the reasoning as per the company's policy.
 
-        Also, you have to give the reasons in japanese language as well. So, make sure to translate the reasons in japanese language as well.
+        
+        Additionaly, you have to give the reasons in japanese language as well.
+        Keep the following points in consideration while translating:
 
+        1. Translate it to an easy to understand native style japanese language.
+        
+        2. Do not change the meaning of the text while translating.  Also, make sure to use the correct grammar and vocabulary.
+
+        
         You have to return the output of all the above 2 tasks in the following JSON format:
             tech_reason: <GIVE THE REASONING HERE THAT IS ASKED FOR IN TASK-1>,
             tech_reason_japanese: <GIVE THE REASONING IN JAPANESE LANGUAGE HERE THAT IS ASKED FOR IN TASK-1>,
@@ -708,7 +734,7 @@ class HRAssistant():
             response = self.__client.chat.completions.create(
                 model=model,
                 response_format={"type": "json_object"},
-                messages=messages
+                messages=messages,
             )
 
             response = json.loads(
@@ -734,34 +760,6 @@ class HRAssistant():
             
             return self.__get_score_reasons_and_personality_scores(candidate_recruit_answers, candidate_score, candidate_description)
 
-    def __translate_en_ja(self, reason):
-        """
-        Translates a text (in any language) to Japanese using the Google Cloud Translate API.
-
-        Parameters:
-        ----------
-        description : str
-            The text to be translated.
-
-        Returns:
-        -------
-        str:
-            The translated text in Japanese.
-        """
-
-        # Set the environment variable for the Google Cloud credentials
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"../google-credentials.json"
-
-        # Create an instance of the Google Cloud Translate API
-        translate_client = translate.Client()
-
-        # Translate the given text to English and get the translated text
-        target = "ja"                       # Set the target language to Japanese
-        output = translate_client.translate(reason, target_language=target)[
-            'translatedText']
-
-        return output
-
     def __add_reasons_and_scores(self):
         """
         This function adds the reasoning for the candidate scores and the personality scores of the candidates to the dataframe 'cands_final_score_dataframe'.
@@ -784,19 +782,19 @@ class HRAssistant():
 
             candidate_score = row['final_score']
 
-            # Extract the candidates quistionairee answers and their projects through the candidate_id
-            # See the index of the candidate_id in the candidate_id_list and extract the:
-            #       1. corresponding answers from the candidate_recruit_answers list
-            #       2. corresponding description (projet details) from the candidate_desc_list list
-            idx_temp = self.__candidate_id_list.index(candidate_id)
-            candidate_recruit_answers = self.__candidate_recruit_answers[idx_temp]
-            candidate_projects_info = self.__candidate_desc_list[idx_temp]
+            # Extract the candidate's information from the dataframe '__cand_raw_data_dataframe'
+            # cand_info will be a pd.Series object
+            cand_info = self.__cand_raw_data_dataframe[self.__cand_raw_data_dataframe['id'] == candidate_id].iloc[0]
+
+            # Get the recruit answers and the project descriptions from the row of the candidate
+            candidate_recruit_answers = cand_info.at['answers']
+            candidate_projects_info = cand_info.at['description']
 
             # Get the reasoning for the candidate's score and the personality score of the candidate
             response = self.__get_score_reasons_and_personality_scores(
                 candidate_recruit_answers, candidate_score, candidate_projects_info)
             
-            techreason, score, personalityreason, techreason_jap, personalityreason_jap = response
+            techreason, techreason_jap, score, personalityreason, personalityreason_jap = response
 
             # Translate both the reasonings to Japanese
             # techreason_jap = self.__translate_en_ja(
@@ -815,7 +813,13 @@ class HRAssistant():
                                                  'personality_reason'] = personalityreason
             self.cands_final_score_dataframe.loc[index,
                                                  'personality_reason_ja'] = personalityreason_jap
-
+            
+            # add value from name, img, collegeName and major
+            self.cands_final_score_dataframe.loc[index, 'name'] = cand_info.at['name']
+            self.cands_final_score_dataframe.loc[index, 'img'] = cand_info.at['img']
+            self.cands_final_score_dataframe.loc[index, 'collegeName'] = cand_info.at['collegeName']
+            self.cands_final_score_dataframe.loc[index, 'major'] = cand_info.at['major']
+            
         return
 
     def score_candidates(self):
@@ -888,8 +892,8 @@ class HRAssistant():
         # pd.DataFrame.to_excel(self.__cands_dataframe, f"./results/{self.__jdk_id}.xlsx", index=False)
 
         # Uncomment the below line to save the 'cands_final_score_dataframe', which contains the final scores of the candidates (FINAL RESULT)
-        # pd.DataFrame.to_excel(self.cands_final_score_dataframe,
-                            #   f"./results/jdk_{self-.__jdk_id}.xlsx", index=False)
+        pd.DataFrame.to_excel(self.cands_final_score_dataframe,
+                              f"./results/jdk1_{self.__jdk_id}.xlsx", index=False)
 
         return result_data_json
 

@@ -1,5 +1,9 @@
 {
     "id": 1,
+    "name": "Shubh",
+    "img": "Hello",
+    "collegeName": "IITJ",
+    "major": "CSE",
     "description": "The candidate has worked on the following projects: The project is titled 'LLMGuard'. LLMGuard: Developed a pipeline for bias/toxicity detection in language models utilizing GPT-2, BERT, and other models. Created a user-friendly UI (ReactJS) and backend (Django Rest Framework) for intuitive integration and usage of the pipeline. Skills: ReactJS, Django, Python, JavaScript.The project is titled 'Literature Society IITJ Website'. Literature Society IITJ Website: A website developed for managing activities including user profile management, library system, upload feature for written works, and moderator/admin access. Skills used: ReactJS, Django, Python, JavaScript.The project is titled 'CloudPhysician's Vital Extraction Challenge'. CloudPhysician's Vital Extraction Challenge: Fine-tuned DETR and detectron for ICU monitor segmentation and vital extraction, including a graph digitization algorithm for ECG strip. Skills used: Computer Vision, Image Processing.The project is titled 'Multi Model Data Analysis for Annotation of Human Activities'. Project Title: Multi Model Data Analysis for Human Activity Annotation\nProject Description: Analyzed accelerometer and gyroscope data, implemented data cleaning and activity type detection pipeline using PyTorch, Tensorflow, Sklearn, and Python.The project is titled 'FaceNet Implementation'. Implemented FaceNet research paper and Standard Siamese network from scratch using PyTorch, successfully trained on CelebA dataset.SKILLS:  Tensorflow, JavaScript, Sklearn, Computer Vision, Django, Image Processing, ReactJS, Data Analysis, Python, PyTorch.",
     "galkRecruitScreeningAnswers": {
         "The reason why you want to come to Japan  (Multiple choice)": [

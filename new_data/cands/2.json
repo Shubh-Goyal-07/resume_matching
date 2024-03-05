@@ -1,5 +1,9 @@
 {
     "id": 2,
+    "name": "Suk",
+    "img": "Hello",
+    "collegeName": "IITJ",
+    "major": "CSE",
     "description": "The candidate has worked on the following projects: The project is titled 'SHAMIYANA APP'. \"Developed Shamiyana App, a time-saving food delivery and ordering platform for Shamiyana Cafe utilizing Flutter, Dart, and Firebase.\"The project is titled 'RAPID'. RAPID is a web app that combines multiplayer gaming and video calling functionality, allowing users to play games like chess with friends while video calling them. It utilizes WebSockets for real-time gameplay communication and the WebRTC API for video calls. Skills used include NodeJS, ExpressJS, Socket.IO, WebRTC, HTML, CSS, JS, and Docker.The project is titled 'SMART SENSING MIDDLEWARE'. SMART SENSING MIDDLEWARE - A web application displaying data from smart home devices through graphs using ReactJS, HTML, and CSS.SKILLS:  ReactJS, Flutter, WebRTC, Socket.IO, NodeJS, HTML, Docker, Firebase, ExpressJS, CSS, JS, Dart.",
     "galkRecruitScreeningAnswers": {
         "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",

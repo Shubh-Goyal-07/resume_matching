@@ -1,5 +1,9 @@
 {
     "id": 3,
+    "name": "Ya",
+    "img": "Hello",
+    "collegeName": "IITJ",
+    "major": "CSE",
     "description": "The candidate has worked on the following projects: The project is titled 'Cloudphysician's Vital Extraction Challenge'. Cloudphysician's Vital Extraction Challenge: Extracted ICU monitor vitals using object detection and text recognition, generating python dictionary. Skills used: Computer Vision, Image Processing.The project is titled 'Multi Model Data Analysis for Annotation of Human Activities'. Multi Model Data Analysis pipeline developed using Python, PyTorch, Tensorflow, and Sklearn to predict human activities using accelerometer and gyroscope data from a smartwatch.The project is titled 'Website for the Literature Society of the college'. Website for the Literature Society of the college - A library management system with a readers' section allowing users to view and upload content. Skills used: Django Rest Framework, ReactJS.The project is titled 'LLMGuard'. LLMGuard: Backend development for a user interface integrating machine learning models with Rest APIs to detect hate profanity, bias in large language model responses. Skills: Pytorch, Tensorflow, Keras, Django Rest Framework, ReactJS.SKILLS:  Pytorch, Tensorflow, Django Rest Framework, Sklearn, Computer Vision, Image Processing, Keras, ReactJS, Python, PyTorch.",
     "galkRecruitScreeningAnswers": {
         "The reason why you want to come to Japan": "I want to come to Japan because Japan is one of the leading countries in AI and I am deeply interested in the field od AI. I have always been fascinated by the amazing work culture of Japan and I myself want to be a part of that work culture.",
