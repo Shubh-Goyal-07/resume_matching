@@ -118,7 +118,7 @@ class HRAssistant():
         Scores the candidates based on their projects for a particular job description.
     """
 
-    def __init__(self, jdk_info, candidates_info):
+    def __init__(self, jdk_info, candidates_info, cand_count_reasoning):
         """
         The constructor for HRAssistant class.
 
@@ -182,6 +182,8 @@ class HRAssistant():
         # delete the temporary lists
         del answers, self.__candidate_desc_list, self.__candidate_recruit_answers, self.__candidate_name, self.__candidate_img, self.__candidate_college, self.__candidate_major
 
+        # Defines the number of candidates to produce reasoning for
+        self.cand_count_reasoning = cand_count_reasoning
 
         # Set the openai api key and create an instance of the OpenAI class
         openai.api_key = os.environ.get("OPENAI_API_KEY")
@@ -595,6 +597,9 @@ class HRAssistant():
         # Round off the final scores to 2 decimal places
         self.cands_final_score_dataframe['final_score'] = self.cands_final_score_dataframe['final_score'].apply(
             lambda x: round(x, 2))
+        
+        # Sort the dataframe by the final scores in descending order
+        self.cands_final_score_dataframe = self.cands_final_score_dataframe.sort_values(by='final_score', ascending=False)
 
         # Drop the project count column to save memory
         self.cands_final_score_dataframe.drop(
@@ -773,13 +778,12 @@ class HRAssistant():
         None
         """
 
+        running_count = 0
+
         # Iterate through the dataframe and add the reasoning and the personality scores to the dataframe
         for index, row in self.cands_final_score_dataframe.iterrows():
             # Get the candidate's id and score in the current row
             candidate_id = row['id']
-
-            # print("Candidate ID: ", candidate_id)
-
             candidate_score = row['final_score']
 
             # Extract the candidate's information from the dataframe '__cand_raw_data_dataframe'
@@ -790,18 +794,17 @@ class HRAssistant():
             candidate_recruit_answers = cand_info.at['answers']
             candidate_projects_info = cand_info.at['description']
 
-            # Get the reasoning for the candidate's score and the personality score of the candidate
-            response = self.__get_score_reasons_and_personality_scores(
-                candidate_recruit_answers, candidate_score, candidate_projects_info)
-            
-            techreason, techreason_jap, score, personalityreason, personalityreason_jap = response
-
-            # Translate both the reasonings to Japanese
-            # techreason_jap = self.__translate_en_ja(
-            #     techreason)                     # tech reasoning
-            # personalityreason_jap = self.__translate_en_ja(
-            #     personalityreason)       # personality reasoning
-
+            # check if the specified number of candidates' reasons has been added (self.cand_count_reasoning)
+            running_count += 1
+            if (running_count < self.cand_count_reasoning):
+                # Get the reasoning for the candidate's score and the personality score of the candidate
+                response = self.__get_score_reasons_and_personality_scores(
+                    candidate_recruit_answers, candidate_score, candidate_projects_info)
+                
+                techreason, techreason_jap, score, personalityreason, personalityreason_jap = response
+            else:
+                techreason = techreason_jap = score = personalityreason = personalityreason_jap = None
+                
             # Add the technical reasoning and the personality scores and reasoning to the dataframe 'cands_final_score_dataframe'
             self.cands_final_score_dataframe.loc[index,
                                                  'tech_reason'] = techreason
@@ -887,7 +890,7 @@ class HRAssistant():
         # Convert the dataframe to a JSON object
         result_data_json = self.cands_final_score_dataframe.to_json(
             orient='records')
-
+        
         # Uncomment the below line to save the 'cands_datframe', which contains the project scores
         # pd.DataFrame.to_excel(self.__cands_dataframe, f"./results/{self.__jdk_id}.xlsx", index=False)
 
@@ -898,7 +901,7 @@ class HRAssistant():
         return result_data_json
 
 
-def get_candidate_scores(jdk_info, candidates_info):
+def get_candidate_scores(jdk_info, candidates_info, cand_count=30):
     """
     This function scores the candidates based on their projects for a particular job description.
 
@@ -932,7 +935,7 @@ def get_candidate_scores(jdk_info, candidates_info):
         - personality_reason_japanese (str): personality_reason translated to Japanese.
     """
 
-    jdk_resume_assistant = HRAssistant(jdk_info, candidates_info)
+    jdk_resume_assistant = HRAssistant(jdk_info, candidates_info, cand_count)
     result = jdk_resume_assistant.score_candidates()
 
     return result
