@@ -52,10 +52,12 @@ for i in range(1, 5):
 print("Data Loaded")
 jdk1 = json.load(open(f"../new_data/jdks/1.json"))
 start_time = time.time()
-jdk_resume_assistant = HRAssistant(jdk1, cands_data)
+jdk_resume_assistant = HRAssistant(jdk1, cands_data, 3)
 result = jdk_resume_assistant.score_candidates()
 print("--- %s seconds ---" % (time.time() - start_time))
 print("JDK 1 Done")
+# print(result)
+# json.dump(result, open(f"./results/1.json", 'w'), indent=4)
 # print(results)
 
 # jdk2 = json.load(open(f"../new_data/jdks/2.json"))

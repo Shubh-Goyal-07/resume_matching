@@ -182,9 +182,6 @@ class HRAssistant():
         # delete the temporary lists
         del answers, self.__candidate_desc_list, self.__candidate_recruit_answers, self.__candidate_name, self.__candidate_img, self.__candidate_college, self.__candidate_major
 
-        # Defines the number of candidates to produce reasoning for
-        self.cand_count_reasoning = cand_count_reasoning
-
         # Set the openai api key and create an instance of the OpenAI class
         openai.api_key = os.environ.get("OPENAI_API_KEY")
         self.__client = openai.OpenAI()
@@ -210,6 +207,10 @@ class HRAssistant():
         self.__experience_penalties = config['experience_params']['experience_percentile_penalties']
         # Project count penalties (applied on the final score of the candidate)
         self.__project_count_penalties = config['project_count_penalties']
+
+        # Defines the number of candidates to produce reasoning for
+        self.cand_count_reasoning = config['max_reasoning_count']
+
 
     def __fetch_jdk_embeddings(self):
         """
@@ -796,7 +797,7 @@ class HRAssistant():
 
             # check if the specified number of candidates' reasons has been added (self.cand_count_reasoning)
             running_count += 1
-            if (running_count < self.cand_count_reasoning):
+            if (running_count <= self.cand_count_reasoning):
                 # Get the reasoning for the candidate's score and the personality score of the candidate
                 response = self.__get_score_reasons_and_personality_scores(
                     candidate_recruit_answers, candidate_score, candidate_projects_info)
@@ -901,7 +902,7 @@ class HRAssistant():
         return result_data_json
 
 
-def get_candidate_scores(jdk_info, candidates_info, cand_count=30):
+def get_candidate_scores(jdk_info, candidates_info, cand_count=None):
     """
     This function scores the candidates based on their projects for a particular job description.
 
