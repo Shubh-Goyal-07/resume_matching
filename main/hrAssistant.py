@@ -1,6 +1,5 @@
 import openai
 from pinecone import Pinecone
-from google.cloud import translate_v2 as translate
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -107,9 +106,6 @@ class HRAssistant():
 
     __get_score_reasons_and_personality_scores(candidate_recruit_answers, candidate_score, candidate_description)
         Generates the reasoning for a candidate's score and also generates the personality score of the candidate along with the reasoning.
-
-    __translate_en_ja(reason)
-        Translates a text (in any language) to Japanese using the Google Cloud Translate API.
 
     __add_reasons_and_scores()
         Adds the reasoning for the candidate scores and the personality scores of the candidates to the dataframe 'cands_final_score_dataframe'.

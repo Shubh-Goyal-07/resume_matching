@@ -1,6 +1,5 @@
 import openai
 from pinecone import Pinecone
-from google.cloud import translate_v2 as translate
 
 from dotenv import load_dotenv, find_dotenv
 import os
@@ -71,9 +70,6 @@ class Manager_model():
 
     Methods
     -------
-    __translate_ja_en(description)
-        Translates a text (in any language) to English using the Google Cloud Translate API.
-
     __create_jdk_prompt(title, description, skills)
         Creates the system and user prompts to be used for getting the final description of the job description.
 
@@ -142,34 +138,6 @@ class Manager_model():
 
         # Extract the Pinecone database configuration from the configuration file
         self.__pinecone_config = config['pinecone_config']
-
-    def __translate_ja_en(self, description):
-        """
-        Translates a text (in any language) to English using the Google Cloud Translate API.
-
-        Parameters:
-        ----------
-        description : str
-            The text to be translated.
-
-        Returns:
-        -------
-        str:
-            The translated text in English.
-        """
-
-        # Set the environment variable for the Google Cloud credentials
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = r"../google-credentials.json"
-
-        # Create an instance of the Google Cloud Translate API
-        translate_client = translate.Client()
-
-        # Translate the given text to English and get the translated text
-        target = "en"               # Set the target language to English
-        output = translate_client.translate(description, target_language=target)[
-            'translatedText']
-
-        return output
 
     def __create_jdk_prompt(self, title, description, skills):
         """
@@ -397,9 +365,6 @@ class Manager_model():
         skills = self.data['skills']
         # Convert the list of skills to a string
         skills = ", ".join(skills)
-
-        # Translate the description to English
-        description = self.__translate_ja_en(description)
 
         # Create the system and user prompts
         system_prompt, user_prompt = self.__create_jdk_prompt(
